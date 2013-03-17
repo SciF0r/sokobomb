@@ -1,4 +1,6 @@
 *.class
+.classpath
+bin
 
 # Package Files #
 *.jar
