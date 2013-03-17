@@ -18,4 +18,11 @@ public abstract class FieldItem {
 		this.positionX = x;
 		this.positionY = y;
 	}
+
+	/**
+	 * Draws the item
+	 */
+	public void draw() {
+		// TODO add code to draw
+	}
 }

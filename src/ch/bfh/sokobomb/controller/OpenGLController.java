@@ -19,6 +19,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.util.OpenGLLoader;
 
 /**
@@ -55,6 +56,15 @@ public class OpenGLController {
 			System.out.println("Couldn't load the lwjgl nativ libraries");
 			System.exit(0);
 		}
+	}
+
+	/**
+	 * Draw a field
+	 *
+	 * @param field
+	 */
+	public void draw(Field field) {
+		// TODO implement
 	}
 
 	/**

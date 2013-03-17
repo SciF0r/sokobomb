@@ -1,7 +1,6 @@
 package ch.bfh.sokobomb.controller;
 
 import ch.bfh.sokobomb.model.Field;
-import ch.bfh.sokobomb.model.Player;
 
 /**
  * Main controller
@@ -10,7 +9,10 @@ import ch.bfh.sokobomb.model.Player;
  */
 public class MainController {
 
+	final static String DEFAULT_LEVEL = "res/levels/level1.txt";
+
 	private Field field;
+	private OpenGLController openGL;
 
 	/**
 	 * Set field and initialize openGL
@@ -19,16 +21,21 @@ public class MainController {
 	 */
 	public MainController(Field field) {
 		this.field = field;
-		OpenGLController openGL = new OpenGLController();
-		openGL.start();
+		this.openGL = new OpenGLController();
+		this.openGL.start();
+	}
+
+	public void draw() {
+		this.openGL.draw(this.field);
 	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Player player = new Player();
-		Field field = new Field(player);
+		Field field = new Field(MainController.DEFAULT_LEVEL);
+
 		MainController mainController = new MainController(field);
+		mainController.draw();
 	}
 }
