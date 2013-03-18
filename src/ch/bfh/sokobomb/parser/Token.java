@@ -12,6 +12,7 @@ public class Token {
 	 */
 	public int x;
 	public int y;
+	public int z;
 
 	/**
 	 * Constants to associate the token type

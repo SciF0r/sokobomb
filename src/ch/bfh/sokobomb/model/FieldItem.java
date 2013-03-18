@@ -3,15 +3,18 @@ package ch.bfh.sokobomb.model;
 import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
 public abstract class FieldItem {
 
-	protected String image;
-	protected int positionX;
-	protected int positionY;
+	protected String  path    = null;
+	protected Texture texture = null;
+	protected int     positionX;
+	protected int     positionY;
+	protected int     positionZ;
 
 	/**
 	 * The default implementation "beams" the field
@@ -21,29 +24,32 @@ public abstract class FieldItem {
 	 * @param x
 	 * @param y
 	 */
-	public void setPosition(int x, int y) {
+	public void setPosition(int x, int y, int z) {
 		this.positionX = x * 32;
 		this.positionY = y * 32;
+		this.positionZ = z;
 	}
 
 	/**
-	 * Draws the item
-	 *
+	 * Draws the item 
 	 * @throws IOException 
 	 */
 	public void draw() throws IOException {
-		Texture texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(this.image));
+		if (this.texture == null) {
+			this.texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(this.path));
+		}
+		Color.white.bind();
 		texture.bind();
 
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f(0, 0);
-		GL11.glVertex2f(this.positionX, this.positionY);
+		GL11.glVertex3f(this.positionX, this.positionY, this.positionZ);
 		GL11.glTexCoord2f(1, 0);
-		GL11.glVertex2f(this.positionX + texture.getTextureWidth(), this.positionY);
+		GL11.glVertex3f(this.positionX + texture.getTextureWidth(), this.positionY, this.positionZ);
 		GL11.glTexCoord2f(1, 1);
-		GL11.glVertex2f(this.positionX + texture.getTextureWidth(), this.positionY + texture.getTextureHeight());
+		GL11.glVertex3f(this.positionX + texture.getTextureWidth(), this.positionY + texture.getTextureHeight(), this.positionZ);
 		GL11.glTexCoord2f(0, 1);
-		GL11.glVertex2f(this.positionX, this.positionY + texture.getTextureHeight());
+		GL11.glVertex3f(this.positionX, this.positionY + texture.getTextureHeight(), this.positionZ);
 		GL11.glEnd();
 	}
 
@@ -53,6 +59,6 @@ public abstract class FieldItem {
 	 * @param path
 	 */
 	public void setImage(String path) {
-		this.image = path;
+		this.path = path;
 	}
 }

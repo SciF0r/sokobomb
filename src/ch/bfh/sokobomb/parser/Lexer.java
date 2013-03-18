@@ -81,24 +81,31 @@ public class Lexer {
 			switch (c) {
 				case '#':
 					token.type = Token.WALL;
+					token.z = 0;
 					break;
 				case '@':
 					token.type = Token.PLAYER_START;
+					token.z = 2;
 					break;
 				case '.':
 					token.type = Token.TARGET;
+					token.z = 1;
 					break;
 				case '$':
 					token.type = Token.BOMB_START;
+					token.z = 1;
 					break;
 				case '*':
 					token.type = Token.BOMB_TARGET;
+					token.z = 1;
 					break;
 				case '+':
 					token.type = Token.PLAYER_TARGET;
+					token.z = 2;
 					break;
 				case ' ':
 					token.type = Token.FLOOR;
+					token.z = 0;
 					break;
 				case '\n':
 					// Next line

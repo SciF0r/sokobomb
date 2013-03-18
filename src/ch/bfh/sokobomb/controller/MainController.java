@@ -1,5 +1,7 @@
 package ch.bfh.sokobomb.controller;
 
+import java.io.IOException;
+
 import ch.bfh.sokobomb.model.Field;
 
 /**
@@ -27,6 +29,8 @@ public class MainController {
 
 	/**
 	 * @param args
+	 *
+	 * @throws IOException 
 	 */
 	public static void main(String[] args) {
 		Field field = new Field(MainController.DEFAULT_LEVEL);

@@ -68,7 +68,7 @@ public class Field {
 	 * @param y
 	 */
 	public void movePlayer(int x, int y) {
-		this.player.setPosition(x, y);
+		this.player.setPosition(x, y, 0);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class Field {
 		}
 
 		for (FieldItem item: items) {
-			item.setPosition(token.x, token.y);
+			item.setPosition(token.x, token.y, 0);
 			this.addItem(item);
 			
 			if (item.getClass() == Player.class) {

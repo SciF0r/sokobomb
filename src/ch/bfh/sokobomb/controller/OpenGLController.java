@@ -101,9 +101,6 @@ public class OpenGLController {
 			//clear buffer
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			//set color
-			glColor3f(1.0f, 1.0f, 0.0f);
-
 			try {
 				field.draw();
 			}
@@ -111,6 +108,9 @@ public class OpenGLController {
 				e.printStackTrace();
 				System.exit(0);
 			}
+
+			Display.update();
+			Display.sync(100);
 
 /*
 			//draw all fields
@@ -132,8 +132,7 @@ public class OpenGLController {
 			drawPlayer(x,y);
 */
 
-			pollInput();
-			Display.update();
+//			pollInput();
 		}
 
 		Display.destroy();

@@ -5,6 +5,6 @@ import ch.bfh.sokobomb.util.Tiles;
 public class Target extends FieldItem {
 
 	public Target() {
-		this.image = Tiles.TARGET;
+		this.setImage(Tiles.TARGET);
 	}
 }
