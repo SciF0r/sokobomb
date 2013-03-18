@@ -8,6 +8,11 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
+/**
+ * A field item (Bomb, Floor, ...)
+ *
+ * @author Denis Simonet
+ */
 public abstract class FieldItem {
 
 	protected String  path    = null;
@@ -43,7 +48,8 @@ public abstract class FieldItem {
 
 	/**
 	 * Draws the item 
-	 * @throws IOException 
+	 *
+	 * @throws IOException When the texture could not be initialized
 	 */
 	public void draw() throws IOException {
 		if (this.texture == null) {
@@ -70,7 +76,7 @@ public abstract class FieldItem {
 	 * @param path
 	 */
 	public void setImage(String path) {
-		this.path = path;
+		this.path    = path;
 		this.texture = null;
 	}
 }

@@ -1,5 +1,10 @@
 package ch.bfh.sokobomb.exception;
 
+/**
+ * Obviously used in the Lexer
+ *
+ * @author Denis Simonet
+ */
 public class LexerException extends RuntimeException {
 
 	/**

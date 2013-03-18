@@ -1,5 +1,10 @@
 package ch.bfh.sokobomb.parser;
 
+/**
+ * A token, used by Lexer and Parser
+ *
+ * @author Denis Simonet
+ */
 public class Token {
 
 	/**
@@ -12,7 +17,6 @@ public class Token {
 	 */
 	public int x;
 	public int y;
-	public int z;
 
 	/**
 	 * Constants to associate the token type

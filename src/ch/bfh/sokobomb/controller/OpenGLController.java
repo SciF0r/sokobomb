@@ -25,23 +25,15 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import ch.bfh.sokobomb.model.Field;
-import ch.bfh.sokobomb.model.Player;
 import ch.bfh.sokobomb.util.OpenGLLoader;
 
 /**
- * Controller which handles all the OpenGL stuff
+ * Controller which handles all the OpenGL stuff and draws the field
  *
+ * @author Christoph Bruderer
  * @author Denis Simonet
  */
 public class OpenGLController {
-
-	/*
-	 * For the demo only
-	 */
-	private int x;
-	private int y;
-	private int row=6;
-	private int col=8;
 
 	/**
 	 * Load the lwjgl library
@@ -65,7 +57,9 @@ public class OpenGLController {
 	}
 
 	/**
-	 * Demonstration, needs to be replaced
+	 * Draw and refresh the field
+	 *
+	 * @param field The field to be drawn
 	 */
 	public void start(Field field) {
 		try {

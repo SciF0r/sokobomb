@@ -7,6 +7,11 @@ import java.util.List;
 import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
 
+/**
+ * Contains all required information to draw a field
+ *
+ * @author Denis Simonet
+ */
 public class Field {
 
 	private List<FieldItem> items = new LinkedList<FieldItem>();
@@ -24,6 +29,7 @@ public class Field {
 
 	/**
 	 * Draw the field
+	 *
 	 * @throws IOException 
 	 */
 	public void draw() throws IOException {
@@ -116,8 +122,6 @@ public class Field {
 	 * Add a field by token
 	 *
 	 * @param token
-	 * @throws RuntimeException
-	 * @return
 	 */
 	public void addItemByToken(Token token) {
 		Player    player = null;
