@@ -1,5 +1,6 @@
 package ch.bfh.sokobomb.model;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,8 +23,9 @@ public class Field {
 
 	/**
 	 * Draw the field
+	 * @throws IOException 
 	 */
-	public void draw() {
+	public void draw() throws IOException {
 		// TODO need some kind of openGL object
 		for (FieldItem item: this.items) {
 			item.draw();

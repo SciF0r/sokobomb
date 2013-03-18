@@ -22,11 +22,7 @@ public class MainController {
 	public MainController(Field field) {
 		this.field = field;
 		this.openGL = new OpenGLController();
-		this.openGL.start();
-	}
-
-	public void draw() {
-		this.openGL.draw(this.field);
+		this.openGL.start(this.field);
 	}
 
 	/**
@@ -35,7 +31,6 @@ public class MainController {
 	public static void main(String[] args) {
 		Field field = new Field(MainController.DEFAULT_LEVEL);
 
-		MainController mainController = new MainController(field);
-		mainController.draw();
+		new MainController(field);
 	}
 }
