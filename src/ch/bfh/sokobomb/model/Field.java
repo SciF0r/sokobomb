@@ -10,7 +10,8 @@ import ch.bfh.sokobomb.parser.Token;
 public class Field {
 
 	private List<FieldItem> items = new LinkedList<FieldItem>();
-	private FieldItem player;
+	private List<Bomb>      bombs = new LinkedList<Bomb>();
+	private Player          player;
 
 	/**
 	 * The constructor sets the player
@@ -26,10 +27,15 @@ public class Field {
 	 * @throws IOException 
 	 */
 	public void draw() throws IOException {
-		// TODO need some kind of openGL object
 		for (FieldItem item: this.items) {
 			item.draw();
 		}
+
+		for (Bomb bomb: this.bombs) {
+			bomb.draw();
+		}
+
+		this.player.draw();
 	}
 
 	/**
@@ -40,6 +46,32 @@ public class Field {
 	private void parse(String path) {
 		Parser parser = new Parser();
 		parser.parse(path, this);
+	}
+
+	/**
+	 * Add a bomb to the field
+	 *
+	 * @param bomb
+	 */
+	public void addBomb(Bomb bomb) {
+		this.bombs.add(bomb);
+	}
+
+	/**
+	 * Add a player to the field
+	 *
+	 * The current implementation only allows one player
+	 *
+	 * @param player
+	 */
+	public void addPlayer(Player player) {
+		if (this.player != null) {
+			throw new RuntimeException(
+				"More than one player defined"
+			);
+		}
+
+		this.player = player;
 	}
 
 	/**
@@ -68,7 +100,7 @@ public class Field {
 	 * @param y
 	 */
 	public void movePlayer(int x, int y) {
-		this.player.setPosition(x, y, 0);
+		this.player.setPosition(x, y);
 	}
 
 	/**
@@ -79,33 +111,35 @@ public class Field {
 	 * @return
 	 */
 	public void addItemByToken(Token token) {
-		List<FieldItem> items = new LinkedList<FieldItem>();
+		Player    player = null;
+		Bomb      bomb   = null;
+		FieldItem item   = null;
 
 		switch (token.type) {
 			case Token.WALL:
-				items.add(new Wall());
+				item = new Wall();
 				break;
 			case Token.PLAYER_START:
-				items.add(new Player());
-				items.add(new Floor());
+				player = new Player();
+				item   = new Floor();
 				break;
 			case Token.TARGET:
-				items.add(new Target());
+				item = new Target();
 				break;
 			case Token.BOMB_START:
-				items.add(new Bomb());
-				items.add(new Floor());
+				item = new Floor();
+				bomb = new Bomb();
 				break;
 			case Token.BOMB_TARGET:
-				items.add(new Bomb());
-				items.add(new Target());
+				bomb = new Bomb();
+				item = new Target();
 				break;
 			case Token.PLAYER_TARGET:
-				items.add(new Player());
-				items.add(new Target());
+				player = new Player();
+				item   = new Target();
 				break;
 			case Token.FLOOR:
-				items.add(new Floor());
+				item = new Floor();
 				break;
 			default:
 				throw new RuntimeException(
@@ -113,19 +147,19 @@ public class Field {
 				);
 		}
 
-		for (FieldItem item: items) {
-			item.setPosition(token.x, token.y, 0);
+		if (item != null) {
+			item.setPosition(token.x, token.y);
 			this.addItem(item);
-			
-			if (item.getClass() == Player.class) {
-				if (this.player != null) {
-					throw new RuntimeException(
-						"More than one player defined"
-					);
-				}
+		}
 
-				this.player = item;
-			}
+		if (bomb != null) {
+			bomb.setPosition(token.x, token.y);
+			this.addBomb(bomb);
+		}
+
+		if (player != null) {
+			player.setPosition(token.x, token.y);
+			this.addPlayer(player);
 		}
 	}
 }

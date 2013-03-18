@@ -6,20 +6,15 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_PROJECTION;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glOrtho;
-import static org.lwjgl.opengl.GL11.glVertex2i;
 import static org.lwjgl.opengl.GL11.glViewport;
 
 import java.io.IOException;
@@ -87,7 +82,6 @@ public class OpenGLController {
 		glEnable(GL_BLEND);
 		glEnable(GL_TEXTURE_2D);  
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glViewport(0, 0, 800, 600);
 		glMatrixMode(GL_MODELVIEW);
@@ -112,52 +106,11 @@ public class OpenGLController {
 			Display.update();
 			Display.sync(100);
 
-/*
-			//draw all fields
-			int delta=4;
-			int size=100;
-			for (int i=0; i<col; i++) {
-				int xpos = i*100;
-				for(int j=0; j<row; j++) {
-					int ypos=j*size;
-					glBegin(GL_QUADS);
-					glVertex2i(xpos+delta,ypos+delta);
-					glVertex2i(xpos+size-delta,ypos+delta);
-					glVertex2i(xpos+size-delta,ypos+size-delta);
-					glVertex2i(xpos+delta,ypos+size-delta);
-					glEnd();
-				}
-			}
-
-			drawPlayer(x,y);
-*/
-
 //			pollInput();
 		}
 
 		Display.destroy();
 		System.exit(0);
-	}
-
-	/**
-	 * Draws the player, needs to be replaced
-	 *
-	 * @param x
-	 * @param y
-	 */
-	private void drawPlayer(int x,int y) {
-		//set color
-		glColor3f(0.0f, 0.0f, 1.0f);
-
-		glBegin(GL_QUADS);
-		int size=100;
-		int s = 50;
-		int offset=25;
-		glVertex2i(x*size+offset, y*size+offset);
-		glVertex2i(x*size+s+offset, y*size+offset);
-		glVertex2i(x*size+offset+s, y*size+offset+s);
-		glVertex2i(x*size+offset, y*size+offset+s);
-		glEnd();
 	}
 
 	/**

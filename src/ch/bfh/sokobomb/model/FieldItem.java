@@ -14,7 +14,6 @@ public abstract class FieldItem {
 	protected Texture texture = null;
 	protected int     positionX;
 	protected int     positionY;
-	protected int     positionZ;
 
 	/**
 	 * The default implementation "beams" the field
@@ -24,10 +23,9 @@ public abstract class FieldItem {
 	 * @param x
 	 * @param y
 	 */
-	public void setPosition(int x, int y, int z) {
+	public void setPosition(int x, int y) {
 		this.positionX = x * 32;
 		this.positionY = y * 32;
-		this.positionZ = z;
 	}
 
 	/**
@@ -43,13 +41,13 @@ public abstract class FieldItem {
 
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f(0, 0);
-		GL11.glVertex3f(this.positionX, this.positionY, this.positionZ);
+		GL11.glVertex2f(this.positionX, this.positionY);
 		GL11.glTexCoord2f(1, 0);
-		GL11.glVertex3f(this.positionX + texture.getTextureWidth(), this.positionY, this.positionZ);
+		GL11.glVertex2f(this.positionX + texture.getTextureWidth(), this.positionY);
 		GL11.glTexCoord2f(1, 1);
-		GL11.glVertex3f(this.positionX + texture.getTextureWidth(), this.positionY + texture.getTextureHeight(), this.positionZ);
+		GL11.glVertex2f(this.positionX + texture.getTextureWidth(), this.positionY + texture.getTextureHeight());
 		GL11.glTexCoord2f(0, 1);
-		GL11.glVertex3f(this.positionX, this.positionY + texture.getTextureHeight(), this.positionZ);
+		GL11.glVertex2f(this.positionX, this.positionY + texture.getTextureHeight());
 		GL11.glEnd();
 	}
 
@@ -60,5 +58,6 @@ public abstract class FieldItem {
 	 */
 	public void setImage(String path) {
 		this.path = path;
+		this.texture = null;
 	}
 }
