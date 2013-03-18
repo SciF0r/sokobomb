@@ -25,4 +25,13 @@ public abstract class FieldItem {
 	public void draw() {
 		// TODO add code to draw
 	}
+
+	/**
+	 * Sets a new graphics to be displayed
+	 *
+	 * @param path
+	 */
+	public void setImage(String path) {
+		this.image = path;
+	}
 }

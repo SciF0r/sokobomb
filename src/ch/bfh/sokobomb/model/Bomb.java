@@ -1,8 +1,10 @@
 package ch.bfh.sokobomb.model;
 
+import ch.bfh.sokobomb.util.Tiles;
+
 public class Bomb extends FieldItem {
 
 	public Bomb() {
-		this.image = "res/bomb.png";
+		this.image = Tiles.BOMB;
 	}
 }
