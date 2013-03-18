@@ -25,6 +25,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import ch.bfh.sokobomb.model.Field;
+import ch.bfh.sokobomb.model.Player;
 import ch.bfh.sokobomb.util.OpenGLLoader;
 
 /**
@@ -106,7 +107,7 @@ public class OpenGLController {
 			Display.update();
 			Display.sync(100);
 
-//			pollInput();
+			pollInput(field);
 		}
 
 		Display.destroy();
@@ -115,39 +116,30 @@ public class OpenGLController {
 
 	/**
 	 * Mouse and keyboard event handling
+	 *
+	 * @param field The field to act on
 	 */
-	private void pollInput() {
-		//Keyboard.enableRepeatEvents(false);
+	private void pollInput(Field field) {
+		Keyboard.enableRepeatEvents(true);
+
 		if (Mouse.isButtonDown(0)) {
-			int mousex = Mouse.getX();
-			int mousey = Mouse.getY();
-			//this.drawPlayer(x/100, y/100);
-			x=mousex/100;
-			y=mousey/100;
+			int mouseX = Mouse.getX();
+			int mouseY = Mouse.getY();
+			field.getPlayer().setPosition(mouseX / 32, (600 - mouseY) / 32);
 		}
 
 		while (Keyboard.next()) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-				if (x<col-1) {
-					x=x+1;
-					//Display.sync(10);
-					//System.out.println(x +" "+y);
-				}
+				field.movePlayer(1, 0);
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-				if (x>0) {
-					x=x-1;
-				}
+				field.movePlayer(-1, 0);
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-				if (y<row-1) {
-					y=y+1;
-				}
+				field.movePlayer(0, -1);
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-				if (y>0) {
-					y=y-1;
-				}
+				field.movePlayer(0, 1);
 			}
 		}
 	}

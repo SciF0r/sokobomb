@@ -75,6 +75,15 @@ public class Field {
 	}
 
 	/**
+	 * Getter for player
+	 *
+	 * @return The player
+	 */
+	public Player getPlayer() {
+		return this.player;
+	}
+
+	/**
 	 * Adds a field item to the field
 	 *
 	 * @param item
@@ -100,7 +109,7 @@ public class Field {
 	 * @param y
 	 */
 	public void movePlayer(int x, int y) {
-		this.player.setPosition(x, y);
+		this.player.move(x, y);
 	}
 
 	/**

@@ -29,6 +29,19 @@ public abstract class FieldItem {
 	}
 
 	/**
+	 * Move to a certain position
+	 *
+	 * Must be overwritten for animation
+	 *
+	 * @param x
+	 * @param y
+	 */
+	public void move(int x, int y) {
+		this.positionX += x * 32;
+		this.positionY += y * 32;
+	}
+
+	/**
 	 * Draws the item 
 	 * @throws IOException 
 	 */
