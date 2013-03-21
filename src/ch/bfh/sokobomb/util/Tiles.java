@@ -16,4 +16,10 @@ final public class Tiles {
 	final public static String WALL        = "res/tiles/yoshi-32-wall.png";
 	final public static String PLAYER      = "res/tiles/yoshi-32-worker.png";
 	final public static String TARGET      = "res/tiles/yoshi-32-dock.png";
+
+	/**
+	 * Each tile must have the same width and height
+	 */
+	final public static int WIDTH  = 32;
+	final public static int HEIGHT = 32;
 }

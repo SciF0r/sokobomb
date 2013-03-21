@@ -26,6 +26,7 @@ import org.lwjgl.opengl.DisplayMode;
 
 import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.util.OpenGLLoader;
+import ch.bfh.sokobomb.util.Tiles;
 
 /**
  * Controller which handles all the OpenGL stuff and draws the field
@@ -35,10 +36,15 @@ import ch.bfh.sokobomb.util.OpenGLLoader;
  */
 public class OpenGLController {
 
+	private int width;
+	private int height;
+
 	/**
 	 * Load the lwjgl library
 	 */
-	public OpenGLController() {
+	public OpenGLController(int width, int height) {
+		this.width      = width;
+		this.height     = height;
 		this.loadLibs();
 	}
 
@@ -63,7 +69,7 @@ public class OpenGLController {
 	 */
 	public void start(Field field) {
 		try {
-			Display.setDisplayMode(new DisplayMode(800, 600));
+			Display.setDisplayMode(new DisplayMode(this.width, this.height));
 			Display.create();
 			Display.setVSyncEnabled(true);
 		}
@@ -78,12 +84,12 @@ public class OpenGLController {
 		glEnable(GL_TEXTURE_2D);  
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glViewport(0, 0, 800, 600);
+		glViewport(0, 0, this.width, this.height);
 		glMatrixMode(GL_MODELVIEW);
 		glMatrixMode(GL_PROJECTION);
 
 		glLoadIdentity();
-		glOrtho(0, 800, 600, 0, -1, 1);
+		glOrtho(0, this.width, this.height, 0, -1, 1);
 		glMatrixMode(GL_MODELVIEW);
 
 		while (!Display.isCloseRequested()) {
@@ -119,7 +125,7 @@ public class OpenGLController {
 		if (Mouse.isButtonDown(0)) {
 			int mouseX = Mouse.getX();
 			int mouseY = Mouse.getY();
-			field.getPlayer().setPosition(mouseX / 32, (600 - mouseY) / 32);
+			field.getPlayer().setPosition(mouseX / Tiles.WIDTH, (this.height - mouseY) / Tiles.HEIGHT);
 		}
 
 		while (Keyboard.next()) {

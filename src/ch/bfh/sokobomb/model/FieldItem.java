@@ -8,6 +8,8 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
+import ch.bfh.sokobomb.util.Tiles;
+
 /**
  * A field item (Bomb, Floor, ...)
  *
@@ -29,8 +31,8 @@ public abstract class FieldItem {
 	 * @param y
 	 */
 	public void setPosition(int x, int y) {
-		this.positionX = x * 32;
-		this.positionY = y * 32;
+		this.positionX = x * Tiles.WIDTH;
+		this.positionY = y * Tiles.HEIGHT;
 	}
 
 	/**
@@ -41,9 +43,9 @@ public abstract class FieldItem {
 	 * @param x
 	 * @param y
 	 */
-	public void move(int x, int y) {
-		this.positionX += x * 32;
-		this.positionY += y * 32;
+	public void move(int dx, int dy) {
+		this.positionX += dx * Tiles.WIDTH;
+		this.positionY += dy * Tiles.HEIGHT;
 	}
 
 	/**

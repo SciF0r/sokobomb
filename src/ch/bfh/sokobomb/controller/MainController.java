@@ -23,7 +23,10 @@ public class MainController {
 	 */
 	public MainController(Field field) {
 		this.field = field;
-		this.openGL = new OpenGLController();
+		this.openGL = new OpenGLController(
+			416,
+			512
+		);
 		this.openGL.start(this.field);
 	}
 
