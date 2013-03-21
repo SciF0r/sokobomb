@@ -100,6 +100,9 @@ public class Lexer {
 				case ' ':
 					token.type = Token.FLOOR;
 					break;
+				case '&':
+					token.type = Token.EMPTY;
+					break;
 				case '\r':
 					this.index++;
 					return nextToken();

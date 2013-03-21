@@ -29,6 +29,10 @@ public class Parser {
 		this.lexer.initLexer(path);
 
 		while ((token = this.lexer.nextToken()).type != Token.EOF) {
+			if (token.type == Token.EMPTY) {
+				continue;
+			}
+
 			field.addItemByToken(token);
 		}
 	}

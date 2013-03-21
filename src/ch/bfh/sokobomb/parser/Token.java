@@ -29,4 +29,5 @@ public class Token {
 	public static final int PLAYER_TARGET = 5; // +
 	public static final int FLOOR         = 6; // Space
 	public static final int EOF           = 7; // End Of File
+	public static final int EMPTY         = 8; // Empty
 }
