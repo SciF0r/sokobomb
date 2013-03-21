@@ -9,7 +9,7 @@ import java.util.Arrays;
  * @author Christoph Bruderer
  *
  */
-public class OpenGLLoader {
+final public class OpenGLLoader {
 
 	/**
 	 * Load native libraries

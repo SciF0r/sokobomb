@@ -28,12 +28,18 @@ public class Parser {
 
 		this.lexer.initLexer(path);
 
+		int width  = 0;
+		int height = 0;
 		while ((token = this.lexer.nextToken()).type != Token.EOF) {
 			if (token.type == Token.EMPTY) {
 				continue;
 			}
 
 			field.addItemByToken(token);
+			width = Math.max(width, token.x + 1);
+			height = Math.max(height, token.y + 1);
 		}
+
+		field.buildFieldCache(width, height);
 	}
 }

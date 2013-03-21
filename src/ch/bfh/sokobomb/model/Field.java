@@ -16,7 +16,9 @@ public class Field {
 
 	private List<FieldItem> items = new LinkedList<FieldItem>();
 	private List<Bomb>      bombs = new LinkedList<Bomb>();
-	private Player          player;
+	private Integer[][]     cache = null;
+
+	private Player player;
 
 	/**
 	 * The constructor sets the player
@@ -114,8 +116,13 @@ public class Field {
 	 * @param x
 	 * @param y
 	 */
-	public void movePlayer(int x, int y) {
-		this.player.move(x, y);
+	public void movePlayer(int dx, int dy) {
+		int newX = player.getPositionX() + dx;
+		int newY = player.getPositionY() + dy; 
+
+		if (this.mayEnter(newX, newY)) {
+			this.player.setPosition(newX, newY);
+		}
 	}
 
 	/**
@@ -131,28 +138,39 @@ public class Field {
 		switch (token.type) {
 			case Token.WALL:
 				item = new Wall();
+				item.tokenType = Token.WALL;
 				break;
 			case Token.PLAYER_START:
 				player = new Player();
+				player.tokenType = Token.PLAYER_START;
 				item   = new Floor();
+				item.tokenType = Token.FLOOR;
 				break;
 			case Token.TARGET:
 				item = new Target();
+				item.tokenType = Token.TARGET;
 				break;
 			case Token.BOMB_START:
 				item = new Floor();
+				item.tokenType = Token.FLOOR;
 				bomb = new Bomb();
+				bomb.tokenType = Token.BOMB_START;
 				break;
 			case Token.BOMB_TARGET:
 				bomb = new Bomb();
+				bomb.tokenType = Token.BOMB_START;
 				item = new Target();
+				item.tokenType = Token.TARGET;
 				break;
 			case Token.PLAYER_TARGET:
 				player = new Player();
+				player.tokenType = Token.PLAYER_START;
 				item   = new Target();
+				item.tokenType = Token.TARGET;
 				break;
 			case Token.FLOOR:
 				item = new Floor();
+				item.tokenType = Token.FLOOR;
 				break;
 			default:
 				throw new RuntimeException(
@@ -174,5 +192,37 @@ public class Field {
 			player.setPosition(token.x, token.y);
 			this.addPlayer(player);
 		}
+	}
+
+	/**
+	 * Builds the field cache
+	 */
+	public void buildFieldCache(int width, int height) {
+		this.cache = new Integer[width][height];
+
+		for (FieldItem item: items) {
+			this.cache[item.positionX][item.positionY] = item.tokenType;
+		}
+	}
+
+	/**
+	 * Returns whether the player may enter a field
+	 *
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public boolean mayEnter(int x, int y) {
+		if (this.cache.length <= x || this.cache[x].length <= y || x < 1 || y < 1) {
+			return false;
+		}
+
+		Integer type = this.cache[x][y];
+		
+		if (type == null) {
+			return false;
+		}
+
+		return type == Token.FLOOR || type == Token.TARGET;
 	}
 }

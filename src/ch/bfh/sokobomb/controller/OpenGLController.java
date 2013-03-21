@@ -105,7 +105,6 @@ public class OpenGLController {
 			}
 
 			Display.update();
-			Display.sync(100);
 
 			pollInput(field);
 		}
@@ -123,9 +122,11 @@ public class OpenGLController {
 		Keyboard.enableRepeatEvents(true);
 
 		if (Mouse.isButtonDown(0)) {
-			int mouseX = Mouse.getX();
-			int mouseY = Mouse.getY();
-			field.getPlayer().setPosition(mouseX / Tiles.WIDTH, (this.height - mouseY) / Tiles.HEIGHT);
+			int x = Mouse.getX() / Tiles.WIDTH;
+			int y = (this.height - Mouse.getY()) / Tiles.HEIGHT;
+			if (field.mayEnter(x, y)) {
+				field.getPlayer().setPosition(x, y);
+			}
 		}
 
 		while (Keyboard.next()) {
