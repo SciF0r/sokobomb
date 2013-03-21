@@ -111,7 +111,7 @@ public class Field {
 	}
 
 	/**
-	 * Moves the player to a certain target
+	 * Moves the player to a certain position
 	 *
 	 * @param x
 	 * @param y
@@ -119,19 +119,34 @@ public class Field {
 	public void movePlayer(int dx, int dy) {
 		int newX = player.getPositionX() + dx;
 		int newY = player.getPositionY() + dy; 
-
+		
 		Bomb bomb = this.findBomb(newX, newY);
 		if (bomb != null) {
-			if (this.mayEnter(newX + dx, newY + dy)) {
-				bomb.setPosition(newX + dx, newY + dy);
-			}
-			else {
-				return;
-			}
+			this.moveBomb(bomb, dx, dy);
 		}
 
 		if (this.mayEnter(newX, newY)) {
 			this.player.setPosition(newX, newY);
+		}
+	}
+
+	/**
+	 * Moves the player to a certain position
+	 *
+	 * @param x
+	 * @param y
+	 */
+	public void moveBomb(Bomb bomb, int dx, int dy) {
+		int newX = bomb.getPositionX() + dx;
+		int newY = bomb.getPositionY() + dy;
+
+		Bomb newBomb = this.findBomb(newX, newY);
+		if (newBomb != null) {
+			this.moveBomb(newBomb, dx, dy);
+		}
+
+		if (this.mayEnter(newX, newY)) {
+			bomb.setPosition(newX, newY);
 		}
 	}
 
@@ -229,7 +244,7 @@ public class Field {
 
 		Integer type = this.cache[x][y];
 		
-		if (type == null) {
+		if (type == null || this.findBomb(x, y) != null) {
 			return false;
 		}
 
