@@ -120,6 +120,16 @@ public class Field {
 		int newX = player.getPositionX() + dx;
 		int newY = player.getPositionY() + dy; 
 
+		Bomb bomb = this.findBomb(newX, newY);
+		if (bomb != null) {
+			if (this.mayEnter(newX + dx, newY + dy)) {
+				bomb.setPosition(newX + dx, newY + dy);
+			}
+			else {
+				return;
+			}
+		}
+
 		if (this.mayEnter(newX, newY)) {
 			this.player.setPosition(newX, newY);
 		}
@@ -224,5 +234,22 @@ public class Field {
 		}
 
 		return type == Token.FLOOR || type == Token.TARGET;
+	}
+
+	/**
+	 * Returns a bomb if it is at a certain position
+	 *
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public Bomb findBomb(int x, int y) {
+		for (Bomb bomb: this.bombs) {
+			if (bomb.getPositionX() == x && bomb.getPositionY() == y) {
+				return bomb;
+			}
+		}
+
+		return null;
 	}
 }
