@@ -23,10 +23,7 @@ public class MainController {
 	 */
 	public MainController(Field field) {
 		this.field = field;
-		this.openGL = new OpenGLController(
-			416,
-			512
-		);
+		this.openGL = new OpenGLController();
 		this.openGL.start(this.field);
 	}
 
@@ -36,7 +33,7 @@ public class MainController {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) {
-		Field field = new Field(MainController.DEFAULT_LEVEL);
+		Field field = new Field(MainController.DEFAULT_LEVEL, 416, 512);
 
 		new MainController(field);
 	}

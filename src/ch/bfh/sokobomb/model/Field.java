@@ -6,9 +6,11 @@ import java.util.List;
 
 import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
+import ch.bfh.sokobomb.states.PlayState;
+import ch.bfh.sokobomb.states.State;
 
 /**
- * Contains all required information to draw a field
+ * Contains all required information to draw a field and handle input
  *
  * @author Denis Simonet
  */
@@ -21,29 +23,41 @@ public class Field {
 	private Player player;
 
 	/**
+	 * The width of the field
+	 */
+	private int width;
+
+	/**
+	 * The height of the field
+	 */
+	private int height;
+
+	/**
+	 * Current state
+	 */
+	private State state = new PlayState(this);
+
+	/**
 	 * The constructor sets the player
 	 *
 	 * @param path The path to the file with the field to be loaded
 	 */
-	public Field(String path) {
+	public Field(String path, int width, int height) {
+		this.width = width;
+		this.height = height;
 		this.parse(path);
+		this.state.entry();
+		
 	}
 
 	/**
-	 * Draw the field
+	 * Sets a new state
 	 *
-	 * @throws IOException 
+	 * @param state
 	 */
-	public void draw() throws IOException {
-		for (FieldItem item: this.items) {
-			item.draw();
-		}
-
-		for (Bomb bomb: this.bombs) {
-			bomb.draw();
-		}
-
-		this.player.draw();
+	public void setState(State state) {
+		this.state = state;
+		this.state.entry();
 	}
 
 	/**
@@ -111,6 +125,20 @@ public class Field {
 	}
 
 	/**
+	 * @return the items
+	 */
+	public List<FieldItem> getItems() {
+		return items;
+	}
+
+	/**
+	 * @return the bombs
+	 */
+	public List<Bomb> getBombs() {
+		return bombs;
+	}
+
+	/**
 	 * Moves the player to a certain position
 	 *
 	 * @param x
@@ -119,7 +147,7 @@ public class Field {
 	public void movePlayer(int dx, int dy) {
 		int newX = player.getPositionX() + dx;
 		int newY = player.getPositionY() + dy; 
-		
+
 		Bomb bomb = this.findBomb(newX, newY);
 		if (bomb != null) {
 			this.moveBomb(bomb, dx, dy);
@@ -148,6 +176,14 @@ public class Field {
 		if (this.mayEnter(newX, newY)) {
 			bomb.setPosition(newX, newY);
 		}
+	}
+
+	/**
+	 * Draw the field according to state
+	 * @throws IOException 
+	 */
+	public void draw() throws IOException {
+		this.state.draw();
 	}
 
 	/**
@@ -266,5 +302,13 @@ public class Field {
 		}
 
 		return null;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 }

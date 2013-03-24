@@ -19,14 +19,11 @@ import static org.lwjgl.opengl.GL11.glViewport;
 
 import java.io.IOException;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.util.OpenGLLoader;
-import ch.bfh.sokobomb.util.Tiles;
 
 /**
  * Controller which handles all the OpenGL stuff and draws the field
@@ -36,15 +33,10 @@ import ch.bfh.sokobomb.util.Tiles;
  */
 public class OpenGLController {
 
-	private int width;
-	private int height;
-
 	/**
 	 * Load the lwjgl library
 	 */
-	public OpenGLController(int width, int height) {
-		this.width      = width;
-		this.height     = height;
+	public OpenGLController() {
 		this.loadLibs();
 	}
 
@@ -69,7 +61,7 @@ public class OpenGLController {
 	 */
 	public void start(Field field) {
 		try {
-			Display.setDisplayMode(new DisplayMode(this.width, this.height));
+			Display.setDisplayMode(new DisplayMode(field.getWidth(), field.getHeight()));
 			Display.create();
 			Display.setVSyncEnabled(true);
 		}
@@ -84,12 +76,12 @@ public class OpenGLController {
 		glEnable(GL_TEXTURE_2D);  
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glViewport(0, 0, this.width, this.height);
+		glViewport(0, 0, field.getWidth(), field.getHeight());
 		glMatrixMode(GL_MODELVIEW);
 		glMatrixMode(GL_PROJECTION);
 
 		glLoadIdentity();
-		glOrtho(0, this.width, this.height, 0, -1, 1);
+		glOrtho(0, field.getWidth(), field.getHeight(), 0, -1, 1);
 		glMatrixMode(GL_MODELVIEW);
 
 		while (!Display.isCloseRequested()) {
@@ -103,45 +95,9 @@ public class OpenGLController {
 				e.printStackTrace();
 				System.exit(0);
 			}
-
-			Display.update();
-
-			pollInput(field);
 		}
 
 		Display.destroy();
 		System.exit(0);
-	}
-
-	/**
-	 * Mouse and keyboard event handling
-	 *
-	 * @param field The field to act on
-	 */
-	private void pollInput(Field field) {
-		Keyboard.enableRepeatEvents(true);
-
-		if (Mouse.isButtonDown(0)) {
-			int x = Mouse.getX() / Tiles.WIDTH;
-			int y = (this.height - Mouse.getY()) / Tiles.HEIGHT;
-			if (field.mayEnter(x, y)) {
-				field.getPlayer().setPosition(x, y);
-			}
-		}
-
-		while (Keyboard.next()) {
-			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-				field.movePlayer(1, 0);
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-				field.movePlayer(-1, 0);
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-				field.movePlayer(0, -1);
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-				field.movePlayer(0, 1);
-			}
-		}
 	}
 }
