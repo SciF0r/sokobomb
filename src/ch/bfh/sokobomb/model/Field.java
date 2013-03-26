@@ -145,16 +145,19 @@ public class Field {
 	 * @param y
 	 */
 	public void movePlayer(int dx, int dy) {
-		int newX = player.getPositionX() + dx;
-		int newY = player.getPositionY() + dy; 
 
-		Bomb bomb = this.findBomb(newX, newY);
+		Coordinate coordinate = new Coordinate(
+			player.getPositionX() + dx,
+			player.getPositionY() + dy
+		);
+
+		Bomb bomb = this.findBomb(coordinate);
 		if (bomb != null) {
 			this.moveBomb(bomb, dx, dy);
 		}
 
-		if (this.mayEnter(newX, newY)) {
-			this.player.setPosition(newX, newY);
+		if (this.mayEnter(coordinate)) {
+			this.player.setPosition(coordinate);
 		}
 	}
 
@@ -165,16 +168,18 @@ public class Field {
 	 * @param y
 	 */
 	public void moveBomb(Bomb bomb, int dx, int dy) {
-		int newX = bomb.getPositionX() + dx;
-		int newY = bomb.getPositionY() + dy;
+		Coordinate coordinate = new Coordinate(
+			bomb.getPositionX() + dx,
+			bomb.getPositionY() + dy
+		);
 
-		Bomb newBomb = this.findBomb(newX, newY);
+		Bomb newBomb = this.findBomb(coordinate);
 		if (newBomb != null) {
 			this.moveBomb(newBomb, dx, dy);
 		}
 
-		if (this.mayEnter(newX, newY)) {
-			bomb.setPosition(newX, newY);
+		if (this.mayEnter(coordinate)) {
+			bomb.setPosition(coordinate);
 		}
 	}
 
@@ -240,17 +245,17 @@ public class Field {
 		}
 
 		if (item != null) {
-			item.setPosition(token.x, token.y);
+			item.setPosition(token.coordinate);
 			this.addItem(item);
 		}
 
 		if (bomb != null) {
-			bomb.setPosition(token.x, token.y);
+			bomb.setPosition(token.coordinate);
 			this.addBomb(bomb);
 		}
 
 		if (player != null) {
-			player.setPosition(token.x, token.y);
+			player.setPosition(token.coordinate);
 			this.addPlayer(player);
 		}
 	}
@@ -258,12 +263,19 @@ public class Field {
 	/**
 	 * Builds the field cache
 	 */
-	public void buildFieldCache(int width, int height) {
+	public void buildCache(int width, int height) {
 		this.cache = new Integer[width][height];
 
 		for (FieldItem item: items) {
-			this.cache[item.positionX][item.positionY] = item.tokenType;
+			this.cache[item.getPositionX()][item.getPositionY()] = item.tokenType;
 		}
+	}
+
+	/**
+	 * @return The field cache
+	 */
+	public Integer[][] getCache() {
+		return this.cache;
 	}
 
 	/**
@@ -273,14 +285,14 @@ public class Field {
 	 * @param y
 	 * @return
 	 */
-	public boolean mayEnter(int x, int y) {
-		if (this.cache.length <= x || this.cache[x].length <= y || x < 1 || y < 1) {
+	public boolean mayEnter(Coordinate coordinate) {
+		if (this.cache.length <= coordinate.getX() || this.cache[coordinate.getX()].length <= coordinate.getY() || coordinate.getX() < 1 || coordinate.getY() < 1) {
 			return false;
 		}
 
-		Integer type = this.cache[x][y];
+		Integer type = this.cache[coordinate.getX()][coordinate.getY()];
 		
-		if (type == null || this.findBomb(x, y) != null) {
+		if (type == null || this.findBomb(coordinate) != null) {
 			return false;
 		}
 
@@ -290,13 +302,12 @@ public class Field {
 	/**
 	 * Returns a bomb if it is at a certain position
 	 *
-	 * @param x
-	 * @param y
+	 * @param coordinate
 	 * @return
 	 */
-	public Bomb findBomb(int x, int y) {
+	public Bomb findBomb(Coordinate coordinate) {
 		for (Bomb bomb: this.bombs) {
-			if (bomb.getPositionX() == x && bomb.getPositionY() == y) {
+			if (bomb.getPositionX() == coordinate.getX() && bomb.getPositionY() == coordinate.getY()) {
 				return bomb;
 			}
 		}
@@ -310,5 +321,14 @@ public class Field {
 
 	public int getHeight() {
 		return height;
+	}
+
+	/**
+	 * Calls setPlayerPosition() on the current state
+	 *
+	 * @param coordinate
+	 */
+	public void setPlayerPosition(Coordinate coordinate) {
+		this.state.setPlayerPosition(coordinate);
 	}
 }

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import ch.bfh.sokobomb.exception.LexerException;
+import ch.bfh.sokobomb.model.Coordinate;
 
 /**
  * A lexer for ASCII sokoban notation
@@ -119,8 +120,10 @@ public class Lexer {
 			}
 		}
 
-		token.x = this.column++;
-		token.y = this.row;
+		token.coordinate = new Coordinate(
+			this.column++,
+			this.row
+		);
 
 		this.index++;
 

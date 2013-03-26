@@ -6,6 +6,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import ch.bfh.sokobomb.model.Bomb;
+import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.model.FieldItem;
 
@@ -34,10 +35,8 @@ public class PlayState extends State {
 	}
 
 	@Override
-	public void handleLeftClick(int x, int y) {
-		if (super.field.mayEnter(x, y)) {
-			super.field.getPlayer().setPosition(x, y);
-		}
+	public void handleLeftClick(Coordinate coordinate) {
+		this.setPlayerPosition(coordinate);
 	}
 
 	/**
@@ -59,5 +58,15 @@ public class PlayState extends State {
 		Display.update();
 
 		super.pollInput();
+	}
+
+	/**
+	 * Moves player to a certain field
+	 */
+	public void setPlayerPosition(Coordinate coordinate) {
+		if (super.field.mayEnter(coordinate)) {
+			super.field.setState(new PlayerMovingState(super.field));
+			super.field.setPlayerPosition(coordinate);
+		}
 	}
 }

@@ -17,35 +17,40 @@ import ch.bfh.sokobomb.util.Tiles;
  */
 public abstract class FieldItem {
 
-	protected String  path    = null;
-	protected Texture texture = null;
-	protected int     positionX;
-	protected int     positionY;
-	protected int     tokenType;
+	protected String imagePath  = null;
+	protected Texture texture   = null;
+	protected Integer tokenType = null;
+	protected boolean isMoving  = false;
+	protected Coordinate coordinate;
 
 	/**
 	 * This "beams" the field to a new position
 	 *
-	 * @param x
-	 * @param y
+	 * @param coordinate
 	 */
-	public void setPosition(int x, int y) {
-		this.positionX = x;
-		this.positionY = y;
+	public void setPosition(Coordinate coordinate) {
+		this.coordinate = coordinate;
 	}
 
 	/**
 	 * @return Position x
 	 */
 	public int getPositionX() {
-		return this.positionX;
+		return this.coordinate.getX();
 	}
 
 	/**
 	 * @return Position y
 	 */
 	public int getPositionY() {
-		return this.positionY;
+		return this.coordinate.getY();
+	}
+
+	/**
+	 * @return The current coordinate
+	 */
+	public Coordinate getCoordinate() {
+		return this.coordinate;
 	}
 
 	/**
@@ -54,11 +59,11 @@ public abstract class FieldItem {
 	 * @throws IOException When the texture could not be initialized
 	 */
 	public void draw() throws IOException {
-		int x = this.positionX * Tiles.WIDTH;
-		int y = this.positionY * Tiles.HEIGHT;
+		int x = this.coordinate.getX() * Tiles.WIDTH;
+		int y = this.coordinate.getY() * Tiles.HEIGHT;
 		
 		if (this.texture == null) {
-			this.texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(this.path));
+			this.texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(this.imagePath));
 		}
 
 		Color.white.bind();
@@ -81,8 +86,8 @@ public abstract class FieldItem {
 	 *
 	 * @param path
 	 */
-	public void setImage(String path) {
-		this.path    = path;
-		this.texture = null;
+	public void setImage(String imagePath) {
+		this.imagePath = imagePath;
+		this.texture   = null;
 	}
 }
