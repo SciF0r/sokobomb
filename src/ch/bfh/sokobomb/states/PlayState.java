@@ -30,6 +30,9 @@ public class PlayState extends State {
 			case Keyboard.KEY_DOWN:
 				super.field.movePlayer(0, 1);
 				break;
+			case Keyboard.KEY_ESCAPE:
+				super.field.setState(new PauseState(field));
+				break;
 		}
 	}
 
