@@ -1,5 +1,7 @@
 package ch.bfh.sokobomb.parser;
 
+import ch.bfh.sokobomb.model.Coordinate;
+
 /**
  * A token, used by Lexer and Parser
  *
@@ -13,10 +15,9 @@ public class Token {
 	public int type;
 
 	/**
-	 * The coordinates
+	 * The coordinate
 	 */
-	public int x;
-	public int y;
+	public Coordinate coordinate;
 
 	/**
 	 * Constants to associate the token type

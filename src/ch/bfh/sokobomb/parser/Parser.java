@@ -36,10 +36,10 @@ public class Parser {
 			}
 
 			field.addItemByToken(token);
-			width = Math.max(width, token.x + 1);
-			height = Math.max(height, token.y + 1);
+			width = Math.max(width, token.coordinate.getX() + 1);
+			height = Math.max(height, token.coordinate.getY() + 1);
 		}
 
-		field.buildFieldCache(width, height);
+		field.buildCache(width, height);
 	}
 }

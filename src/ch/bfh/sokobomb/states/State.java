@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.util.Tiles;
 
@@ -88,14 +89,21 @@ public abstract class State {
 	/**
 	 * Handle a left mouse click
 	 */
-	public void handleLeftClick(int x, int y) {
+	public void handleLeftClick(Coordinate coordinate) {
 		// Nothing
 	}
 
 	/**
 	 * Handle a right mouse click
 	 */
-	public void handleRightClick(int x, int y) {
+	public void handleRightClick(Coordinate coordinate) {
+		// Nothing
+	}
+
+	/**
+	 * @param coordinate
+	 */
+	public void setPlayerPosition(Coordinate coordinate) {
 		// Nothing
 	}
 
@@ -109,14 +117,14 @@ public abstract class State {
 		if (Mouse.isButtonDown(0)) {
 			int x = Mouse.getX() / Tiles.WIDTH;
 			int y = (this.field.getHeight() - Mouse.getY()) / Tiles.HEIGHT;
-			this.handleLeftClick(x, y);
+			this.handleLeftClick(new Coordinate(x, y));
 		}
 
 		// Right mouse button
 		if (Mouse.isButtonDown(1)) {
 			int x = Mouse.getX() / Tiles.WIDTH;
 			int y = (this.field.getHeight() - Mouse.getY()) / Tiles.HEIGHT;
-			this.handleRightClick(x, y);
+			this.handleRightClick(new Coordinate(x, y));
 		}
 
 		while (Keyboard.next()) {
