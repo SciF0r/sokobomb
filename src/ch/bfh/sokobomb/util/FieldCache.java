@@ -37,10 +37,7 @@ final public class FieldCache {
 		for (int x = 0; x < this.cache.length; x++) {
 			for (int y = 0; y < this.cache[x].length; y++) {
 				try {
-					Node currentNode = this.getNodeAtCoordinate(x, y);
-					currentNode.setCost(Integer.MAX_VALUE);
-					currentNode.setParent(null);
-					currentNode.setPermanent(false);
+					this.getNodeAtCoordinate(x, y).reset();
 				}
 				catch (InvalidCoordinateException e) {
 					// Ignore

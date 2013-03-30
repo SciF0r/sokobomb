@@ -12,10 +12,18 @@ public class Node {
 
 	public Node(int type, Coordinate coordinate) {
 		this.type       = type;
+		this.coordinate = coordinate;
+
+		this.reset();
+	}
+
+	/**
+	 * Resets the node
+	 */
+	public void reset() {
 		this.cost       = Integer.MAX_VALUE;
 		this.parent     = null;
 		this.permanent  = false;
-		this.coordinate = coordinate;
 	}
 
 	/**
