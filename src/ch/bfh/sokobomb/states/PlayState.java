@@ -37,6 +37,9 @@ public class PlayState extends State {
 			case Keyboard.KEY_U:
 				super.field.undo();
 				break;
+			case Keyboard.KEY_R:
+				super.field.restart();
+				break;
 		}
 	}
 

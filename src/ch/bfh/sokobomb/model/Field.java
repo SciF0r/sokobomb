@@ -154,6 +154,18 @@ public class Field implements Cloneable {
 	}
 
 	/**
+	 * Restart from the beginning
+	 */
+	public void restart() {
+		if (!this.fieldHistory.isEmpty()) {
+			Field field = this.fieldHistory.firstElement();
+			this.bombs  = field.getBombs();
+			this.player = field.getPlayer();
+			this.fieldHistory.clear();
+		}
+	}
+
+	/**
 	 * Moves the player in a certain direction
 	 *
 	 * @param x
