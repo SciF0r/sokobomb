@@ -41,12 +41,12 @@ public class Dijkstra {
 		LinkedList<Coordinate> path = new LinkedList<Coordinate>();
 		currentNode = this.targetNode;
 		path.addFirst(currentNode.getCoordinate());
-		while (currentNode.getParent() != null) {
+		while (currentNode.getParent() != null && currentNode.getParent() != this.startNode) {
 			currentNode = currentNode.getParent();
 			path.addFirst(currentNode.getCoordinate());
 		}
 
-		if (currentNode != this.startNode) {
+		if (currentNode.getParent() != this.startNode) {
 			return null;
 		}
 		
