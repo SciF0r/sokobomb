@@ -34,6 +34,9 @@ public class PlayState extends State {
 			case Keyboard.KEY_ESCAPE:
 				super.field.setState(new PauseState(field));
 				break;
+			case Keyboard.KEY_U:
+				super.field.undo();
+				break;
 		}
 	}
 
@@ -66,10 +69,13 @@ public class PlayState extends State {
 	/**
 	 * Moves player to a certain field
 	 */
-	public void setPlayerPosition(Coordinate coordinate) {
+	public boolean setPlayerPosition(Coordinate coordinate) {
 		if (super.field.mayEnter(coordinate)) {
 			super.field.setState(new PlayerMovingState(super.field));
 			super.field.setPlayerPosition(coordinate);
+			return true;
 		}
+
+		return false;
 	}
 }

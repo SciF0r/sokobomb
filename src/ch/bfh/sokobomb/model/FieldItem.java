@@ -15,7 +15,7 @@ import ch.bfh.sokobomb.util.Tiles;
  *
  * @author Denis Simonet
  */
-public abstract class FieldItem {
+public abstract class FieldItem implements Cloneable {
 
 	protected String imagePath  = null;
 	protected Texture texture   = null;
@@ -96,5 +96,10 @@ public abstract class FieldItem {
 	public void setImage(String imagePath) {
 		this.imagePath = imagePath;
 		this.texture   = null;
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 }

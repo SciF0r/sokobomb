@@ -2,7 +2,7 @@ package ch.bfh.sokobomb.model;
 
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Stack;
 
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.parser.Parser;
@@ -16,11 +16,12 @@ import ch.bfh.sokobomb.util.FieldCache;
  *
  * @author Denis Simonet
  */
-public class Field {
+public class Field implements Cloneable {
 
-	private List<FieldItem> items = new LinkedList<FieldItem>();
-	private List<Bomb>      bombs = new LinkedList<Bomb>();
-	private FieldCache      cache = null;
+	private Stack<Field> fieldHistory   = new Stack<Field>();
+	private LinkedList<FieldItem> items = new LinkedList<FieldItem>();
+	private LinkedList<Bomb> bombs      = new LinkedList<Bomb>();
+	private FieldCache cache            = null;
 
 	private Player player;
 
@@ -129,24 +130,41 @@ public class Field {
 	/**
 	 * @return the items
 	 */
-	public List<FieldItem> getItems() {
+	public LinkedList<FieldItem> getItems() {
 		return items;
 	}
 
 	/**
 	 * @return the bombs
 	 */
-	public List<Bomb> getBombs() {
+	public LinkedList<Bomb> getBombs() {
 		return bombs;
 	}
 
 	/**
-	 * Moves the player to a certain position
+	 * Undo the last move
+	 */
+	public void undo() {
+		if (!this.fieldHistory.isEmpty()) {
+			Field field = this.fieldHistory.pop();
+			this.items  = field.getItems();
+			this.bombs  = field.getBombs();
+			this.player = field.getPlayer();
+		}
+	}
+
+	/**
+	 * Moves the player in a certain direction
 	 *
 	 * @param x
 	 * @param y
 	 */
 	public void movePlayer(int dx, int dy) {
+		try {
+			this.fieldHistory.push((Field)this.clone());
+		} catch (CloneNotSupportedException e) {
+			System.err.println(e.getMessage());
+		}
 
 		Coordinate coordinate = new Coordinate(
 			player.getPositionX() + dx,
@@ -160,6 +178,10 @@ public class Field {
 
 		if (this.mayEnter(coordinate)) {
 			this.player.setPosition(coordinate);
+		}
+		else {
+			// In the end the player could not move
+			this.fieldHistory.pop();
 		}
 	}
 
@@ -334,6 +356,29 @@ public class Field {
 	 * @param coordinate
 	 */
 	public void setPlayerPosition(Coordinate coordinate) {
-		this.state.setPlayerPosition(coordinate);
+		if (this.state.setPlayerPosition(coordinate)) {
+			try {
+				this.fieldHistory.push((Field)this.clone());
+			} catch (CloneNotSupportedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * Clone bombs and player
+	 */
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		Field field = (Field)super.clone();
+		field.player = (Player)this.player.clone();
+
+		LinkedList<Bomb> bombs = new LinkedList<Bomb>();
+		for (Bomb bomb: this.bombs) {
+			bombs.add((Bomb)bomb.clone());
+		}
+		field.bombs = bombs;
+
+		return field;
 	}
 }

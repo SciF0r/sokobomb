@@ -101,10 +101,13 @@ public abstract class State {
 	}
 
 	/**
+	 * Sets a new player position
+	 *
 	 * @param coordinate
+	 * @return Whether the player actually moved to the position
 	 */
-	public void setPlayerPosition(Coordinate coordinate) {
-		// Nothing
+	public boolean setPlayerPosition(Coordinate coordinate) {
+		return false;
 	}
 
 	/**
