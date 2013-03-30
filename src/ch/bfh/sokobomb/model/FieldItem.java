@@ -54,6 +54,13 @@ public abstract class FieldItem {
 	}
 
 	/**
+	 * @return The tile type
+	 */
+	public Integer getType() {
+		return this.tokenType;
+	}
+
+	/**
 	 * Draws the item 
 	 *
 	 * @throws IOException When the texture could not be initialized

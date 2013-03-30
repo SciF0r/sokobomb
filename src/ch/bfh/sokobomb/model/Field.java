@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
 import ch.bfh.sokobomb.states.PlayState;
 import ch.bfh.sokobomb.states.State;
+import ch.bfh.sokobomb.util.FieldCache;
 
 /**
  * Contains all required information to draw a field and handle input
@@ -18,7 +20,7 @@ public class Field {
 
 	private List<FieldItem> items = new LinkedList<FieldItem>();
 	private List<Bomb>      bombs = new LinkedList<Bomb>();
-	private Integer[][]     cache = null;
+	private FieldCache      cache = null;
 
 	private Player player;
 
@@ -43,11 +45,11 @@ public class Field {
 	 * @param path The path to the file with the field to be loaded
 	 */
 	public Field(String path, int width, int height) {
-		this.width = width;
+		this.width  = width;
 		this.height = height;
+
 		this.parse(path);
 		this.state.entry();
-		
 	}
 
 	/**
@@ -264,17 +266,13 @@ public class Field {
 	 * Builds the field cache
 	 */
 	public void buildCache(int width, int height) {
-		this.cache = new Integer[width][height];
-
-		for (FieldItem item: items) {
-			this.cache[item.getPositionX()][item.getPositionY()] = item.tokenType;
-		}
+		this.cache = new FieldCache(this, width, height);
 	}
 
 	/**
 	 * @return The field cache
 	 */
-	public Integer[][] getCache() {
+	public FieldCache getCache() {
 		return this.cache;
 	}
 
@@ -286,17 +284,14 @@ public class Field {
 	 * @return
 	 */
 	public boolean mayEnter(Coordinate coordinate) {
-		if (this.cache.length <= coordinate.getX() || this.cache[coordinate.getX()].length <= coordinate.getY() || coordinate.getX() < 1 || coordinate.getY() < 1) {
+		try {
+			int type = this.cache.getTypeAtCoordinate(coordinate);
+
+			return type == Token.FLOOR || type == Token.TARGET;
+		}
+		catch (InvalidCoordinateException e) {
 			return false;
 		}
-
-		Integer type = this.cache[coordinate.getX()][coordinate.getY()];
-		
-		if (type == null || this.findBomb(coordinate) != null) {
-			return false;
-		}
-
-		return type == Token.FLOOR || type == Token.TARGET;
 	}
 
 	/**
@@ -315,10 +310,20 @@ public class Field {
 		return null;
 	}
 
+	/**
+	 * Return width of the whole window
+	 *
+	 * @return The width
+	 */
 	public int getWidth() {
 		return width;
 	}
 
+	/**
+	 * Return height of the whole window
+	 *
+	 * @return The height
+	 */
 	public int getHeight() {
 		return height;
 	}
