@@ -5,12 +5,14 @@ import java.util.LinkedList;
 import java.util.Stack;
 
 import org.lwjgl.opengl.Display;
+import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
 import ch.bfh.sokobomb.states.PlayState;
 import ch.bfh.sokobomb.states.State;
+import ch.bfh.sokobomb.states.WonState;
 import ch.bfh.sokobomb.util.FieldCache;
 
 /**
@@ -224,11 +226,20 @@ public class Field implements Cloneable {
 	/**
 	 * Draw the field according to state
 	 * @throws IOException 
+	 * @throws  
 	 */
 	public void draw() throws IOException {
 		this.state.draw();
 		Display.update();
 		this.state.pollInput();
+
+		if (this.hasWon()) {
+			try {
+				this.setState(new WonState(this));
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -246,6 +257,26 @@ public class Field implements Cloneable {
 		}
 
 		this.getPlayer().draw();
+	}
+
+	/**
+	 * Verifies whether all bombs are on a target field
+	 *
+	 * @return Whether the player has won
+	 */
+	final private boolean hasWon() {
+		try {
+			for (Bomb bomb: this.bombs) {
+				if (this.cache.getTypeAtCoordinate(bomb.getCoordinate()) != Token.TARGET) {
+					return false;
+				}
+			}
+		}
+		catch (InvalidCoordinateException e) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -340,8 +371,11 @@ public class Field implements Cloneable {
 	 */
 	public boolean mayEnter(Coordinate coordinate) {
 		try {
-			int type = this.cache.getTypeAtCoordinate(coordinate);
+			if (this.findBomb(coordinate) != null) {
+				return false;
+			}
 
+			int type = this.cache.getTypeAtCoordinate(coordinate);
 			return type == Token.FLOOR || type == Token.TARGET;
 		}
 		catch (InvalidCoordinateException e) {

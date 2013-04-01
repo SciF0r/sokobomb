@@ -74,11 +74,6 @@ final public class FieldCache {
 
 		try {
 			int type = this.cache[coordinate.getX()][coordinate.getY()].getType();
-
-			if (this.field.findBomb(coordinate) != null) {
-				throw new InvalidCoordinateException("Cannot go onto a bomb");
-			}
-
 			return type;
 
 		}
