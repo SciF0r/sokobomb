@@ -34,6 +34,9 @@ public class PlayState extends State {
 			case Keyboard.KEY_ESCAPE:
 				super.field.setState(new PauseState(field));
 				break;
+			case Keyboard.KEY_H:
+				super.field.setState(new HighscoreState(field));
+				break;
 			case Keyboard.KEY_U:
 				super.field.undo();
 				break;
