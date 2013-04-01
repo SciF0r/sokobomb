@@ -1,6 +1,7 @@
 *.class
 .classpath
 bin
+res/sokobomb.db
 
 # Package Files #
 *.war
