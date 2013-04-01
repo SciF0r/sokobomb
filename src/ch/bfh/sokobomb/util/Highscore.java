@@ -30,7 +30,9 @@ public class Highscore {
 
 		this.statement = connection.createStatement();
 		this.statement.setQueryTimeout(30);
-		this.statement.executeUpdate(this.createQuery);
+
+		// TODO remove, this is for testing only
+		this.reset();
 		this.addScore("test", 1337);
 		this.addScore("SciFi", 42);
 		this.addScore("Bla", 4000);
@@ -69,10 +71,16 @@ public class Highscore {
 		return 1;
 	}
 
+	/**
+	 * Return all items
+	 *
+	 * @return
+	 */
 	public ArrayList<String> getItems() {
 		ResultSet highscore;
 		ArrayList<String> items = new ArrayList<String>();
 
+		// TODO Probably return points/name pair instead of string
 		try {
 			String item;
 			highscore = this.statement.executeQuery("SELECT * FROM highscore ORDER BY points DESC LIMIT 10");
