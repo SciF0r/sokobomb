@@ -8,12 +8,14 @@ import org.lwjgl.opengl.Display;
 import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
+import ch.bfh.sokobomb.exception.NoNextLevelException;
 import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
 import ch.bfh.sokobomb.states.PlayState;
 import ch.bfh.sokobomb.states.State;
 import ch.bfh.sokobomb.states.WonState;
 import ch.bfh.sokobomb.util.FieldCache;
+import ch.bfh.sokobomb.util.Levels;
 
 /**
  * Contains all required information to draw a field and handle input
@@ -26,6 +28,7 @@ public class Field implements Cloneable {
 	private LinkedList<FieldItem> items = new LinkedList<FieldItem>();
 	private LinkedList<Bomb> bombs      = new LinkedList<Bomb>();
 	private FieldCache cache            = null;
+	private Levels levels;
 
 	private Player player;
 
@@ -49,12 +52,29 @@ public class Field implements Cloneable {
 	 *
 	 * @param path The path to the file with the field to be loaded
 	 */
-	public Field(String path, int width, int height) {
+	public Field(int width, int height) {
 		this.width  = width;
 		this.height = height;
 
-		this.parse(path);
 		this.state.entry();
+		this.startGame();
+	}
+
+	/**
+	 * Start game
+	 */
+	public void startGame() {
+		this.levels = new Levels();
+		this.loadNextLevel();
+	}
+
+	/**
+	 * Loads the next level
+	 *
+	 * @return Whether a level was loaded
+	 */
+	public void loadNextLevel() throws NoNextLevelException {
+		this.parse(this.levels.getNextLevel());
 	}
 
 	/**
@@ -73,6 +93,8 @@ public class Field implements Cloneable {
 	 * @param path
 	 */
 	private void parse(String path) {
+		this.reset();
+
 		Parser parser = new Parser();
 		parser.parse(path, this);
 	}
@@ -124,7 +146,7 @@ public class Field implements Cloneable {
 	/**
 	 * Removes a field item from the field
 	 *
-	 * @param item
+	 * @param itemRestart
 	 * @return Whether removal was successful
 	 */
 	public boolean removeItem(FieldItem item) {
@@ -158,7 +180,7 @@ public class Field implements Cloneable {
 	}
 
 	/**
-	 * Restart from the beginning
+	 * Restart level
 	 */
 	public void restart() {
 		if (!this.fieldHistory.isEmpty()) {
@@ -167,6 +189,16 @@ public class Field implements Cloneable {
 			this.player = field.getPlayer();
 			this.fieldHistory.clear();
 		}
+	}
+
+	/**
+	 * Resets everything
+	 */
+	public void reset() {
+		this.player = null;
+		this.bombs.clear();
+		this.items.clear();
+		this.fieldHistory.clear();
 	}
 
 	/**
@@ -196,7 +228,7 @@ public class Field implements Cloneable {
 			this.player.setPosition(coordinate);
 		}
 		else {
-			// In the end the player could not move
+			// The player could not move
 			this.fieldHistory.pop();
 		}
 	}

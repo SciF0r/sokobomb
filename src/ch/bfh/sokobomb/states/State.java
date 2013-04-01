@@ -114,7 +114,7 @@ public abstract class State {
 	 * Mouse and keyboard event handling
 	 */
 	final public void pollInput() {
-		Keyboard.enableRepeatEvents(true);
+		Keyboard.enableRepeatEvents(false);
 
 		// Left mouse button
 		if (Mouse.isButtonDown(0)) {

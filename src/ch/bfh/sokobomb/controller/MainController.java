@@ -9,8 +9,6 @@ import ch.bfh.sokobomb.model.Field;
  */
 public class MainController {
 
-	final static String DEFAULT_LEVEL = "res/levels/level1.txt";
-
 	private Field field;
 	private OpenGLController openGL;
 
@@ -29,7 +27,7 @@ public class MainController {
 	 * @param args 
 	 */
 	public static void main(String[] args) {
-		Field field = new Field(MainController.DEFAULT_LEVEL, 416, 512);
+		Field field = new Field(416, 512);
 
 		new MainController(field);
 	}
