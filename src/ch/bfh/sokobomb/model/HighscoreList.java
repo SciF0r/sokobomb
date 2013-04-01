@@ -12,6 +12,7 @@ public class HighscoreList {
 
 	private ArrayList<String> items;
 	private AngelCodeFont font;
+	@SuppressWarnings("unused")
 	private int width, height;
 
 	public HighscoreList(int width, int height, ArrayList<String> items) throws SlickException {
