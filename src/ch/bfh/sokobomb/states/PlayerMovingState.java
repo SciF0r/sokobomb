@@ -40,9 +40,8 @@ public class PlayerMovingState extends State {
 			super.field.getPlayer().setPosition(this.path.next());
 			// TODO Threads? Or timer?
 			try {
-				Thread.sleep(500);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
