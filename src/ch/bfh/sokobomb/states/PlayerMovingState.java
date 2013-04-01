@@ -2,12 +2,8 @@ package ch.bfh.sokobomb.states;
 
 import java.io.IOException;
 
-import org.lwjgl.opengl.Display;
-
-import ch.bfh.sokobomb.model.Bomb;
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Field;
-import ch.bfh.sokobomb.model.FieldItem;
 import ch.bfh.sokobomb.path.Path;
 
 public class PlayerMovingState extends State {
@@ -24,17 +20,7 @@ public class PlayerMovingState extends State {
 	 * @throws IOException 
 	 */
 	public void draw() throws IOException {
-		for (FieldItem item: super.field.getItems()) {
-			item.draw();
-		}
-
-		for (Bomb bomb: super.field.getBombs()) {
-			bomb.draw();
-		}
-
-		super.field.getPlayer().draw();
-
-		Display.update();
+		super.field.drawField();
 
 		if (this.path.hasNext()) {
 			super.field.getPlayer().setPosition(this.path.next());
@@ -46,10 +32,13 @@ public class PlayerMovingState extends State {
 			}
 		}
 		else {
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			super.field.setState(new PlayState(super.field));
 		}
-
-		super.pollInput();
 	}
 
 	/**

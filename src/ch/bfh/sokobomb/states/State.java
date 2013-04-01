@@ -113,7 +113,7 @@ public abstract class State {
 	/**
 	 * Mouse and keyboard event handling
 	 */
-	public void pollInput() {
+	final public void pollInput() {
 		Keyboard.enableRepeatEvents(true);
 
 		// Left mouse button

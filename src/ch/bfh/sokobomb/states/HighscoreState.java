@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
 import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.model.Field;
@@ -47,9 +46,5 @@ public class HighscoreState extends State {
 
 	public void draw() throws IOException{
 		this.highscoreList.draw();
-
-		Display.update();
-
-		this.pollInput();
 	}
 }

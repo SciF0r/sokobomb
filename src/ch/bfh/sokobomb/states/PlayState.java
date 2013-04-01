@@ -3,12 +3,9 @@ package ch.bfh.sokobomb.states;
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
 
-import ch.bfh.sokobomb.model.Bomb;
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Field;
-import ch.bfh.sokobomb.model.FieldItem;
 
 public class PlayState extends State {
 
@@ -57,19 +54,7 @@ public class PlayState extends State {
 	 * @throws IOException 
 	 */
 	public void draw() throws IOException {
-		for (FieldItem item: super.field.getItems()) {
-			item.draw();
-		}
-
-		for (Bomb bomb: super.field.getBombs()) {
-			bomb.draw();
-		}
-
-		super.field.getPlayer().draw();
-
-		Display.update();
-
-		super.pollInput();
+		super.field.drawField();
 	}
 
 	/**

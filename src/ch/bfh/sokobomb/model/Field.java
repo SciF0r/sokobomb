@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Stack;
 
+import org.lwjgl.opengl.Display;
+
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
@@ -225,6 +227,25 @@ public class Field implements Cloneable {
 	 */
 	public void draw() throws IOException {
 		this.state.draw();
+		Display.update();
+		this.state.pollInput();
+	}
+
+	/**
+	 * Draw the field (tiles, bombs, player)
+	 *
+	 * @throws IOException 
+	 */
+	public void drawField() throws IOException {
+		for (FieldItem item: this.getItems()) {
+			item.draw();
+		}
+
+		for (Bomb bomb: this.getBombs()) {
+			bomb.draw();
+		}
+
+		this.getPlayer().draw();
 	}
 
 	/**
