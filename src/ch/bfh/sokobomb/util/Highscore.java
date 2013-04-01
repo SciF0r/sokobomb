@@ -8,6 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * Provides methods for highscore manipulation 
+ *
+ * @author Denis Simonet
+ */
 public class Highscore {
 	private Connection connection;
 	private Statement  statement;

@@ -31,6 +31,7 @@ public class Dijkstra {
 	public LinkedList<Coordinate> getPath() {
 		this.startNode.setCost(0);
 
+		// First calculate the node costs and cheapest parents
 		Node currentNode = this.startNode;
 		do {
 			this.dijkstraIteration(currentNode);
@@ -38,6 +39,7 @@ public class Dijkstra {
 		}
 		while (currentNode != null);
 
+		// Read the shortest path, beginning at the end node
 		LinkedList<Coordinate> path = new LinkedList<Coordinate>();
 		currentNode = this.targetNode;
 		path.addFirst(currentNode.getCoordinate());
@@ -46,6 +48,7 @@ public class Dijkstra {
 			path.addFirst(currentNode.getCoordinate());
 		}
 
+		// If the current node is not the start node there was no path
 		if (currentNode.getParent() != this.startNode) {
 			return null;
 		}
@@ -62,6 +65,7 @@ public class Dijkstra {
 	private void dijkstraIteration(Node node) {
 		node.setPermanent(true);
 
+		// Updates the cost and parent of each adjacent node
 		for (Node currentNode: this.getAdjacentNodes(node)) {
 			if ((node.getCost() + 1) < currentNode.getCost()) {
 				currentNode.setCost(node.getCost() + 1);
@@ -81,6 +85,7 @@ public class Dijkstra {
 		LinkedList<Node> nodeList = new LinkedList<Node>();
 		FieldCache cache          = this.field.getCache();
 
+		// Return all adjacent nodes which can be entered by the player 
 		try {
 			this.addNodeToList(
 				cache.getNodeAtCoordinate(

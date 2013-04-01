@@ -10,6 +10,11 @@ import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.model.HighscoreList;
 import ch.bfh.sokobomb.util.Highscore;
 
+/**
+ * Shows the current highscore
+ *
+ * @author Denis Simonet
+ */
 public class HighscoreState extends State {
 
 	private HighscoreList highscoreList;
@@ -27,8 +32,7 @@ public class HighscoreState extends State {
 			);
 		}
 		catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			super.field.setState(new PlayState(super.field));
 		}
 		catch (SQLException e) {
 			super.field.setState(new PlayState(super.field));
@@ -44,6 +48,7 @@ public class HighscoreState extends State {
 		}
 	}
 
+	@Override
 	public void draw() throws IOException{
 		this.highscoreList.draw();
 	}

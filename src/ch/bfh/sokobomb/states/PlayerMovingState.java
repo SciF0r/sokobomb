@@ -6,6 +6,13 @@ import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.path.Path;
 
+/**
+ * This state moves the player along a given path
+ *
+ * The path is calculated by Dijkstra
+ *
+ * @author Denis Simonet
+ */
 public class PlayerMovingState extends State {
 
 	private Path path;

@@ -1,13 +1,18 @@
 package ch.bfh.sokobomb.model;
 
+/**
+ * Stores a coordinate
+ *
+ * @author Denis Simonet
+ */
 public class Coordinate {
 
 	final private int x;
 	final private int y;
 
 	public Coordinate(int x, int y) {
-		this.x      = x;
-		this.y      = y;
+		this.x = x;
+		this.y = y;
 	}
 
 	/**

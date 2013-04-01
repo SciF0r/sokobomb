@@ -15,7 +15,7 @@ import ch.bfh.sokobomb.util.Tiles;
  *
  * @author Denis Simonet
  */
-public abstract class FieldItem implements Cloneable {
+public abstract class FieldItem implements Cloneable, Drawable {
 
 	protected String imagePath  = null;
 	protected Texture texture   = null;

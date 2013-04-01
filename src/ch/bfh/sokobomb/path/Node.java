@@ -2,6 +2,12 @@ package ch.bfh.sokobomb.path;
 
 import ch.bfh.sokobomb.model.Coordinate;
 
+/**
+ * A node in the field cache
+ *
+ * @author Denis Simonet
+ *
+ */
 public class Node {
 
 	final private int type;

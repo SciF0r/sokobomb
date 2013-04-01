@@ -6,6 +6,11 @@ import java.util.LinkedList;
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Field;
 
+/**
+ * Calculates a path from a start to a target node
+ *
+ * @author Denis Simonet
+ */
 public class Path {
 
 	private LinkedList<Coordinate> path;

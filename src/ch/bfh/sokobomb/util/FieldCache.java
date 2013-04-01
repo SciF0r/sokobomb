@@ -6,6 +6,11 @@ import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.model.FieldItem;
 import ch.bfh.sokobomb.path.Node;
 
+/**
+ * Caches the field
+ *
+ * @author Denis Simonet
+ */
 final public class FieldCache {
 
 	private Node[][] cache;
@@ -115,10 +120,13 @@ final public class FieldCache {
 	}
 
 	/**
+	 * Dijkstra needs this
+	 *
 	 * @return The current node with lowest cost
 	 */
 	public Node getTemporaryNodeWithLowestCost() {
 		Node node = null;
+		// Loop through the whole field
 		for (int x = 0; x < this.cache.length; x++) {
 			for (int y = 0; y < this.cache[x].length; y++) {
 				try {

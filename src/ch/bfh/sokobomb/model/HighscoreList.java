@@ -5,7 +5,12 @@ import java.util.ArrayList;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.SlickException;
 
-public class HighscoreList {
+/**
+ * Draws a given highscore
+ *
+ * @author Denis Simonet
+ */
+public class HighscoreList implements Drawable {
 
 	final private String highscoreTitle = "Highscore";
 	final private String highscoreEmpty = "Empty list";

@@ -4,7 +4,8 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.SlickException;
 
-public class MenuButton {
+public class MenuButton implements Drawable {
+
 	private String text;
 	
 	private int x,y, width, height;
