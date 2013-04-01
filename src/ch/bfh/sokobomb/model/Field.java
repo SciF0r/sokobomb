@@ -93,7 +93,7 @@ public class Field implements Cloneable {
 	 * @param path
 	 */
 	private void parse(String path) {
-		this.reset();
+		this.resetObject();
 
 		Parser parser = new Parser();
 		parser.parse(path, this);
@@ -182,7 +182,7 @@ public class Field implements Cloneable {
 	/**
 	 * Restart level
 	 */
-	public void restart() {
+	public void restartLevel() {
 		if (!this.fieldHistory.isEmpty()) {
 			Field field = this.fieldHistory.firstElement();
 			this.bombs  = field.getBombs();
@@ -192,9 +192,9 @@ public class Field implements Cloneable {
 	}
 
 	/**
-	 * Resets everything
+	 * Resets object variables
 	 */
-	public void reset() {
+	public void resetObject() {
 		this.player = null;
 		this.bombs.clear();
 		this.items.clear();
@@ -265,7 +265,7 @@ public class Field implements Cloneable {
 		Display.update();
 		this.state.pollInput();
 
-		if (this.hasWon()) {
+		if (this.state.getClass() == PlayState.class && this.hasWon()) {
 			try {
 				this.setState(new WonState(this));
 			} catch (SlickException e) {
