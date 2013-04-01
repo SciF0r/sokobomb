@@ -27,7 +27,7 @@ public class MainController {
 	 * @param args 
 	 */
 	public static void main(String[] args) {
-		Field field = new Field(416, 512);
+		Field field = new Field(544, 512);
 
 		new MainController(field);
 	}

@@ -14,11 +14,12 @@ import ch.bfh.sokobomb.model.Coordinate;
  */
 public class Lexer {
 
-	private String source; // source string for lexical analysis
-	private int    index;  // current index in source
-	private int    length; // length of source
-	private int    row;   // Current line
-	private int    column; // Current column
+	private String  source; // source string for lexical analysis
+	private int     index;  // current index in source
+	private int     length; // length of source
+	private int     row;   // Current line
+	private int     column; // Current column
+	private boolean wallFound;
 
 	/**
 	 * Initialize the lexer
@@ -51,11 +52,12 @@ public class Lexer {
 
 			fis.close();
 
-			this.source = sourceBuilder.toString();
-			this.index  = 0;
-			this.length = this.source.length();
-			this.row   = 0;
-			this.column = 0;
+			this.source    = sourceBuilder.toString();
+			this.index     = 0;
+			this.length    = this.source.length();
+			this.row       = 0;
+			this.column    = 0;
+			this.wallFound = false;
 		} catch (IOException e) {
 			throw new LexerException(
 				e.getMessage()
@@ -81,6 +83,7 @@ public class Lexer {
 
 			switch (c) {
 				case '#':
+					wallFound = true;
 					token.type = Token.WALL;
 					break;
 				case '@':
@@ -98,11 +101,11 @@ public class Lexer {
 				case '+':
 					token.type = Token.PLAYER_TARGET;
 					break;
-				case ' ':
-					token.type = Token.FLOOR;
-					break;
 				case '&':
 					token.type = Token.EMPTY;
+					break;
+				case ' ':
+					token.type = this.wallFound ? Token.FLOOR : Token.EMPTY;
 					break;
 				case '\r':
 					this.index++;
@@ -112,6 +115,7 @@ public class Lexer {
 					this.row++;
 					this.column = 0;
 					this.index++;
+					this.wallFound = false;
 					return nextToken();
 				default:
 					throw new LexerException(
