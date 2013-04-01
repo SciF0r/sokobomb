@@ -55,7 +55,7 @@ public class PlayerMovingState extends State {
 	/**
 	 * Calculates the path
 	 */
-	public boolean setPlayerPosition(Coordinate coordinate) {
+	public void setPlayerPosition(Coordinate coordinate) {
 		this.path = new Path(
 			super.field,
 			super.field.getCache().getNodeAtCoordinate(
@@ -65,7 +65,5 @@ public class PlayerMovingState extends State {
 				coordinate
 			)
 		);
-
-		return false;
 	}
 }

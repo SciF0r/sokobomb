@@ -368,12 +368,17 @@ public class Field implements Cloneable {
 	 * @param coordinate
 	 */
 	public void setPlayerPosition(Coordinate coordinate) {
-		if (this.state.setPlayerPosition(coordinate)) {
-			try {
-				this.fieldHistory.push((Field)this.clone());
-			} catch (CloneNotSupportedException e) {
-				e.printStackTrace();
-			}
+		this.state.setPlayerPosition(coordinate);
+	}
+
+	/**
+	 * Adds current field to history
+	 */
+	public void addFieldToHistory() {
+		try {
+			this.fieldHistory.push((Field)this.clone());
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
 		}
 	}
 

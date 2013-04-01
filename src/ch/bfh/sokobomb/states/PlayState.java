@@ -75,13 +75,11 @@ public class PlayState extends State {
 	/**
 	 * Moves player to a certain field
 	 */
-	public boolean setPlayerPosition(Coordinate coordinate) {
+	public void setPlayerPosition(Coordinate coordinate) {
 		if (super.field.mayEnter(coordinate)) {
 			super.field.setState(new PlayerMovingState(super.field));
 			super.field.setPlayerPosition(coordinate);
-			return true;
+			super.field.addFieldToHistory();
 		}
-
-		return false;
 	}
 }
