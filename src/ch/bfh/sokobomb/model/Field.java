@@ -247,7 +247,7 @@ public class Field implements Cloneable {
 
 		Bomb newBomb = this.findBomb(coordinate);
 		if (newBomb != null) {
-			this.moveBomb(newBomb, dx, dy);
+			return;
 		}
 
 		if (this.mayEnter(coordinate)) {
