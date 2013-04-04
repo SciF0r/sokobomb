@@ -7,7 +7,6 @@ import org.lwjgl.input.Mouse;
 
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Field;
-import ch.bfh.sokobomb.util.Tiles;
 
 /**
  * Class for a state
@@ -118,15 +117,15 @@ public abstract class State {
 
 		// Left mouse button
 		if (Mouse.isButtonDown(0)) {
-			int x = Mouse.getX() / Tiles.WIDTH;
-			int y = (this.field.getHeight() - Mouse.getY()) / Tiles.HEIGHT;
+			int x = Mouse.getX();
+			int y = this.field.getHeight() - Mouse.getY();
 			this.handleLeftClick(new Coordinate(x, y));
 		}
 
 		// Right mouse button
 		if (Mouse.isButtonDown(1)) {
-			int x = Mouse.getX() / Tiles.WIDTH;
-			int y = (this.field.getHeight() - Mouse.getY()) / Tiles.HEIGHT;
+			int x = Mouse.getX();
+			int y = this.field.getHeight() - Mouse.getY();
 			this.handleRightClick(new Coordinate(x, y));
 		}
 

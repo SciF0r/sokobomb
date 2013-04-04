@@ -8,7 +8,6 @@ import org.lwjgl.opengl.GL11;
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.model.MenuButton;
-import ch.bfh.sokobomb.util.Tiles;
 
 /**
  * Shows the pause screen
@@ -36,8 +35,8 @@ public class PauseState extends State {
 
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
-		int x = coordinate.getX() * Tiles.HEIGHT;
-		int y = coordinate.getY() * Tiles.WIDTH;
+		int x = coordinate.getX();
+		int y = coordinate.getY();
 
 		if (mb.getX() < x && (mb.getX() + mb.getWidth()) > x && mb.getY() < y && (mb.getY() + mb.getHeight()) > y) {
 			super.field.setState(new PlayState(super.field));

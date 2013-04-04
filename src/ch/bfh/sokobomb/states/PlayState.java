@@ -6,6 +6,7 @@ import org.lwjgl.input.Keyboard;
 
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Field;
+import ch.bfh.sokobomb.util.Tiles;
 
 public class PlayState extends State {
 
@@ -45,7 +46,10 @@ public class PlayState extends State {
 
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
-		this.setPlayerPosition(coordinate);
+		this.setPlayerPosition(new Coordinate(
+			coordinate.getX() / Tiles.WIDTH,
+			coordinate.getY() / Tiles.HEIGHT
+		));
 	}
 
 	/**
