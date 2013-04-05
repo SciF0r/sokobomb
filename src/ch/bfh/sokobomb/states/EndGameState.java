@@ -41,7 +41,7 @@ public class EndGameState extends State {
 		super.field.drawField();
 
 		//Draw Background
-		GL11.glColor4f(0.5f, 0.70f, 0.5f, 0.6f);		
+		GL11.glColor4f(0.5f, 0.70f, 0.5f, 0.6f);
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glVertex2i(0               , 0                );
 		GL11.glVertex2i(0               , field.getHeight());
