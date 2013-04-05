@@ -5,7 +5,6 @@ import java.io.IOException;
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.path.Path;
-import ch.bfh.sokobomb.util.Tiles;
 
 /**
  * This state moves the player along a given path
