@@ -20,7 +20,11 @@ public class HighscoreList implements Drawable {
 	@SuppressWarnings("unused")
 	private int width, height;
 
-	public HighscoreList(int width, int height, ArrayList<HighscoreItem> items) throws SlickException {
+	public HighscoreList(
+		int width,
+		int height,
+		ArrayList<HighscoreItem> items
+	) throws SlickException {
 		this.items  = items;
 		this.width  = width;
 		this.height = height;

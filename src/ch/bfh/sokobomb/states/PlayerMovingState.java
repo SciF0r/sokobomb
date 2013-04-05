@@ -16,9 +16,15 @@ import ch.bfh.sokobomb.path.Path;
 public class PlayerMovingState extends State {
 
 	private Path path;
+	private long timestamp;
 
 	public PlayerMovingState(Field field) {
 		super(field);
+	}
+
+	@Override
+	public void doEntry() {
+		this.timestamp = 0;
 	}
 
 	/**
@@ -29,21 +35,16 @@ public class PlayerMovingState extends State {
 	public void draw() throws IOException {
 		super.field.drawField();
 
+		if ((System.currentTimeMillis() - this.timestamp) < 300) {
+			return;
+		}
+
+		this.timestamp = System.currentTimeMillis();
+
 		if (this.path.hasNext()) {
 			super.field.getPlayer().setPosition(this.path.next());
-			// TODO Threads? Or timer?
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 		else {
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 			super.field.setState(new PlayState(super.field));
 		}
 	}

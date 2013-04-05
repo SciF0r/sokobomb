@@ -114,20 +114,23 @@ public abstract class State {
 	 * Mouse and keyboard event handling
 	 */
 	final public void pollInput() {
-		Keyboard.enableRepeatEvents(true);
+		while (Mouse.next()) {
+			int button = Mouse.getEventButton();
+			int x      = Mouse.getEventX();
+			int y      = this.field.getHeight() - Mouse.getEventY();
+			
+			// Mouse button was released
+			if (!Mouse.getEventButtonState()) {
+				continue;
+			}
 
-		// Left mouse button
-		if (Mouse.isButtonDown(0)) {
-			int x = Mouse.getX();
-			int y = this.field.getHeight() - Mouse.getY();
-			this.handleLeftClick(new Coordinate(x, y));
-		}
+			if (button == 0) {
+				this.handleLeftClick(new Coordinate(x, y));
+			}
 
-		// Right mouse button
-		if (Mouse.isButtonDown(1)) {
-			int x = Mouse.getX();
-			int y = this.field.getHeight() - Mouse.getY();
-			this.handleRightClick(new Coordinate(x, y));
+			if (button == 1) {
+				this.handleRightClick(new Coordinate(x, y));
+			}
 		}
 
 		while (Keyboard.next()) {

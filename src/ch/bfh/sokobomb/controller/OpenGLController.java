@@ -19,6 +19,7 @@ import static org.lwjgl.opengl.GL11.glViewport;
 
 import java.io.IOException;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
@@ -83,6 +84,8 @@ public class OpenGLController {
 		glLoadIdentity();
 		glOrtho(0, field.getWidth(), field.getHeight(), 0, -1, 1);
 		glMatrixMode(GL_MODELVIEW);
+
+		Keyboard.enableRepeatEvents(true);
 
 		while (!Display.isCloseRequested()) {
 			//clear buffer
