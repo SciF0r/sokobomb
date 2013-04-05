@@ -6,9 +6,9 @@ import java.sql.SQLException;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.SlickException;
 
+import ch.bfh.sokobomb.db.Highscore;
 import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.model.HighscoreList;
-import ch.bfh.sokobomb.util.Highscore;
 
 /**
  * Shows the current highscore
