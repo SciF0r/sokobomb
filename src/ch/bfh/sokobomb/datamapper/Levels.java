@@ -1,4 +1,4 @@
-package ch.bfh.sokobomb.db;
+package ch.bfh.sokobomb.datamapper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +13,7 @@ import ch.bfh.sokobomb.Application;
  *
  * @author Denis Simonet
  */
-public class Highscore {
+public class Levels {
 
 	private Statement statement;
 	final private String createQuery = "CREATE TABLE IF NOT EXISTS highscore (id integer, level integer, name string, points integer)";
@@ -23,7 +23,7 @@ public class Highscore {
 	 * Prepare the sqlite database connection
 	 * @throws SQLException 
 	 */
-	public Highscore() throws SQLException {
+	public Levels() throws SQLException {
 		this.statement = Application.getConnection().createStatement();
 		this.statement.setQueryTimeout(30);
 	}

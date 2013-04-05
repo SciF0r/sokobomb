@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Field;
@@ -139,5 +140,18 @@ public abstract class State {
 				this.handleKeyRelease(Keyboard.getEventKey());
 			}
 		}
+	}
+
+	/**
+	 * Draws a transparent overlay for menus
+	 */
+	protected void drawTransparentOverlay() {
+		GL11.glColor4f(0.5f, 0.70f, 0.5f, 0.6f);		
+		GL11.glBegin(GL11.GL_QUADS);
+		GL11.glVertex2i(0,0);
+		GL11.glVertex2i(0,field.getHeight());
+		GL11.glVertex2i(field.getWidth(), field.getHeight());
+		GL11.glVertex2i(field.getWidth(),0);
+		GL11.glEnd();
 	}
 }

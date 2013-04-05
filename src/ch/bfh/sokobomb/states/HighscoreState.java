@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.SlickException;
 
-import ch.bfh.sokobomb.db.Highscore;
+import ch.bfh.sokobomb.datamapper.Highscore;
 import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.model.HighscoreList;
 
@@ -50,6 +50,8 @@ public class HighscoreState extends State {
 
 	@Override
 	public void draw() throws IOException{
+		super.field.drawField();
+		super.drawTransparentOverlay();
 		this.highscoreList.draw();
 	}
 }

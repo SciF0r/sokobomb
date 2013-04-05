@@ -15,12 +15,12 @@ public class HighscoreList implements Drawable {
 	final private String highscoreTitle = "Highscore";
 	final private String highscoreEmpty = "Empty list";
 
-	private ArrayList<String> items;
+	private ArrayList<HighscoreItem> items;
 	private AngelCodeFont font;
 	@SuppressWarnings("unused")
 	private int width, height;
 
-	public HighscoreList(int width, int height, ArrayList<String> items) throws SlickException {
+	public HighscoreList(int width, int height, ArrayList<HighscoreItem> items) throws SlickException {
 		this.items  = items;
 		this.width  = width;
 		this.height = height;
@@ -47,13 +47,13 @@ public class HighscoreList implements Drawable {
 		}
 		else {
 			int i = 0;
-			for (String item: this.items) {
-				int itemWidth  = this.font.getWidth(item);
-				int itemHeight = this.font.getHeight(item);
+			for (HighscoreItem item: this.items) {
+				int itemWidth  = this.font.getWidth(item.toString());
+				int itemHeight = this.font.getHeight(item.toString());
 				int itemX      = (this.width - itemWidth) / 2;
 				int itemY      = titleHeight + itemHeight * i++;
 
-				this.font.drawString(itemX, itemY, item);
+				this.font.drawString(itemX, itemY, item.toString());
 			}
 		}
 	}

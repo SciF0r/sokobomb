@@ -3,7 +3,6 @@ package ch.bfh.sokobomb.states;
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.SlickException;
 
@@ -39,15 +38,7 @@ public class EndGameState extends State {
 	@Override
 	public void draw() throws IOException {
 		super.field.drawField();
-
-		//Draw Background
-		GL11.glColor4f(0.5f, 0.70f, 0.5f, 0.6f);
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex2i(0               , 0                );
-		GL11.glVertex2i(0               , field.getHeight());
-		GL11.glVertex2i(field.getWidth(), field.getHeight());
-		GL11.glVertex2i(field.getWidth(), 0                );
-		GL11.glEnd();
+		super.drawTransparentOverlay();
 
 		int titleWidth  = this.font.getWidth(this.textEndGame);
 		int titleHeight = this.font.getHeight(this.textEndGame);
