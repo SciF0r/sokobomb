@@ -45,7 +45,7 @@ public class PlayerMovingState extends State {
 	public void draw() throws IOException {
 		super.field.drawField();
 
-		if ((System.currentTimeMillis() - this.timestamp) < 300) {
+		if ((System.currentTimeMillis() - this.timestamp) < 50) {
 			return;
 		}
 
