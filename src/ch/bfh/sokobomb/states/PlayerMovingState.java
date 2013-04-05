@@ -5,6 +5,7 @@ import java.io.IOException;
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.path.Path;
+import ch.bfh.sokobomb.util.Tiles;
 
 /**
  * This state moves the player along a given path
@@ -25,6 +26,16 @@ public class PlayerMovingState extends State {
 	@Override
 	public void doEntry() {
 		this.timestamp = 0;
+	}
+
+	@Override
+	public void handleKeyPress(int key) {
+		super.field.setState(new PlayState(super.field));
+	}
+
+	@Override
+	public void handleLeftClick(Coordinate coordinate) {
+		super.field.setState(new PlayState(super.field));
 	}
 
 	/**
