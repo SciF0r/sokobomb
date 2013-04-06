@@ -5,10 +5,12 @@ import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 
 import ch.bfh.sokobomb.Application;
+import ch.bfh.sokobomb.field.DesignField;
+import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.util.Tiles;
 
-public class PlayState extends PlayFieldState {
+public class PlayState extends State {
 
 	public PlayState() {
 		this.stateId = State.PLAY;
@@ -16,18 +18,19 @@ public class PlayState extends PlayFieldState {
 
 	@Override
 	public void handleKeyPress(int key) {
+		PlayField field = (PlayField)Application.getFieldController().getField();
 		switch (key) {
 			case Keyboard.KEY_RIGHT:
-				this.getField().movePlayer(1, 0);
+				field.movePlayer(1, 0);
 				break;
 			case Keyboard.KEY_LEFT:
-				this.getField().movePlayer(-1, 0);
+				field.movePlayer(-1, 0);
 				break;
 			case Keyboard.KEY_UP:
-				this.getField().movePlayer(0, -1);
+				field.movePlayer(0, -1);
 				break;
 			case Keyboard.KEY_DOWN:
-				this.getField().movePlayer(0, 1);
+				field.movePlayer(0, 1);
 				break;
 			case Keyboard.KEY_ESCAPE:
 				Application.getStateController().setState(State.PAUSE);
@@ -36,14 +39,14 @@ public class PlayState extends PlayFieldState {
 				Application.getStateController().setState(State.HIGHSCORE);
 				break;
 			case Keyboard.KEY_D:
-				this.getField().resetObject();
 				Application.getStateController().setState(State.DESIGN);
+				Application.getFieldController().setField(new DesignField());
 				break;
 			case Keyboard.KEY_U:
-				this.getField().undo();
+				field.undo();
 				break;
 			case Keyboard.KEY_R:
-				this.getField().restartLevel();
+				field.restartLevel();
 				break;
 		}
 	}
@@ -62,17 +65,18 @@ public class PlayState extends PlayFieldState {
 	 * @throws IOException 
 	 */
 	public void draw() throws IOException {
-		this.getField().drawField();
+		Application.getFieldController().drawField();
 	}
 
 	/**
 	 * Moves player to a certain field
 	 */
 	public void setPlayerPosition(Coordinate coordinate) {
-		if (this.getField().mayEnter(coordinate)) {
+		PlayField field = (PlayField)Application.getFieldController().getField();
+		if (field.mayEnter(coordinate)) {
 			Application.getStateController().setState(State.PLAYER_MOVING);
-			this.getField().setPlayerPosition(coordinate);
-			this.getField().addFieldToHistory();
+			field.setPlayerPosition(coordinate);
+			field.addFieldToHistory();
 		}
 	}
 }

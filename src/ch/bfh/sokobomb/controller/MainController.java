@@ -1,5 +1,6 @@
 package ch.bfh.sokobomb.controller;
 
+import ch.bfh.sokobomb.field.Field;
 import ch.bfh.sokobomb.field.PlayField;
 
 /**
@@ -9,7 +10,6 @@ import ch.bfh.sokobomb.field.PlayField;
  */
 public class MainController {
 
-	private PlayField field;
 	private OpenGLController openGL;
 
 	/**
@@ -17,10 +17,9 @@ public class MainController {
 	 *
 	 * @param field
 	 */
-	public MainController(PlayField field) {
-		this.field = field;
+	public MainController(Field field) {
 		this.openGL = new OpenGLController();
-		this.openGL.start(this.field, 544, 512);
+		this.openGL.start(field, 544, 512);
 	}
 
 	/**

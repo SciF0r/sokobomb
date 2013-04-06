@@ -16,7 +16,7 @@ import ch.bfh.sokobomb.model.HighscoreList;
  *
  * @author Denis Simonet
  */
-public class HighscoreState extends PlayFieldState {
+public class HighscoreState extends State {
 
 	private HighscoreList highscoreList;
 	
@@ -53,7 +53,7 @@ public class HighscoreState extends PlayFieldState {
 
 	@Override
 	public void draw() throws IOException{
-		this.getField().drawField();
+		Application.getFieldController().drawField();
 		this.drawTransparentOverlay();
 		this.highscoreList.draw();
 	}

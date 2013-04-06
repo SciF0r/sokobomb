@@ -13,7 +13,7 @@ import ch.bfh.sokobomb.model.MenuButton;
  *
  * @author Christoph Bruderer
  */
-public class PauseState extends PlayFieldState {
+public class PauseState extends State {
 
 	private MenuButton mb;
 
@@ -43,7 +43,7 @@ public class PauseState extends PlayFieldState {
 
 	@Override
 	public void draw() throws IOException {
-		this.getField().drawField();
+		Application.getFieldController().drawField();
 		this.drawTransparentOverlay();
 		 
 		mb.draw();

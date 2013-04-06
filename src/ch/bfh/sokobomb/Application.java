@@ -4,13 +4,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import ch.bfh.sokobomb.controller.FieldController;
 import ch.bfh.sokobomb.controller.StateController;
+import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.states.State;
 
 public class Application {
 
 	private static Connection connection;
 	private static StateController stateController;
+	private static FieldController fieldController;
 
 	/**
 	 * @return A DBManager instance
@@ -44,5 +47,16 @@ public class Application {
 		}
 
 		return Application.stateController;
+	}
+
+	/**
+	 * @return The state controller instance
+	 */
+	public static FieldController getFieldController() {
+		if (Application.fieldController == null) {
+			Application.fieldController = new FieldController(new PlayField());
+		}
+
+		return Application.fieldController;
 	}
 }

@@ -162,7 +162,10 @@ public abstract class Field implements Cloneable {
 			bomb.draw();
 		}
 
-		this.getPlayer().draw();
+		Player player = this.getPlayer();
+		if (player != null) {
+			player.draw();
+		}
 	}
 
 	/**

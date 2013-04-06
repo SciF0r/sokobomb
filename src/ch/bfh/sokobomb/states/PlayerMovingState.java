@@ -3,6 +3,7 @@ package ch.bfh.sokobomb.states;
 import java.io.IOException;
 
 import ch.bfh.sokobomb.Application;
+import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.path.Path;
 
@@ -13,7 +14,7 @@ import ch.bfh.sokobomb.path.Path;
  *
  * @author Denis Simonet
  */
-public class PlayerMovingState extends PlayFieldState {
+public class PlayerMovingState extends State {
 
 	private Path path;
 	private long timestamp;
@@ -43,7 +44,7 @@ public class PlayerMovingState extends PlayFieldState {
 	 * @throws IOException 
 	 */
 	public void draw() throws IOException {
-		this.getField().drawField();
+		Application.getFieldController().drawField();
 
 		if ((System.currentTimeMillis() - this.timestamp) < 50) {
 			return;
@@ -52,7 +53,7 @@ public class PlayerMovingState extends PlayFieldState {
 		this.timestamp = System.currentTimeMillis();
 
 		if (this.path.hasNext()) {
-			this.getField().getPlayer().setPosition(this.path.next());
+			Application.getFieldController().getField().getPlayer().setPosition(this.path.next());
 		}
 		else {
 			Application.getStateController().setState(State.PLAY);
@@ -63,12 +64,13 @@ public class PlayerMovingState extends PlayFieldState {
 	 * Calculates the path
 	 */
 	public void setPlayerPosition(Coordinate coordinate) {
+		PlayField field = (PlayField)Application.getFieldController().getField();
 		this.path = new Path(
-			this.getField(),
-			this.getField().getCache().getNodeAtCoordinate(
-				this.getField().getPlayer().getCoordinate()
+			field,
+			field.getCache().getNodeAtCoordinate(
+					Application.getFieldController().getField().getPlayer().getCoordinate()
 			),
-			this.getField().getCache().getNodeAtCoordinate(
+			field.getCache().getNodeAtCoordinate(
 				coordinate
 			)
 		);

@@ -9,6 +9,7 @@ import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.NoNextLevelException;
+import ch.bfh.sokobomb.field.PlayField;
 
 /**
  * Shows that the player has won
@@ -16,7 +17,7 @@ import ch.bfh.sokobomb.exception.NoNextLevelException;
  * @author Denis Simonet
  *
  */
-public class WonState extends PlayFieldState {
+public class WonState extends State {
 
 	final private String textWon = "You win!";
 	private AngelCodeFont font;
@@ -34,10 +35,11 @@ public class WonState extends PlayFieldState {
 
 	@Override
 	public void handleKeyPress(int key) {
+		PlayField field = (PlayField)Application.getFieldController().getField();
 		switch (key) {
 			case Keyboard.KEY_RETURN:
 				try {
-					this.getField().loadNextLevel();
+					field.loadNextLevel();
 					Application.getStateController().setState(State.PLAY);
 				}
 				catch (NoNextLevelException e) {
@@ -49,7 +51,7 @@ public class WonState extends PlayFieldState {
 
 	@Override
 	public void draw() throws IOException {
-		this.getField().drawField();
+		Application.getFieldController().drawField();
 		this.drawTransparentOverlay();
 
 		int titleWidth  = this.font.getWidth(this.textWon);

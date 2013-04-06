@@ -15,7 +15,7 @@ import ch.bfh.sokobomb.Application;
  * @author Denis Simonet
  *
  */
-public class EndGameState extends PlayFieldState {
+public class EndGameState extends State {
 
 	final private String textEndGame = "Finished";
 	private AngelCodeFont font;
@@ -34,7 +34,7 @@ public class EndGameState extends PlayFieldState {
 	public void handleKeyPress(int key) {
 		switch (key) {
 			case Keyboard.KEY_RETURN:
-				this.getField().startGame();
+				Application.getFieldController().startGame();
 				Application.getStateController().setState(State.PLAY);
 				break;
 		}
@@ -42,7 +42,7 @@ public class EndGameState extends PlayFieldState {
 
 	@Override
 	public void draw() throws IOException {
-		this.getField().drawField();
+		Application.getFieldController().drawField();
 		this.drawTransparentOverlay();
 
 		int titleWidth  = this.font.getWidth(this.textEndGame);

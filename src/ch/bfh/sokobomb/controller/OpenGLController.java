@@ -21,6 +21,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.field.Field;
 import ch.bfh.sokobomb.util.OpenGLLoader;
 
@@ -87,7 +88,7 @@ public class OpenGLController {
 
 		while (!Display.isCloseRequested()) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			field.draw();
+			Application.getFieldController().draw();
 		}
 
 		Display.destroy();
