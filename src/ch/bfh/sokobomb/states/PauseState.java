@@ -3,9 +3,11 @@ package ch.bfh.sokobomb.states;
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.model.Coordinate;
+import ch.bfh.sokobomb.model.Menu;
 import ch.bfh.sokobomb.model.MenuButton;
 
 /**
@@ -16,8 +18,17 @@ import ch.bfh.sokobomb.model.MenuButton;
 public class PauseState extends State {
 
 	private MenuButton mb;
+	private Menu m;
 
 	public PauseState() {
+		
+		try {
+			this.m = new Menu("....Titel.....", null);
+		} catch (SlickException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
 		mb = new MenuButton(50, 70, 300, 80, "Return to the Game");
 		this.stateId = State.PAUSE;
 	}
@@ -46,6 +57,6 @@ public class PauseState extends State {
 		Application.getFieldController().drawField();
 		this.drawTransparentOverlay();
 		 
-		mb.draw();
+		m.draw();
 	}
 }
