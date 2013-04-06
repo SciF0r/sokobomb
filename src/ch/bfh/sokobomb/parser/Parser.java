@@ -1,6 +1,6 @@
 package ch.bfh.sokobomb.parser;
 
-import ch.bfh.sokobomb.field.PlayField;
+import ch.bfh.sokobomb.field.Field;
 
 /**
  * Parses the tokens from the lexer
@@ -23,7 +23,7 @@ public class Parser {
 	 *
 	 * @param path
 	 */
-	public void parse(String path, PlayField field) {
+	public void parse(String path, Field field) {
 		Token token;
 
 		this.lexer.initLexer(path);

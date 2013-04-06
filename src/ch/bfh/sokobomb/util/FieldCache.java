@@ -1,7 +1,7 @@
 package ch.bfh.sokobomb.util;
 
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
-import ch.bfh.sokobomb.field.PlayField;
+import ch.bfh.sokobomb.field.Field;
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.FieldItem;
 import ch.bfh.sokobomb.model.Node;
@@ -14,9 +14,9 @@ import ch.bfh.sokobomb.model.Node;
 final public class FieldCache {
 
 	private Node[][] cache;
-	private PlayField field;
+	private Field field;
 
-	public FieldCache(PlayField field, int width, int height) {
+	public FieldCache(Field field, int width, int height) {
 		this.field = field;
 		this.cache = new Node[width][height];
 
@@ -36,7 +36,7 @@ final public class FieldCache {
 	}
 
 	/**
-	 * Resets to cache such that a new Dijkstra can be run
+	 * Resets the cache such that a new Dijkstra can be run
 	 */
 	public void reset() {
 		for (int x = 0; x < this.cache.length; x++) {

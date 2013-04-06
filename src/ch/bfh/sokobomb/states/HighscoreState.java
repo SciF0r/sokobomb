@@ -30,7 +30,7 @@ public class HighscoreState extends PlayFieldState {
 				highscore.getItems()
 			);
 
-			super.stateId = State.HIGHSCORE;
+			this.stateId = State.HIGHSCORE;
 		}
 		catch (SlickException e) {
 			e.printStackTrace();
@@ -53,8 +53,8 @@ public class HighscoreState extends PlayFieldState {
 
 	@Override
 	public void draw() throws IOException{
-		super.getField().drawField();
-		super.drawTransparentOverlay();
+		this.getField().drawField();
+		this.drawTransparentOverlay();
 		this.highscoreList.draw();
 	}
 }

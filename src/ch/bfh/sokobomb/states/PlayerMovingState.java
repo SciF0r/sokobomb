@@ -19,7 +19,7 @@ public class PlayerMovingState extends PlayFieldState {
 	private long timestamp;
 
 	public PlayerMovingState() {
-		super.stateId = State.PLAYER_MOVING;
+		this.stateId = State.PLAYER_MOVING;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class PlayerMovingState extends PlayFieldState {
 	 * @throws IOException 
 	 */
 	public void draw() throws IOException {
-		super.getField().drawField();
+		this.getField().drawField();
 
 		if ((System.currentTimeMillis() - this.timestamp) < 50) {
 			return;
@@ -52,7 +52,7 @@ public class PlayerMovingState extends PlayFieldState {
 		this.timestamp = System.currentTimeMillis();
 
 		if (this.path.hasNext()) {
-			super.getField().getPlayer().setPosition(this.path.next());
+			this.getField().getPlayer().setPosition(this.path.next());
 		}
 		else {
 			Application.getStateController().setState(State.PLAY);
@@ -64,11 +64,11 @@ public class PlayerMovingState extends PlayFieldState {
 	 */
 	public void setPlayerPosition(Coordinate coordinate) {
 		this.path = new Path(
-			super.getField(),
-			super.getField().getCache().getNodeAtCoordinate(
-				super.getField().getPlayer().getCoordinate()
+			this.getField(),
+			this.getField().getCache().getNodeAtCoordinate(
+				this.getField().getPlayer().getCoordinate()
 			),
-			super.getField().getCache().getNodeAtCoordinate(
+			this.getField().getCache().getNodeAtCoordinate(
 				coordinate
 			)
 		);

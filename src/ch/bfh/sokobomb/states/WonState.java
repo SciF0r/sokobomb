@@ -29,7 +29,7 @@ public class WonState extends PlayFieldState {
 			System.exit(0);
 		}
 
-		super.stateId = State.WON;
+		this.stateId = State.WON;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class WonState extends PlayFieldState {
 		switch (key) {
 			case Keyboard.KEY_RETURN:
 				try {
-					super.getField().loadNextLevel();
+					this.getField().loadNextLevel();
 					Application.getStateController().setState(State.PLAY);
 				}
 				catch (NoNextLevelException e) {
@@ -49,8 +49,8 @@ public class WonState extends PlayFieldState {
 
 	@Override
 	public void draw() throws IOException {
-		super.getField().drawField();
-		super.drawTransparentOverlay();
+		this.getField().drawField();
+		this.drawTransparentOverlay();
 
 		int titleWidth  = this.font.getWidth(this.textWon);
 		int titleHeight = this.font.getHeight(this.textWon);

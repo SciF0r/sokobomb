@@ -1,40 +1,22 @@
 package ch.bfh.sokobomb.field;
 
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.Stack;
-
-import org.lwjgl.opengl.Display;
-
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.exception.NoNextLevelException;
 import ch.bfh.sokobomb.model.Bomb;
 import ch.bfh.sokobomb.model.Coordinate;
-import ch.bfh.sokobomb.model.FieldItem;
-import ch.bfh.sokobomb.model.Floor;
-import ch.bfh.sokobomb.model.Player;
-import ch.bfh.sokobomb.model.Target;
-import ch.bfh.sokobomb.model.Wall;
-import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
 import ch.bfh.sokobomb.states.State;
-import ch.bfh.sokobomb.util.FieldCache;
 import ch.bfh.sokobomb.util.Levels;
 
 /**
- * Contains all required information to draw a field and handle input
+ * Implements a playable Field and handles levels
  *
  * @author Denis Simonet
  */
-public class PlayField implements Cloneable, Field {
+public class PlayField extends Field implements Cloneable {
 
-	private Stack<PlayField> fieldHistory   = new Stack<PlayField>();
-	private LinkedList<FieldItem> items = new LinkedList<FieldItem>();
-	private LinkedList<Bomb> bombs      = new LinkedList<Bomb>();
-	private FieldCache cache            = null;
 	private Levels levels;
-	private Player player;
 
 	/**
 	 * The constructor sets the player
@@ -63,117 +45,15 @@ public class PlayField implements Cloneable, Field {
 	}
 
 	/**
-	 * Parse a level file
-	 *
-	 * @param path
-	 */
-	private void parse(String path) {
-		this.resetObject();
-
-		Parser parser = new Parser();
-		parser.parse(path, this);
-	}
-
-	/**
-	 * Add a bomb to the field
-	 *
-	 * @param bomb
-	 */
-	public void addBomb(Bomb bomb) {
-		this.bombs.add(bomb);
-	}
-
-	/**
-	 * Add a player to the field
-	 *
-	 * The current implementation only allows one player
-	 *
-	 * @param player
-	 */
-	public void addPlayer(Player player) {
-		if (this.player != null) {
-			throw new RuntimeException(
-				"More than one player defined"
-			);
-		}
-
-		this.player = player;
-	}
-
-	/**
-	 * Getter for player
-	 *
-	 * @return The player
-	 */
-	public Player getPlayer() {
-		return this.player;
-	}
-
-	/**
-	 * Adds a field item to the field
-	 *
-	 * @param item
-	 */
-	public void addItem(FieldItem item) {
-		this.items.add(item);
-	}
-
-	/**
-	 * Removes a field item from the field
-	 *
-	 * @param itemRestart
-	 * @return Whether removal was successful
-	 */
-	public boolean removeItem(FieldItem item) {
-		return this.items.remove(item);
-	}
-
-	/**
-	 * @return the items
-	 */
-	public LinkedList<FieldItem> getItems() {
-		return items;
-	}
-
-	/**
-	 * @return the bombs
-	 */
-	public LinkedList<Bomb> getBombs() {
-		return bombs;
-	}
-
-	/**
-	 * Undo the last move
-	 */
-	public void undo() {
-		if (!this.fieldHistory.isEmpty()) {
-			PlayField field = this.fieldHistory.pop();
-			this.items  = field.getItems();
-			this.bombs  = field.getBombs();
-			this.player = field.getPlayer();
-		}
-	}
-
-	/**
 	 * Restart level
 	 */
 	public void restartLevel() {
 		if (!this.fieldHistory.isEmpty()) {
-			PlayField field = this.fieldHistory.firstElement();
+			PlayField field = (PlayField)this.fieldHistory.firstElement();
 			this.bombs  = field.getBombs();
 			this.player = field.getPlayer();
 			this.fieldHistory.clear();
 		}
-	}
-
-	/**
-	 * Resets object variables
-	 */
-	public void resetObject() {
-		this.player = null;
-		this.bombs.clear();
-		this.items.clear();
-		this.fieldHistory.clear();
 	}
 
 	/**
@@ -232,30 +112,11 @@ public class PlayField implements Cloneable, Field {
 
 	@Override
 	public void draw() {
-		Application.getStateController().draw();
-		Display.update();
-		Application.getStateController().pollInput();
+		super.draw();
 
 		if (Application.getStateController().isState(State.PLAY) && this.hasWon()) {
 			Application.getStateController().setState(State.WON);
 		}
-	}
-
-	/**
-	 * Draw the field (tiles, bombs, player)
-	 *
-	 * @throws IOException 
-	 */
-	public void drawField() throws IOException {
-		for (FieldItem item: this.getItems()) {
-			item.draw();
-		}
-
-		for (Bomb bomb: this.getBombs()) {
-			bomb.draw();
-		}
-
-		this.getPlayer().draw();
 	}
 
 	/**
@@ -279,126 +140,6 @@ public class PlayField implements Cloneable, Field {
 	}
 
 	/**
-	 * Add a field by token
-	 *
-	 * @param token
-	 */
-	public void addItemByToken(Token token) {
-		Player    player = null;
-		Bomb      bomb   = null;
-		FieldItem item   = null;
-
-		switch (token.type) {
-			case Token.WALL:
-				item = new Wall();
-				item.setType(Token.WALL);
-				break;
-			case Token.PLAYER_START:
-				player = new Player();
-				player.setType(Token.PLAYER_START);
-				item   = new Floor();
-				item.setType(Token.FLOOR);
-				break;
-			case Token.TARGET:
-				item = new Target();
-				item.setType(Token.TARGET);
-				break;
-			case Token.BOMB_START:
-				item = new Floor();
-				item.setType(Token.FLOOR);
-				bomb = new Bomb();
-				bomb.setType(Token.BOMB_START);
-				break;
-			case Token.BOMB_TARGET:
-				bomb = new Bomb();
-				bomb.setType(Token.BOMB_START);
-				item = new Target();
-				item.setType(Token.TARGET);
-				break;
-			case Token.PLAYER_TARGET:
-				player = new Player();
-				player.setType(Token.PLAYER_START);
-				item   = new Target();
-				item.setType(Token.TARGET);
-				break;
-			case Token.FLOOR:
-				item = new Floor();
-				item.setType(Token.FLOOR);
-				break;
-			default:
-				throw new RuntimeException(
-					"Illegal token"
-				);
-		}
-
-		if (item != null) {
-			item.setPosition(token.coordinate);
-			this.addItem(item);
-		}
-
-		if (bomb != null) {
-			bomb.setPosition(token.coordinate);
-			this.addBomb(bomb);
-		}
-
-		if (player != null) {
-			player.setPosition(token.coordinate);
-			this.addPlayer(player);
-		}
-	}
-
-	/**
-	 * Builds the field cache
-	 */
-	public void buildCache(int width, int height) {
-		this.cache = new FieldCache(this, width, height);
-	}
-
-	/**
-	 * @return The field cache
-	 */
-	public FieldCache getCache() {
-		return this.cache;
-	}
-
-	/**
-	 * Returns whether the player may enter a field
-	 *
-	 * @param x
-	 * @param y
-	 * @return
-	 */
-	public boolean mayEnter(Coordinate coordinate) {
-		try {
-			if (this.findBomb(coordinate) != null) {
-				return false;
-			}
-
-			int type = this.cache.getTypeAtCoordinate(coordinate);
-			return type == Token.FLOOR || type == Token.TARGET;
-		}
-		catch (InvalidCoordinateException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Returns a bomb if it is at a certain position
-	 *
-	 * @param coordinate
-	 * @return
-	 */
-	public Bomb findBomb(Coordinate coordinate) {
-		for (Bomb bomb: this.bombs) {
-			if (bomb.getPositionX() == coordinate.getX() && bomb.getPositionY() == coordinate.getY()) {
-				return bomb;
-			}
-		}
-
-		return null;
-	}
-
-	/**
 	 * Calls setPlayerPosition() on the current state
 	 *
 	 * @param coordinate
@@ -407,9 +148,7 @@ public class PlayField implements Cloneable, Field {
 		Application.getStateController().setPlayerPosition(coordinate);
 	}
 
-	/**
-	 * Adds current field to history
-	 */
+	@Override
 	public void addFieldToHistory() {
 		try {
 			this.fieldHistory.push((PlayField)this.clone());
@@ -423,15 +162,18 @@ public class PlayField implements Cloneable, Field {
 	 */
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-		PlayField field = (PlayField)super.clone();
-		field.player = (Player)this.player.clone();
+		return (PlayField)super.clone();
+	}
 
-		LinkedList<Bomb> bombs = new LinkedList<Bomb>();
-		for (Bomb bomb: this.bombs) {
-			bombs.add((Bomb)bomb.clone());
+	/**
+	 * Undo the last move
+	 */
+	public void undo() {
+		if (!this.fieldHistory.isEmpty()) {
+			PlayField field = (PlayField)this.fieldHistory.pop();
+			this.items  = field.getItems();
+			this.bombs  = field.getBombs();
+			this.player = field.getPlayer();
 		}
-		field.bombs = bombs;
-
-		return field;
 	}
 }

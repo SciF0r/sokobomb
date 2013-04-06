@@ -19,7 +19,7 @@ public class PauseState extends PlayFieldState {
 
 	public PauseState() {
 		mb = new MenuButton(50, 70, 300, 80, "Return to the Game");
-		super.stateId = State.PAUSE;
+		this.stateId = State.PAUSE;
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public class PauseState extends PlayFieldState {
 
 	@Override
 	public void draw() throws IOException {
-		super.getField().drawField();
-		super.drawTransparentOverlay();
+		this.getField().drawField();
+		this.drawTransparentOverlay();
 		 
 		mb.draw();
 	}

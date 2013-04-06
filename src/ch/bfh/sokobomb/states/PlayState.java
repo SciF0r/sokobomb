@@ -11,23 +11,23 @@ import ch.bfh.sokobomb.util.Tiles;
 public class PlayState extends PlayFieldState {
 
 	public PlayState() {
-		super.stateId = State.PLAY;
+		this.stateId = State.PLAY;
 	}
 
 	@Override
 	public void handleKeyPress(int key) {
 		switch (key) {
 			case Keyboard.KEY_RIGHT:
-				super.getField().movePlayer(1, 0);
+				this.getField().movePlayer(1, 0);
 				break;
 			case Keyboard.KEY_LEFT:
-				super.getField().movePlayer(-1, 0);
+				this.getField().movePlayer(-1, 0);
 				break;
 			case Keyboard.KEY_UP:
-				super.getField().movePlayer(0, -1);
+				this.getField().movePlayer(0, -1);
 				break;
 			case Keyboard.KEY_DOWN:
-				super.getField().movePlayer(0, 1);
+				this.getField().movePlayer(0, 1);
 				break;
 			case Keyboard.KEY_ESCAPE:
 				Application.getStateController().setState(State.PAUSE);
@@ -36,14 +36,14 @@ public class PlayState extends PlayFieldState {
 				Application.getStateController().setState(State.HIGHSCORE);
 				break;
 			case Keyboard.KEY_D:
-				super.getField().resetObject();
+				this.getField().resetObject();
 				Application.getStateController().setState(State.DESIGN);
 				break;
 			case Keyboard.KEY_U:
-				super.getField().undo();
+				this.getField().undo();
 				break;
 			case Keyboard.KEY_R:
-				super.getField().restartLevel();
+				this.getField().restartLevel();
 				break;
 		}
 	}
@@ -62,17 +62,17 @@ public class PlayState extends PlayFieldState {
 	 * @throws IOException 
 	 */
 	public void draw() throws IOException {
-		super.getField().drawField();
+		this.getField().drawField();
 	}
 
 	/**
 	 * Moves player to a certain field
 	 */
 	public void setPlayerPosition(Coordinate coordinate) {
-		if (super.getField().mayEnter(coordinate)) {
+		if (this.getField().mayEnter(coordinate)) {
 			Application.getStateController().setState(State.PLAYER_MOVING);
-			super.getField().setPlayerPosition(coordinate);
-			super.getField().addFieldToHistory();
+			this.getField().setPlayerPosition(coordinate);
+			this.getField().addFieldToHistory();
 		}
 	}
 }

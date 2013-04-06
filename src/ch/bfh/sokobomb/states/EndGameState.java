@@ -23,7 +23,7 @@ public class EndGameState extends PlayFieldState {
 	public EndGameState() {
 		try {
 			this.font = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
-			super.stateId = State.END_GAME;
+			this.stateId = State.END_GAME;
 		} catch (SlickException e) {
 			e.printStackTrace();
 			System.exit(0);
@@ -34,7 +34,7 @@ public class EndGameState extends PlayFieldState {
 	public void handleKeyPress(int key) {
 		switch (key) {
 			case Keyboard.KEY_RETURN:
-				super.getField().startGame();
+				this.getField().startGame();
 				Application.getStateController().setState(State.PLAY);
 				break;
 		}
@@ -42,8 +42,8 @@ public class EndGameState extends PlayFieldState {
 
 	@Override
 	public void draw() throws IOException {
-		super.getField().drawField();
-		super.drawTransparentOverlay();
+		this.getField().drawField();
+		this.drawTransparentOverlay();
 
 		int titleWidth  = this.font.getWidth(this.textEndGame);
 		int titleHeight = this.font.getHeight(this.textEndGame);

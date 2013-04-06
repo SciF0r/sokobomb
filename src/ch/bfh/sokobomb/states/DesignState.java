@@ -7,7 +7,7 @@ import ch.bfh.sokobomb.model.Coordinate;
 public class DesignState extends DesignFieldState {
 
 	public DesignState() {
-		super.stateId = State.DESIGN;
+		this.stateId = State.DESIGN;
 	}
 	@Override
 	public void handleKeyPress(int key) {
@@ -23,6 +23,6 @@ public class DesignState extends DesignFieldState {
 	 * @throws IOException 
 	 */
 	public void draw() throws IOException {
-		super.getField().drawField();
+		this.getField().drawField();
 	}
 }
