@@ -4,8 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
+import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.Coordinate;
-import ch.bfh.sokobomb.model.Field;
+import ch.bfh.sokobomb.model.Node;
 import ch.bfh.sokobomb.util.FieldCache;
 
 /**
@@ -15,10 +16,10 @@ import ch.bfh.sokobomb.util.FieldCache;
  */
 public class Dijkstra {
 
-	private Field field;
+	private PlayField field;
 	private Node startNode, targetNode;
 
-	public Dijkstra(Field field, Node startNode, Node targetNode) {
+	public Dijkstra(PlayField field, Node startNode, Node targetNode) {
 		this.field      = field;
 		this.startNode  = startNode;
 		this.targetNode = targetNode;

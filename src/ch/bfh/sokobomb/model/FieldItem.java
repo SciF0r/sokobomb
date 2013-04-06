@@ -10,6 +10,7 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import ch.bfh.sokobomb.util.Tiles;
 
+
 /**
  * A field item (Bomb, Floor, ...)
  *
@@ -58,6 +59,13 @@ public abstract class FieldItem implements Cloneable, Drawable {
 	 */
 	public Integer getType() {
 		return this.tokenType;
+	}
+
+	/**
+	 * @param type The type to be set
+	 */
+	public void setType(Integer type) {
+		this.tokenType = type;
 	}
 
 	/**

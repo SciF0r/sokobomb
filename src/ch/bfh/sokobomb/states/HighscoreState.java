@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.SlickException;
 
+import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.datamapper.Highscore;
-import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.model.HighscoreList;
 
 /**
@@ -15,27 +16,29 @@ import ch.bfh.sokobomb.model.HighscoreList;
  *
  * @author Denis Simonet
  */
-public class HighscoreState extends State {
+public class HighscoreState extends PlayFieldState {
 
 	private HighscoreList highscoreList;
 	
-	public HighscoreState(Field field) {
-		super(field);
-
+	public HighscoreState() {
 		try {
 			Highscore highscore = new Highscore();
 
 			this.highscoreList = new HighscoreList(
-				super.field.getWidth(),
-				super.field.getHeight(),
+				Display.getWidth(),
+				Display.getHeight(),
 				highscore.getItems()
 			);
+
+			super.stateId = State.HIGHSCORE;
 		}
 		catch (SlickException e) {
-			super.field.setState(new PlayState(super.field));
+			e.printStackTrace();
+			System.exit(0);
 		}
 		catch (SQLException e) {
-			super.field.setState(new PlayState(super.field));
+			e.printStackTrace();
+			System.exit(0);
 		}
 	}
 
@@ -43,14 +46,14 @@ public class HighscoreState extends State {
 	public void handleKeyPress(int key) {
 		switch (key) {
 			case Keyboard.KEY_ESCAPE:
-				super.field.setState(new PlayState(super.field));
+				Application.getStateController().setState(State.PLAY);
 				break;
 		}
 	}
 
 	@Override
 	public void draw() throws IOException{
-		super.field.drawField();
+		super.getField().drawField();
 		super.drawTransparentOverlay();
 		this.highscoreList.draw();
 	}

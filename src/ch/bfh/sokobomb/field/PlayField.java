@@ -1,19 +1,24 @@
-package ch.bfh.sokobomb.model;
+package ch.bfh.sokobomb.field;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Stack;
 
 import org.lwjgl.opengl.Display;
-import org.newdawn.slick.SlickException;
 
+import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.exception.NoNextLevelException;
+import ch.bfh.sokobomb.model.Bomb;
+import ch.bfh.sokobomb.model.Coordinate;
+import ch.bfh.sokobomb.model.FieldItem;
+import ch.bfh.sokobomb.model.Floor;
+import ch.bfh.sokobomb.model.Player;
+import ch.bfh.sokobomb.model.Target;
+import ch.bfh.sokobomb.model.Wall;
 import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
-import ch.bfh.sokobomb.states.PlayState;
 import ch.bfh.sokobomb.states.State;
-import ch.bfh.sokobomb.states.WonState;
 import ch.bfh.sokobomb.util.FieldCache;
 import ch.bfh.sokobomb.util.Levels;
 
@@ -22,41 +27,21 @@ import ch.bfh.sokobomb.util.Levels;
  *
  * @author Denis Simonet
  */
-public class Field implements Cloneable {
+public class PlayField implements Cloneable, Field {
 
-	private Stack<Field> fieldHistory   = new Stack<Field>();
+	private Stack<PlayField> fieldHistory   = new Stack<PlayField>();
 	private LinkedList<FieldItem> items = new LinkedList<FieldItem>();
 	private LinkedList<Bomb> bombs      = new LinkedList<Bomb>();
 	private FieldCache cache            = null;
 	private Levels levels;
-
 	private Player player;
-
-	/**
-	 * The width of the field
-	 */
-	private int width;
-
-	/**
-	 * The height of the field
-	 */
-	private int height;
-
-	/**
-	 * Current state
-	 */
-	private State state = new PlayState(this);
 
 	/**
 	 * The constructor sets the player
 	 *
 	 * @param path The path to the file with the field to be loaded
 	 */
-	public Field(int width, int height) {
-		this.width  = width;
-		this.height = height;
-
-		this.state.entry();
+	public PlayField() {
 		this.startGame();
 	}
 
@@ -75,16 +60,6 @@ public class Field implements Cloneable {
 	 */
 	public void loadNextLevel() throws NoNextLevelException {
 		this.parse(this.levels.getNextLevel());
-	}
-
-	/**
-	 * Sets a new state
-	 *
-	 * @param state
-	 */
-	public void setState(State state) {
-		this.state = state;
-		this.state.entry();
 	}
 
 	/**
@@ -172,7 +147,7 @@ public class Field implements Cloneable {
 	 */
 	public void undo() {
 		if (!this.fieldHistory.isEmpty()) {
-			Field field = this.fieldHistory.pop();
+			PlayField field = this.fieldHistory.pop();
 			this.items  = field.getItems();
 			this.bombs  = field.getBombs();
 			this.player = field.getPlayer();
@@ -184,7 +159,7 @@ public class Field implements Cloneable {
 	 */
 	public void restartLevel() {
 		if (!this.fieldHistory.isEmpty()) {
-			Field field = this.fieldHistory.firstElement();
+			PlayField field = this.fieldHistory.firstElement();
 			this.bombs  = field.getBombs();
 			this.player = field.getPlayer();
 			this.fieldHistory.clear();
@@ -209,7 +184,7 @@ public class Field implements Cloneable {
 	 */
 	public void movePlayer(int dx, int dy) {
 		try {
-			this.fieldHistory.push((Field)this.clone());
+			this.fieldHistory.push((PlayField)this.clone());
 		} catch (CloneNotSupportedException e) {
 			System.err.println(e.getMessage());
 		}
@@ -255,22 +230,14 @@ public class Field implements Cloneable {
 		}
 	}
 
-	/**
-	 * Draw the field according to state
-	 * @throws IOException 
-	 * @throws  
-	 */
-	public void draw() throws IOException {
-		this.state.draw();
+	@Override
+	public void draw() {
+		Application.getStateController().draw();
 		Display.update();
-		this.state.pollInput();
+		Application.getStateController().pollInput();
 
-		if (this.state.getClass() == PlayState.class && this.hasWon()) {
-			try {
-				this.setState(new WonState(this));
-			} catch (SlickException e) {
-				e.printStackTrace();
-			}
+		if (Application.getStateController().isState(State.PLAY) && this.hasWon()) {
+			Application.getStateController().setState(State.WON);
 		}
 	}
 
@@ -324,39 +291,39 @@ public class Field implements Cloneable {
 		switch (token.type) {
 			case Token.WALL:
 				item = new Wall();
-				item.tokenType = Token.WALL;
+				item.setType(Token.WALL);
 				break;
 			case Token.PLAYER_START:
 				player = new Player();
-				player.tokenType = Token.PLAYER_START;
+				player.setType(Token.PLAYER_START);
 				item   = new Floor();
-				item.tokenType = Token.FLOOR;
+				item.setType(Token.FLOOR);
 				break;
 			case Token.TARGET:
 				item = new Target();
-				item.tokenType = Token.TARGET;
+				item.setType(Token.TARGET);
 				break;
 			case Token.BOMB_START:
 				item = new Floor();
-				item.tokenType = Token.FLOOR;
+				item.setType(Token.FLOOR);
 				bomb = new Bomb();
-				bomb.tokenType = Token.BOMB_START;
+				bomb.setType(Token.BOMB_START);
 				break;
 			case Token.BOMB_TARGET:
 				bomb = new Bomb();
-				bomb.tokenType = Token.BOMB_START;
+				bomb.setType(Token.BOMB_START);
 				item = new Target();
-				item.tokenType = Token.TARGET;
+				item.setType(Token.TARGET);
 				break;
 			case Token.PLAYER_TARGET:
 				player = new Player();
-				player.tokenType = Token.PLAYER_START;
+				player.setType(Token.PLAYER_START);
 				item   = new Target();
-				item.tokenType = Token.TARGET;
+				item.setType(Token.TARGET);
 				break;
 			case Token.FLOOR:
 				item = new Floor();
-				item.tokenType = Token.FLOOR;
+				item.setType(Token.FLOOR);
 				break;
 			default:
 				throw new RuntimeException(
@@ -432,30 +399,12 @@ public class Field implements Cloneable {
 	}
 
 	/**
-	 * Return width of the whole window
-	 *
-	 * @return The width
-	 */
-	public int getWidth() {
-		return width;
-	}
-
-	/**
-	 * Return height of the whole window
-	 *
-	 * @return The height
-	 */
-	public int getHeight() {
-		return height;
-	}
-
-	/**
 	 * Calls setPlayerPosition() on the current state
 	 *
 	 * @param coordinate
 	 */
 	public void setPlayerPosition(Coordinate coordinate) {
-		this.state.setPlayerPosition(coordinate);
+		Application.getStateController().setPlayerPosition(coordinate);
 	}
 
 	/**
@@ -463,7 +412,7 @@ public class Field implements Cloneable {
 	 */
 	public void addFieldToHistory() {
 		try {
-			this.fieldHistory.push((Field)this.clone());
+			this.fieldHistory.push((PlayField)this.clone());
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
@@ -474,7 +423,7 @@ public class Field implements Cloneable {
 	 */
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-		Field field = (Field)super.clone();
+		PlayField field = (PlayField)super.clone();
 		field.player = (Player)this.player.clone();
 
 		LinkedList<Bomb> bombs = new LinkedList<Bomb>();

@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import ch.bfh.sokobomb.model.Coordinate;
-import ch.bfh.sokobomb.model.Field;
 
 /**
  * Class for a state
@@ -16,10 +16,27 @@ import ch.bfh.sokobomb.model.Field;
  */
 public abstract class State {
 
-	protected Field field;
+	/**
+	 * The available states
+	 */
+	final public static int DESIGN        = 0;
+	final public static int END_GAME      = 1;
+	final public static int HIGHSCORE     = 2;
+	final public static int PAUSE         = 3;
+	final public static int PLAYER_MOVING = 4;
+	final public static int PLAY          = 5;
+	final public static int WON           = 6;
 
-	protected State(Field field) {
-		this.field = field;
+	/**
+	 * The state id of this state
+	 */
+	protected int stateId;
+
+	/**
+	 * @return The state id
+	 */
+	public int getStateId() {
+		return this.stateId;
 	}
 
 	/**
@@ -117,7 +134,7 @@ public abstract class State {
 		while (Mouse.next()) {
 			int button = Mouse.getEventButton();
 			int x      = Mouse.getEventX();
-			int y      = this.field.getHeight() - Mouse.getEventY();
+			int y      = Display.getHeight() - Mouse.getEventY();
 			
 			// Mouse button was released
 			if (!Mouse.getEventButtonState()) {
@@ -151,10 +168,10 @@ public abstract class State {
 	protected void drawTransparentOverlay() {
 		GL11.glColor4f(0.5f, 0.70f, 0.5f, 0.6f);		
 		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex2i(0,0);
-		GL11.glVertex2i(0,field.getHeight());
-		GL11.glVertex2i(field.getWidth(), field.getHeight());
-		GL11.glVertex2i(field.getWidth(),0);
+		GL11.glVertex2i(0,                0                );
+		GL11.glVertex2i(0,                Display.getHeight());
+		GL11.glVertex2i(Display.getWidth(), Display.getHeight());
+		GL11.glVertex2i(Display.getWidth(), 0                );
 		GL11.glEnd();
 	}
 }

@@ -1,6 +1,5 @@
-package ch.bfh.sokobomb.path;
+package ch.bfh.sokobomb.model;
 
-import ch.bfh.sokobomb.model.Coordinate;
 
 /**
  * A node in the field cache

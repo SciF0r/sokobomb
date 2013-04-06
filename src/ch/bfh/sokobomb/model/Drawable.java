@@ -7,7 +7,7 @@ import java.io.IOException;
  *
  * @author Denis Simonet
  */
-interface Drawable {
+public interface Drawable {
 
 	public void draw() throws IOException;
 }

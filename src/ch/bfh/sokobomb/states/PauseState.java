@@ -4,30 +4,29 @@ import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 
+import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.model.Coordinate;
-import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.model.MenuButton;
 
 /**
  * Shows the pause screen
  *
  * @author Christoph Bruderer
- *
  */
-public class PauseState extends State {
+public class PauseState extends PlayFieldState {
 
 	private MenuButton mb;
 
-	public PauseState(Field field) {
-		super(field);
+	public PauseState() {
 		mb = new MenuButton(50, 70, 300, 80, "Return to the Game");
+		super.stateId = State.PAUSE;
 	}
 
 	@Override
 	public void handleKeyPress(int key) {
 		switch (key) {
 			case Keyboard.KEY_ESCAPE:
-				super.field.setState(new PlayState(super.field));
+				Application.getStateController().setState(State.PLAY);
 				break;
 		}
 	}
@@ -38,13 +37,13 @@ public class PauseState extends State {
 		int y = coordinate.getY();
 
 		if (mb.getX() < x && (mb.getX() + mb.getWidth()) > x && mb.getY() < y && (mb.getY() + mb.getHeight()) > y) {
-			super.field.setState(new PlayState(super.field));
+			Application.getStateController().setState(State.PLAY);
 		}
 	}
 
 	@Override
 	public void draw() throws IOException {
-		super.field.drawField();
+		super.getField().drawField();
 		super.drawTransparentOverlay();
 		 
 		mb.draw();

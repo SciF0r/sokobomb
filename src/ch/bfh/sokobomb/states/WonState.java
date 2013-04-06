@@ -3,11 +3,12 @@ package ch.bfh.sokobomb.states;
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.SlickException;
 
+import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.NoNextLevelException;
-import ch.bfh.sokobomb.model.Field;
 
 /**
  * Shows that the player has won
@@ -15,15 +16,20 @@ import ch.bfh.sokobomb.model.Field;
  * @author Denis Simonet
  *
  */
-public class WonState extends State {
+public class WonState extends PlayFieldState {
 
 	final private String textWon = "You win!";
 	private AngelCodeFont font;
 
-	public WonState(Field field) throws SlickException {
-		super(field);
+	public WonState() {
+		try {
+			this.font = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
+		} catch (SlickException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 
-		this.font = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
+		super.stateId = State.WON;
 	}
 
 	@Override
@@ -31,15 +37,11 @@ public class WonState extends State {
 		switch (key) {
 			case Keyboard.KEY_RETURN:
 				try {
-					super.field.loadNextLevel();
-					super.field.setState(new PlayState(super.field));
+					super.getField().loadNextLevel();
+					Application.getStateController().setState(State.PLAY);
 				}
 				catch (NoNextLevelException e) {
-					try {
-						super.field.setState(new EndGameState(super.field));
-					} catch (SlickException e1) {
-						System.out.println("Couldn't load EndGameState: " + e1.getMessage());
-					}
+						Application.getStateController().setState(State.END_GAME);
 				}
 				break;
 		}
@@ -47,14 +49,14 @@ public class WonState extends State {
 
 	@Override
 	public void draw() throws IOException {
-		super.field.drawField();
+		super.getField().drawField();
 		super.drawTransparentOverlay();
 
 		int titleWidth  = this.font.getWidth(this.textWon);
 		int titleHeight = this.font.getHeight(this.textWon);
 
-		int x = (super.field.getWidth()  - titleWidth) / 2;
-		int y = (super.field.getHeight() - titleHeight) / 2;
+		int x = (Display.getWidth()  - titleWidth) / 2;
+		int y = (Display.getHeight() - titleHeight) / 2;
 		this.font.drawString(x, y, this.textWon);
 	}
 }

@@ -2,8 +2,8 @@ package ch.bfh.sokobomb.states;
 
 import java.io.IOException;
 
+import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.model.Coordinate;
-import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.path.Path;
 
 /**
@@ -13,13 +13,13 @@ import ch.bfh.sokobomb.path.Path;
  *
  * @author Denis Simonet
  */
-public class PlayerMovingState extends State {
+public class PlayerMovingState extends PlayFieldState {
 
 	private Path path;
 	private long timestamp;
 
-	public PlayerMovingState(Field field) {
-		super(field);
+	public PlayerMovingState() {
+		super.stateId = State.PLAYER_MOVING;
 	}
 
 	@Override
@@ -29,12 +29,12 @@ public class PlayerMovingState extends State {
 
 	@Override
 	public void handleKeyPress(int key) {
-		super.field.setState(new PlayState(super.field));
+		Application.getStateController().setState(State.PLAY);
 	}
 
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
-		super.field.setState(new PlayState(super.field));
+		Application.getStateController().setState(State.PLAY);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class PlayerMovingState extends State {
 	 * @throws IOException 
 	 */
 	public void draw() throws IOException {
-		super.field.drawField();
+		super.getField().drawField();
 
 		if ((System.currentTimeMillis() - this.timestamp) < 50) {
 			return;
@@ -52,10 +52,10 @@ public class PlayerMovingState extends State {
 		this.timestamp = System.currentTimeMillis();
 
 		if (this.path.hasNext()) {
-			super.field.getPlayer().setPosition(this.path.next());
+			super.getField().getPlayer().setPosition(this.path.next());
 		}
 		else {
-			super.field.setState(new PlayState(super.field));
+			Application.getStateController().setState(State.PLAY);
 		}
 	}
 
@@ -64,11 +64,11 @@ public class PlayerMovingState extends State {
 	 */
 	public void setPlayerPosition(Coordinate coordinate) {
 		this.path = new Path(
-			super.field,
-			super.field.getCache().getNodeAtCoordinate(
-				super.field.getPlayer().getCoordinate()
+			super.getField(),
+			super.getField().getCache().getNodeAtCoordinate(
+				super.getField().getPlayer().getCoordinate()
 			),
-			super.field.getCache().getNodeAtCoordinate(
+			super.getField().getCache().getNodeAtCoordinate(
 				coordinate
 			)
 		);

@@ -17,13 +17,11 @@ import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glViewport;
 
-import java.io.IOException;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-import ch.bfh.sokobomb.model.Field;
+import ch.bfh.sokobomb.field.Field;
 import ch.bfh.sokobomb.util.OpenGLLoader;
 
 /**
@@ -60,9 +58,9 @@ public class OpenGLController {
 	 *
 	 * @param field The field to be drawn
 	 */
-	public void start(Field field) {
+	public void start(Field field, int width, int height) {
 		try {
-			Display.setDisplayMode(new DisplayMode(field.getWidth(), field.getHeight()));
+			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.create();
 			Display.setVSyncEnabled(true);
 		}
@@ -77,27 +75,19 @@ public class OpenGLController {
 		glEnable(GL_TEXTURE_2D);  
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glViewport(0, 0, field.getWidth(), field.getHeight());
+		glViewport(0, 0, width, height);
 		glMatrixMode(GL_MODELVIEW);
 		glMatrixMode(GL_PROJECTION);
 
 		glLoadIdentity();
-		glOrtho(0, field.getWidth(), field.getHeight(), 0, -1, 1);
+		glOrtho(0, width, height, 0, -1, 1);
 		glMatrixMode(GL_MODELVIEW);
 
 		Keyboard.enableRepeatEvents(true);
 
 		while (!Display.isCloseRequested()) {
-			//clear buffer
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			try {
-				field.draw();
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-				System.exit(0);
-			}
+			field.draw();
 		}
 
 		Display.destroy();

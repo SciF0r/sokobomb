@@ -1,10 +1,10 @@
 package ch.bfh.sokobomb.util;
 
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
+import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.Coordinate;
-import ch.bfh.sokobomb.model.Field;
 import ch.bfh.sokobomb.model.FieldItem;
-import ch.bfh.sokobomb.path.Node;
+import ch.bfh.sokobomb.model.Node;
 
 /**
  * Caches the field
@@ -14,9 +14,9 @@ import ch.bfh.sokobomb.path.Node;
 final public class FieldCache {
 
 	private Node[][] cache;
-	private Field field;
+	private PlayField field;
 
-	public FieldCache(Field field, int width, int height) {
+	public FieldCache(PlayField field, int width, int height) {
 		this.field = field;
 		this.cache = new Node[width][height];
 

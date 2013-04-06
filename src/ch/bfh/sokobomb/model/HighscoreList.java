@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.SlickException;
 
+
 /**
  * Draws a given highscore
  *

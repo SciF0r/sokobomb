@@ -3,10 +3,11 @@ package ch.bfh.sokobomb.states;
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.SlickException;
 
-import ch.bfh.sokobomb.model.Field;
+import ch.bfh.sokobomb.Application;
 
 /**
  * Shows that the game has ended
@@ -14,37 +15,41 @@ import ch.bfh.sokobomb.model.Field;
  * @author Denis Simonet
  *
  */
-public class EndGameState extends State {
+public class EndGameState extends PlayFieldState {
 
 	final private String textEndGame = "Finished";
-	final private AngelCodeFont font;
+	private AngelCodeFont font;
 
-	public EndGameState(Field field) throws SlickException {
-		super(field);
-
-		this.font = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
+	public EndGameState() {
+		try {
+			this.font = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
+			super.stateId = State.END_GAME;
+		} catch (SlickException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 
 	@Override
 	public void handleKeyPress(int key) {
 		switch (key) {
 			case Keyboard.KEY_RETURN:
-				super.field.startGame();
-				super.field.setState(new PlayState(super.field));
+				super.getField().startGame();
+				Application.getStateController().setState(State.PLAY);
 				break;
 		}
 	}
 
 	@Override
 	public void draw() throws IOException {
-		super.field.drawField();
+		super.getField().drawField();
 		super.drawTransparentOverlay();
 
 		int titleWidth  = this.font.getWidth(this.textEndGame);
 		int titleHeight = this.font.getHeight(this.textEndGame);
 
-		int x = (super.field.getWidth()  - titleWidth) / 2;
-		int y = (super.field.getHeight() - titleHeight) / 2;
+		int x = (Display.getWidth()  - titleWidth) / 2;
+		int y = (Display.getHeight() - titleHeight) / 2;
 		this.font.drawString(x, y, this.textEndGame);
 	}
 }
