@@ -1,6 +1,7 @@
 package ch.bfh.sokobomb.controller;
 
 import java.io.IOException;
+import java.util.Stack;
 
 import ch.bfh.sokobomb.field.Field;
 import ch.bfh.sokobomb.field.PlayField;
@@ -14,6 +15,7 @@ import ch.bfh.sokobomb.parser.Token;
 public class FieldController {
 
 	private Field field;
+	private Stack<Field> oldFields = new Stack<Field>();
 
 	public FieldController(Field initialField) {
 		this.field = initialField;
@@ -23,7 +25,17 @@ public class FieldController {
 	 * @param field Sets the field to be drawn
 	 */
 	public void setField(Field field) {
+		this.oldFields.push(this.field);
 		this.field = field;
+	}
+
+	/**
+	 * Restore the old field
+	 */
+	public void restoreOldField() {
+		if (!this.oldFields.empty()) {
+			this.field = this.oldFields.pop();
+		}
 	}
 
 	/**

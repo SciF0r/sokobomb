@@ -2,6 +2,8 @@ package ch.bfh.sokobomb.states;
 
 import java.io.IOException;
 
+import org.lwjgl.input.Keyboard;
+
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.parser.Token;
@@ -16,6 +18,12 @@ public class DesignState extends State {
 	}
 	@Override
 	public void handleKeyPress(int key) {
+		switch (key) {
+			case Keyboard.KEY_P:
+				Application.getStateController().setState(State.PLAY);
+				Application.getFieldController().restoreOldField();
+				break;
+		}
 	}
 
 	@Override
