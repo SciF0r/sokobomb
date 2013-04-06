@@ -18,12 +18,16 @@ public class MenuItem{
 		this.checked=false;
 	}
 	
-	public void setChecked(){
-		this.checked=true;
+	public void setChecked(boolean b){
+		this.checked=b;
 	}
 	
-	public void setUnchecked(){
-		this.checked=false;
+	public boolean isChecked(){
+		return this.checked;
+	}
+	
+	public String getText(){
+		return this.text;
 	}
 
 }
