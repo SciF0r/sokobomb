@@ -19,25 +19,21 @@ import ch.bfh.sokobomb.model.MenuItem;
  */
 public class PauseState extends State {
 
-private static final int DOWN = 0;
-private static final int UP = 1;
+
 
 private Menu pauseMenu;
 
 	public PauseState() {
-		MenuItem reset = new MenuItem("reset this Level");
-		MenuItem endGame = new MenuItem("exit Game");
-		MenuItem resume = new MenuItem("resume Game");
-		LinkedList<MenuItem> items = new LinkedList<MenuItem>();
-		items.add(reset);
-		items.add(resume);
-		items.add(endGame);
 		try {
-			this.pauseMenu = new Menu("....Game paused....", items);
+			this.pauseMenu = new Menu("....Game paused....");
 		} catch (SlickException e) {
 			e.printStackTrace();
 			System.exit(0);
 		}
+		this.pauseMenu.addMenuItem(new MenuItem("resume Game", MenuItem.RESUME_GAME));
+		this.pauseMenu.addMenuItem(new MenuItem("reset this Level", MenuItem.RESET_LEVEL));
+		this.pauseMenu.addMenuItem(new MenuItem("exit Game", MenuItem.END_GAME));
+		
 		
 		this.stateId = State.PAUSE;
 	}
@@ -49,14 +45,21 @@ private Menu pauseMenu;
 				Application.getStateController().setState(State.PLAY);
 				break;
 			case Keyboard.KEY_DOWN:
-				this.nextItem(this.DOWN);
+				pauseMenu.nextItem(Menu.DOWN);
 				break;
 			case Keyboard.KEY_UP:
-				this.nextItem(this.UP);
+				pauseMenu.nextItem(Menu.UP);
+				break;
+			case Keyboard.KEY_RETURN:
+				pauseMenu.performAction();
 				break;
 			
 		}
 	}
+	
+	
+	
+	
 
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
@@ -68,28 +71,7 @@ private Menu pauseMenu;
 //		}
 	}
 	
-	private void nextItem(int order){
-		
-		LinkedList<MenuItem> menuitems = this.pauseMenu.getItems();
-		Iterator<MenuItem> it = null;
-		switch ( order){
-		case DOWN:
-			it = menuitems.iterator();
-			break;
-		case UP:
-			it = menuitems.descendingIterator();
-			break;
-			
-	}
-		
-		while(it.hasNext()){
-			MenuItem item = it.next();
-			if (item.isChecked()){
-				item.setChecked(false);
-				it.next().setChecked(true);
-			}	
-		}
-	}
+	
 
 	
 	@Override
@@ -97,6 +79,6 @@ private Menu pauseMenu;
 		Application.getFieldController().drawField();
 		this.drawTransparentOverlay();
 		 
-		pauseMenu.draw();
+		this.pauseMenu.draw();
 	}
 }

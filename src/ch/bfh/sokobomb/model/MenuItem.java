@@ -9,12 +9,18 @@ import java.io.IOException;
  *
  */
 public class MenuItem{
+	final public static int END_GAME    = 0;
+	final public static int RESUME_GAME = 1;
+	final public static int RESET_LEVEL = 2;
+	final public static int ACTION      = 3;
 	
 	final private String text;
+	final private int action;
 	private boolean checked;
 	
-	public MenuItem(String text){
+	public MenuItem(String text, int action){
 		this.text=text;
+		this.action = action;
 		this.checked=false;
 	}
 	
@@ -28,6 +34,10 @@ public class MenuItem{
 	
 	public String getText(){
 		return this.text;
+	}
+	
+	public int getAction(){
+		return this.action;
 	}
 
 }

@@ -9,6 +9,11 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
+
+import ch.bfh.sokobomb.Application;
+import ch.bfh.sokobomb.controller.StateController;
+import ch.bfh.sokobomb.field.PlayField;
+import ch.bfh.sokobomb.states.State;
 /**
  * UNDER CONSTRUCTION!!!
  * 
@@ -18,34 +23,86 @@ import org.newdawn.slick.SlickException;
  *
  */
 public class Menu implements Drawable{
+	final public static int DOWN = 0;
+	final public static int UP = 1;
 	private int width,height;
 	private LinkedList<MenuItem> items;
+	private Iterator<MenuItem> menuIterator;
 	private AngelCodeFont font;
 	final private String title;
 	private String empty = "EMPTY";
 
-	public Menu(String title, LinkedList<MenuItem> items) throws SlickException{
+	public Menu(String title) throws SlickException{
 		this.title = title;
-		this.items = items;
+		this.items = new LinkedList<MenuItem>();
 		this.font = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
 		this.width = Display.getWidth();
 		this.height = Display.getHeight();
-
-		if (items != null){
-			items.getFirst().setChecked(true);
-		}
 	}
-	
-	public LinkedList<MenuItem>getItems(){
+
+	public void addMenuItem(MenuItem item){
+		items.add(item);
+		items.getFirst().setChecked(true);
+	}
+
+
+	public LinkedList<MenuItem> getItems(){
 		return items;
 	}
 
+	public void nextItem(int order){	
+		switch ( order){
+		case DOWN:
+			menuIterator = items.iterator();
+			break;
+		case UP:
+			menuIterator = items.descendingIterator();
+			break;
+		}
+
+		while(menuIterator.hasNext()){
+			MenuItem item = menuIterator.next();
+			if (item.isChecked()){
+				item.setChecked(false);
+				if (menuIterator.hasNext()){
+					menuIterator.next().setChecked(true);
+				}
+			}	
+		}
+	}
+	
+	public void performAction(){
+		PlayField field = (PlayField)Application.getFieldController().getField();
+		this.menuIterator = items.iterator();
+		int action=0;
+		while(menuIterator.hasNext()){
+			MenuItem item = menuIterator.next();
+			if (item.isChecked()){
+				action = item.getAction();
+				break;
+			}
+		}
+			switch (action){
+			case MenuItem.END_GAME:
+				System.exit(0);
+				break;
+			case MenuItem.RESET_LEVEL:
+				field.restartLevel();
+				Application.getStateController().setState(State.PLAY);
+				break;
+			case MenuItem.RESUME_GAME:
+				Application.getStateController().setState(State.PLAY);
+				break;
+			
+			}
+	
+	}
+	
 
 	@Override
 	public void draw() throws IOException {
 		int titleOffset = 10;
 		int titleWidth = font.getWidth(this.title);
-		//		int titleHeight = font.getHeight(this.title);
 
 		int x = (this.width - titleWidth) / 2;
 		int y = titleOffset;
