@@ -74,6 +74,10 @@ public abstract class FieldItem implements Cloneable, Drawable {
 	 * @throws IOException When the texture could not be initialized
 	 */
 	public void draw() throws IOException {
+		if (this.coordinate == null) {
+			return;
+		}
+
 		int x = this.coordinate.getX() * Tiles.WIDTH;
 		int y = this.coordinate.getY() * Tiles.HEIGHT;
 		

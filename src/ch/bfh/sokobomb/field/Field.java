@@ -284,8 +284,10 @@ public abstract class Field implements Cloneable {
 	protected Object clone() throws CloneNotSupportedException {
 		Field field = (Field)super.clone();
 
-		field.player = (Player)this.player.clone();
-
+		if (this.player != null) {
+			field.player = (Player)this.player.clone();
+		}
+		
 		LinkedList<Bomb> bombs = new LinkedList<Bomb>();
 		for (Bomb bomb: this.bombs) {
 			bombs.add((Bomb)bomb.clone());
@@ -294,4 +296,9 @@ public abstract class Field implements Cloneable {
 
 		return field;
 	}
+
+	/**
+	 * Undo the last move
+	 */
+	abstract public void undo();
 }

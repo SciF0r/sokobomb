@@ -165,9 +165,7 @@ public class PlayField extends Field implements Cloneable {
 		return (PlayField)super.clone();
 	}
 
-	/**
-	 * Undo the last move
-	 */
+	@Override
 	public void undo() {
 		if (!this.fieldHistory.isEmpty()) {
 			PlayField field = (PlayField)this.fieldHistory.pop();

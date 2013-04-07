@@ -1,5 +1,9 @@
 package ch.bfh.sokobomb.field;
 
+import java.util.LinkedList;
+
+import ch.bfh.sokobomb.model.FieldItem;
+
 
 /**
  * Contains all required information to draw a field and handle input
@@ -22,12 +26,18 @@ public class DesignField extends Field implements Cloneable {
 	 */
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-		return (DesignField)super.clone();
+		DesignField field = (DesignField)super.clone();
+
+		LinkedList<FieldItem> items = new LinkedList<FieldItem>();
+		for (FieldItem item: this.items) {
+			items.add((FieldItem)item.clone());
+		}
+		field.items = items;
+
+		return field;
 	}
 
-	/**
-	 * Undo the last move
-	 */
+	@Override
 	public void undo() {
 		if (!this.fieldHistory.isEmpty()) {
 			DesignField field = (DesignField)this.fieldHistory.pop();

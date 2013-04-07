@@ -5,6 +5,7 @@ import java.util.Stack;
 
 import ch.bfh.sokobomb.field.Field;
 import ch.bfh.sokobomb.field.PlayField;
+import ch.bfh.sokobomb.model.FieldItem;
 import ch.bfh.sokobomb.parser.Token;
 
 /**
@@ -62,6 +63,13 @@ public class FieldController {
 			e.printStackTrace();
 			System.exit(0);
 		}
+	}
+
+	/**
+	 * @param item The item to be added to the field
+	 */
+	public void addItem(FieldItem item) {
+		this.field.addItem(item);
 	}
 
 	/**

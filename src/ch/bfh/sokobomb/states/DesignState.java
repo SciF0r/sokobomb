@@ -5,16 +5,51 @@ import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 
 import ch.bfh.sokobomb.Application;
+import ch.bfh.sokobomb.controller.OpenGLController;
 import ch.bfh.sokobomb.model.Coordinate;
-import ch.bfh.sokobomb.parser.Token;
+import ch.bfh.sokobomb.model.FieldItem;
+import ch.bfh.sokobomb.model.Floor;
+import ch.bfh.sokobomb.model.Wall;
 
 public class DesignState extends State {
 
-	private int currentTile    = Token.WALL;
 	private boolean buttonDown = false;
+	private FieldItem tileAtMouse;
 
 	public DesignState() {
-		this.stateId = State.DESIGN;  
+		this.stateId = State.DESIGN;
+		this.tileAtMouse = new Wall();
+		this.drawTile();
+	}
+
+	/**
+	 * @param coordinate Sets a new tile position
+	 */
+	private void drawTile() {
+		this.tileAtMouse.setPosition(
+			OpenGLController.getMousePosition().getTileCoordinate()
+		);
+
+		try {
+			this.tileAtMouse.draw();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	/**
+	 * Adds the current tile to field
+	 */
+	private void addTileToField() {
+		try {
+			Application.getFieldController().addItem(
+				(FieldItem)this.tileAtMouse.clone()
+			);
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 
 	@Override
@@ -24,23 +59,24 @@ public class DesignState extends State {
 				Application.getStateController().setState(State.PLAY);
 				Application.getFieldController().restoreOldField();
 				break;
+			case Keyboard.KEY_U:
+				Application.getFieldController().getField().undo();
+				break;
 			case Keyboard.KEY_1:
-				this.currentTile = Token.WALL;
+				this.tileAtMouse = new Wall();
+				this.drawTile();
 				break;
 			case Keyboard.KEY_2:
-				this.currentTile = Token.FLOOR;
+				this.tileAtMouse = new Floor();
+				this.drawTile();
 				break;
 		}
 	}
 
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
-		Token token      = new Token();
-		token.type       = this.currentTile;
-		token.coordinate = coordinate.getTileCoordinate();
-
-		Application.getFieldController().addItemByToken(token);
-
+		Application.getFieldController().getField().addFieldToHistory();
+		this.addTileToField();
 		this.buttonDown = true;
 	}
 
@@ -51,9 +87,17 @@ public class DesignState extends State {
 
 	@Override
 	public void handleMouseMoved(Coordinate coordinate) {
-		if (this.buttonDown) {
-			
+		if (
+			this.buttonDown
+			&&
+			this.tileAtMouse != null
+			&&
+			!this.tileAtMouse.getCoordinate().equals(coordinate)
+		) {
+			this.addTileToField();
 		}
+
+		this.tileAtMouse.setPosition(coordinate.getTileCoordinate());
 	}
 
 	/**
@@ -63,5 +107,9 @@ public class DesignState extends State {
 	 */
 	public void draw() throws IOException {
 		Application.getFieldController().drawField();
+
+		if (this.tileAtMouse != null) {
+			this.tileAtMouse.draw();
+		}
 	}
 }

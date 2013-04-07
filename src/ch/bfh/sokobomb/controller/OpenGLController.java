@@ -18,11 +18,13 @@ import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glViewport;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.field.Field;
+import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.util.OpenGLLoader;
 
 /**
@@ -52,6 +54,16 @@ public class OpenGLController {
 			System.out.println("Couldn't load the lwjgl nativ libraries");
 			System.exit(0);
 		}
+	}
+
+	/**
+	 * @return The current mouse position
+	 */
+	public static Coordinate getMousePosition() {
+		int x = Mouse.getX();
+		int y = Display.getHeight() - Mouse.getY();
+
+		return new Coordinate(x, y);
 	}
 
 	/**
