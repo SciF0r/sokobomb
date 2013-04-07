@@ -1,8 +1,6 @@
 package ch.bfh.sokobomb.states;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.SlickException;

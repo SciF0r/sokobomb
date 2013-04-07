@@ -17,7 +17,6 @@ import ch.bfh.sokobomb.model.TileCoordinate;
 import ch.bfh.sokobomb.model.Wall;
 import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
-import ch.bfh.sokobomb.util.FieldCache;
 
 /**
  * A general field with items, bombs and player, cache, etc.

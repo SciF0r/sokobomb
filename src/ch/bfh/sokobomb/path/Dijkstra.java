@@ -4,10 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
+import ch.bfh.sokobomb.field.FieldCache;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.Node;
 import ch.bfh.sokobomb.model.TileCoordinate;
-import ch.bfh.sokobomb.util.FieldCache;
 
 /**
  * This class calculates the shortest path using Dijkstra algorithm
