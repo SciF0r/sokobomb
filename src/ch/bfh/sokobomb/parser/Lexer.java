@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import ch.bfh.sokobomb.exception.LexerException;
-import ch.bfh.sokobomb.model.Coordinate;
+import ch.bfh.sokobomb.model.TileCoordinate;
 
 /**
  * A lexer for ASCII sokoban notation
@@ -124,7 +124,7 @@ public class Lexer {
 			}
 		}
 
-		token.coordinate = new Coordinate(
+		token.coordinate = new TileCoordinate(
 			this.column++,
 			this.row
 		);

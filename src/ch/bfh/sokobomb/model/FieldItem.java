@@ -22,14 +22,14 @@ public abstract class FieldItem implements Cloneable, Drawable {
 	protected Texture texture   = null;
 	protected Integer tokenType = null;
 	protected boolean isMoving  = false;
-	protected Coordinate coordinate;
+	protected TileCoordinate coordinate;
 
 	/**
 	 * This "beams" the field to a new position
 	 *
 	 * @param coordinate
 	 */
-	public void setPosition(Coordinate coordinate) {
+	public void setPosition(TileCoordinate coordinate) {
 		this.coordinate = coordinate;
 	}
 
@@ -50,7 +50,7 @@ public abstract class FieldItem implements Cloneable, Drawable {
 	/**
 	 * @return The current coordinate
 	 */
-	public Coordinate getCoordinate() {
+	public TileCoordinate getCoordinate() {
 		return this.coordinate;
 	}
 
@@ -77,6 +77,7 @@ public abstract class FieldItem implements Cloneable, Drawable {
 		int x = this.coordinate.getX() * Tiles.WIDTH;
 		int y = this.coordinate.getY() * Tiles.HEIGHT;
 		
+
 		if (this.texture == null) {
 			this.texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(this.imagePath));
 		}

@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import ch.bfh.sokobomb.field.PlayField;
-import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Node;
+import ch.bfh.sokobomb.model.TileCoordinate;
 
 /**
  * Calculates a path from a start to a target node
@@ -14,8 +14,8 @@ import ch.bfh.sokobomb.model.Node;
  */
 public class Path {
 
-	private LinkedList<Coordinate> path;
-	private Iterator<Coordinate> pathIterator;
+	private LinkedList<TileCoordinate> path;
+	private Iterator<TileCoordinate> pathIterator;
 	private PlayField field;
 
 	public Path(PlayField field, Node startNode, Node targetNode) {
@@ -45,7 +45,7 @@ public class Path {
 	/**
 	 * @return Iterator for the path
 	 */
-	public Coordinate next() {
+	public TileCoordinate next() {
 		return this.pathIterator.next();
 	}
 }

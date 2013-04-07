@@ -2,7 +2,7 @@ package ch.bfh.sokobomb.controller;
 
 import java.io.IOException;
 
-import ch.bfh.sokobomb.model.Coordinate;
+import ch.bfh.sokobomb.model.TileCoordinate;
 import ch.bfh.sokobomb.states.DesignState;
 import ch.bfh.sokobomb.states.EndGameState;
 import ch.bfh.sokobomb.states.HighscoreState;
@@ -86,7 +86,7 @@ public class StateController {
 	/**
 	 * Calls setPlayerPosition() on the current state
 	 */
-	public void setPlayerPosition(Coordinate coordinate) {
+	public void setPlayerPosition(TileCoordinate coordinate) {
 		this.state.setPlayerPosition(coordinate);
 	}
 }

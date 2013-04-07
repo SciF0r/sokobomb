@@ -10,7 +10,6 @@ import org.newdawn.slick.SlickException;
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Menu;
-import ch.bfh.sokobomb.model.MenuButton;
 import ch.bfh.sokobomb.model.MenuItem;
 
 /**

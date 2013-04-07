@@ -1,6 +1,6 @@
 package ch.bfh.sokobomb.parser;
 
-import ch.bfh.sokobomb.model.Coordinate;
+import ch.bfh.sokobomb.model.TileCoordinate;
 
 /**
  * A token, used by Lexer and Parser
@@ -17,7 +17,7 @@ public class Token {
 	/**
 	 * The coordinate
 	 */
-	public Coordinate coordinate;
+	public TileCoordinate coordinate;
 
 	/**
 	 * Constants to associate the token type

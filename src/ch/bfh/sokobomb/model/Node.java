@@ -10,12 +10,12 @@ package ch.bfh.sokobomb.model;
 public class Node {
 
 	final private int type;
-	final private Coordinate coordinate;
+	final private TileCoordinate coordinate;
 	private int cost;
 	private Node parent;
 	private boolean permanent;
 
-	public Node(int type, Coordinate coordinate) {
+	public Node(int type, TileCoordinate coordinate) {
 		this.type       = type;
 		this.coordinate = coordinate;
 
@@ -83,7 +83,7 @@ public class Node {
 	/**
 	 * @return the coordinate
 	 */
-	public Coordinate getCoordinate() {
+	public TileCoordinate getCoordinate() {
 		return coordinate;
 	}
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.Coordinate;
+import ch.bfh.sokobomb.model.TileCoordinate;
 import ch.bfh.sokobomb.path.Path;
 
 /**
@@ -63,7 +64,7 @@ public class PlayerMovingState extends State {
 	/**
 	 * Calculates the path
 	 */
-	public void setPlayerPosition(Coordinate coordinate) {
+	public void setPlayerPosition(TileCoordinate coordinate) {
 		PlayField field = (PlayField)Application.getFieldController().getField();
 		this.path = new Path(
 			field,

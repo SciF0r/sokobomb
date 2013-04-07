@@ -9,11 +9,11 @@ import org.lwjgl.opengl.Display;
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.model.Bomb;
-import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.FieldItem;
 import ch.bfh.sokobomb.model.Floor;
 import ch.bfh.sokobomb.model.Player;
 import ch.bfh.sokobomb.model.Target;
+import ch.bfh.sokobomb.model.TileCoordinate;
 import ch.bfh.sokobomb.model.Wall;
 import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
@@ -119,9 +119,9 @@ public abstract class Field implements Cloneable {
 	 * @param coordinate
 	 * @return
 	 */
-	public Bomb findBomb(Coordinate coordinate) {
+	public Bomb findBomb(TileCoordinate coordinate) {
 		for (Bomb bomb: this.bombs) {
-			if (bomb.getPositionX() == coordinate.getX() && bomb.getPositionY() == coordinate.getY()) {
+			if (bomb.getCoordinate().equals(coordinate)) {
 				return bomb;
 			}
 		}
@@ -263,7 +263,7 @@ public abstract class Field implements Cloneable {
 	 * @param y
 	 * @return
 	 */
-	public boolean mayEnter(Coordinate coordinate) {
+	public boolean mayEnter(TileCoordinate coordinate) {
 		try {
 			if (this.findBomb(coordinate) != null) {
 				return false;

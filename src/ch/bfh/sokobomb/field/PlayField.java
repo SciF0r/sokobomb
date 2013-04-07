@@ -4,7 +4,7 @@ import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.exception.NoNextLevelException;
 import ch.bfh.sokobomb.model.Bomb;
-import ch.bfh.sokobomb.model.Coordinate;
+import ch.bfh.sokobomb.model.TileCoordinate;
 import ch.bfh.sokobomb.parser.Token;
 import ch.bfh.sokobomb.states.State;
 import ch.bfh.sokobomb.util.Levels;
@@ -69,7 +69,7 @@ public class PlayField extends Field implements Cloneable {
 			System.err.println(e.getMessage());
 		}
 
-		Coordinate coordinate = new Coordinate(
+		TileCoordinate coordinate = new TileCoordinate(
 			player.getPositionX() + dx,
 			player.getPositionY() + dy
 		);
@@ -95,7 +95,7 @@ public class PlayField extends Field implements Cloneable {
 	 * @param y
 	 */
 	public void moveBomb(Bomb bomb, int dx, int dy) {
-		Coordinate coordinate = new Coordinate(
+		TileCoordinate coordinate = new TileCoordinate(
 			bomb.getPositionX() + dx,
 			bomb.getPositionY() + dy
 		);
@@ -144,7 +144,7 @@ public class PlayField extends Field implements Cloneable {
 	 *
 	 * @param coordinate
 	 */
-	public void setPlayerPosition(Coordinate coordinate) {
+	public void setPlayerPosition(TileCoordinate coordinate) {
 		Application.getStateController().setPlayerPosition(coordinate);
 	}
 

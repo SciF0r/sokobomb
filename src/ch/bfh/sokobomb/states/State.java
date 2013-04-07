@@ -8,6 +8,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import ch.bfh.sokobomb.model.Coordinate;
+import ch.bfh.sokobomb.model.TileCoordinate;
 
 /**
  * Class for a state
@@ -104,9 +105,23 @@ public abstract class State {
 	}
 
 	/**
+	 * Handle a mouse move
+	 */
+	public void handleMouseMoved(Coordinate coordinate) {
+		// Nothing
+	}
+
+	/**
 	 * Handle a left mouse click
 	 */
 	public void handleLeftClick(Coordinate coordinate) {
+		// Nothing
+	}
+
+	/**
+	 * Handle a left mouse click release
+	 */
+	public void handleLeftClickRelease(Coordinate coordinate) {
 		// Nothing
 	}
 
@@ -118,12 +133,19 @@ public abstract class State {
 	}
 
 	/**
+	 * Handle a right mouse click release
+	 */
+	public void handleRightClickRelease(Coordinate coordinate) {
+		// Nothing
+	}
+
+	/**
 	 * Sets a new player position
 	 *
 	 * @param coordinate
 	 * @return Whether the player actually moved to the position
 	 */
-	public void setPlayerPosition(Coordinate coordinate) {
+	public void setPlayerPosition(TileCoordinate coordinate) {
 		// Nothing
 	}
 
@@ -135,18 +157,27 @@ public abstract class State {
 			int button = Mouse.getEventButton();
 			int x      = Mouse.getEventX();
 			int y      = Display.getHeight() - Mouse.getEventY();
-			
-			// Mouse button was released
-			if (!Mouse.getEventButtonState()) {
-				continue;
+
+			if (button == -1) {
+				this.handleMouseMoved(new Coordinate(x ,y ));
 			}
 
 			if (button == 0) {
-				this.handleLeftClick(new Coordinate(x, y));
+				if (Mouse.getEventButtonState()) {
+					this.handleLeftClick(new Coordinate(x, y));
+				}
+				else {
+					this.handleLeftClickRelease(new Coordinate(x, y));
+				}
 			}
 
 			if (button == 1) {
-				this.handleRightClick(new Coordinate(x, y));
+				if (Mouse.getEventButtonState()) {
+					this.handleRightClick(new Coordinate(x, y));
+				}
+				else {
+					this.handleRightClickRelease(new Coordinate(x, y));
+				}
 			}
 		}
 

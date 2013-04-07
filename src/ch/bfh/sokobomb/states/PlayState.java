@@ -8,7 +8,7 @@ import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.field.DesignField;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.Coordinate;
-import ch.bfh.sokobomb.util.Tiles;
+import ch.bfh.sokobomb.model.TileCoordinate;
 
 public class PlayState extends State {
 
@@ -54,9 +54,9 @@ public class PlayState extends State {
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
 		this.setPlayerPosition(new Coordinate(
-			coordinate.getX() / Tiles.WIDTH,
-			coordinate.getY() / Tiles.HEIGHT
-		));
+			coordinate.getX(),
+			coordinate.getY()
+		).getTileCoordinate());
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class PlayState extends State {
 	/**
 	 * Moves player to a certain field
 	 */
-	public void setPlayerPosition(Coordinate coordinate) {
+	public void setPlayerPosition(TileCoordinate coordinate) {
 		PlayField field = (PlayField)Application.getFieldController().getField();
 		if (field.mayEnter(coordinate)) {
 			Application.getStateController().setState(State.PLAYER_MOVING);

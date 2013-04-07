@@ -7,21 +7,28 @@ import org.lwjgl.input.Keyboard;
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.parser.Token;
-import ch.bfh.sokobomb.util.Tiles;
 
 public class DesignState extends State {
 
-	private int currentTile = 6;
+	private int currentTile    = Token.WALL;
+	private boolean buttonDown = false;
 
 	public DesignState() {
 		this.stateId = State.DESIGN;  
 	}
+
 	@Override
 	public void handleKeyPress(int key) {
 		switch (key) {
 			case Keyboard.KEY_P:
 				Application.getStateController().setState(State.PLAY);
 				Application.getFieldController().restoreOldField();
+				break;
+			case Keyboard.KEY_1:
+				this.currentTile = Token.WALL;
+				break;
+			case Keyboard.KEY_2:
+				this.currentTile = Token.FLOOR;
 				break;
 		}
 	}
@@ -30,11 +37,23 @@ public class DesignState extends State {
 	public void handleLeftClick(Coordinate coordinate) {
 		Token token      = new Token();
 		token.type       = this.currentTile;
-		token.coordinate = new Coordinate(
-			coordinate.getX() / Tiles.WIDTH,
-			coordinate.getY() / Tiles.HEIGHT
-		);
+		token.coordinate = coordinate.getTileCoordinate();
+
 		Application.getFieldController().addItemByToken(token);
+
+		this.buttonDown = true;
+	}
+
+	@Override
+	public void handleLeftClickRelease(Coordinate coordinate) {
+		this.buttonDown = false;
+	}
+
+	@Override
+	public void handleMouseMoved(Coordinate coordinate) {
+		if (this.buttonDown) {
+			
+		}
 	}
 
 	/**

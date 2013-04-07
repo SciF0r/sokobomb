@@ -2,9 +2,9 @@ package ch.bfh.sokobomb.util;
 
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.field.Field;
-import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.FieldItem;
 import ch.bfh.sokobomb.model.Node;
+import ch.bfh.sokobomb.model.TileCoordinate;
 
 /**
  * Caches the field
@@ -57,7 +57,7 @@ final public class FieldCache {
 	 * @param coordinate
 	 * @param node
 	 */
-	private void setNodeAtCoordinate(Coordinate coordinate, Node node) {
+	private void setNodeAtCoordinate(TileCoordinate coordinate, Node node) {
 		this.cache[coordinate.getX()][coordinate.getY()] = node;
 	}
 
@@ -67,8 +67,8 @@ final public class FieldCache {
 	 * @param coordinate
 	 * @return The tile type
 	 */
-	public int getTypeAtCoordinate(Coordinate coordinate) {
-		if (this.cache.length <= coordinate.getX() || this.cache[coordinate.getX()].length <= coordinate.getY() || coordinate.getX() < 1 || coordinate.getY() < 1) {
+	public int getTypeAtCoordinate(TileCoordinate coordinate) {
+		if (this.cache.length <= coordinate.getX() || this.cache[coordinate.getX()].length <= coordinate.getY() || coordinate.getX() < 0 || coordinate.getY() < 0) {
 			throw new InvalidCoordinateException("Coordinate is outside of play field");
 		}
 
@@ -89,7 +89,7 @@ final public class FieldCache {
 	 * @throws InvalidCoordinateException
 	 * @return The node reference, null if invalid coordinate
 	 */
-	public Node getNodeAtCoordinate(Coordinate coordinate) {
+	public Node getNodeAtCoordinate(TileCoordinate coordinate) {
 		if (!this.field.mayEnter(coordinate)) {
 			throw new InvalidCoordinateException("Player may not enter this coordinate");
 		}
@@ -105,7 +105,7 @@ final public class FieldCache {
 	 * @return The node reference, null if invalid coordinate
 	 */
 	public Node getNodeAtCoordinate(int x, int y) {
-		Coordinate coordinate = new Coordinate(x, y);
+		TileCoordinate coordinate = new TileCoordinate(x, y);
 
 		if (!this.field.mayEnter(coordinate)) {
 			throw new InvalidCoordinateException("Player may not enter this coordinate");

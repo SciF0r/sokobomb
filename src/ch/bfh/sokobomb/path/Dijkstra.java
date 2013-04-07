@@ -5,8 +5,8 @@ import java.util.List;
 
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.field.PlayField;
-import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Node;
+import ch.bfh.sokobomb.model.TileCoordinate;
 import ch.bfh.sokobomb.util.FieldCache;
 
 /**
@@ -29,7 +29,7 @@ public class Dijkstra {
 	/**
 	 * Returns the best path (Dijkstra)
 	 */
-	public LinkedList<Coordinate> getPath() {
+	public LinkedList<TileCoordinate> getPath() {
 		this.startNode.setCost(0);
 
 		// First calculate the node costs and cheapest parents
@@ -41,7 +41,7 @@ public class Dijkstra {
 		while (currentNode != null);
 
 		// Read the shortest path, beginning at the end node
-		LinkedList<Coordinate> path = new LinkedList<Coordinate>();
+		LinkedList<TileCoordinate> path = new LinkedList<TileCoordinate>();
 		currentNode = this.targetNode;
 		path.addFirst(currentNode.getCoordinate());
 		while (currentNode.getParent() != null && currentNode.getParent() != this.startNode) {
