@@ -28,11 +28,16 @@ public class Menu implements Drawable {
 	private AngelCodeFont font;
 	final private String title;
 
-	public Menu(String title) throws SlickException {
+	public Menu(String title) {
 		this.title        = title;
 		this.selectedItem = null;
 		this.items        = new LinkedList<MenuItem>();
-		this.font         = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
+		try {
+			this.font         = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
+		} catch (SlickException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 
 	/**

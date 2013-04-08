@@ -19,8 +19,8 @@ public class MenuItem {
 	private Coordinate max;
 	
 	public MenuItem(String text, int action) {
-		this.text    = text;
-		this.action  = action;
+		this.text   = text;
+		this.action = action;
 	}
 
 	public String getText(){
