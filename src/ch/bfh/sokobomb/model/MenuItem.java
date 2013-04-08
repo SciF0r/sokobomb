@@ -2,6 +2,8 @@ package ch.bfh.sokobomb.model;
 
 import java.io.IOException;
 
+import ch.bfh.sokobomb.model.coordinate.Coordinate;
+
 /**
  * UNDER CONSTRUCTION!!!
  * 

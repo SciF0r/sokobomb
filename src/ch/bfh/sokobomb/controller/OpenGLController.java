@@ -24,7 +24,7 @@ import org.lwjgl.opengl.DisplayMode;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.field.Field;
-import ch.bfh.sokobomb.model.Coordinate;
+import ch.bfh.sokobomb.model.coordinate.Coordinate;
 import ch.bfh.sokobomb.util.OpenGLLoader;
 
 /**

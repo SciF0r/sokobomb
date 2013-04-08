@@ -1,4 +1,7 @@
-package ch.bfh.sokobomb.model;
+package ch.bfh.sokobomb.path;
+
+import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
+import ch.bfh.sokobomb.model.tiles.Tile;
 
 
 /**
@@ -7,16 +10,14 @@ package ch.bfh.sokobomb.model;
  * @author Denis Simonet
  *
  */
-public class Node {
+public class DijkstraNode extends Tile {
 
-	final private int type;
-	final private TileCoordinate coordinate;
 	private int cost;
-	private Node parent;
+	private DijkstraNode parent;
 	private boolean permanent;
 
-	public Node(int type, TileCoordinate coordinate) {
-		this.type       = type;
+	public DijkstraNode(int type, TileCoordinate coordinate) {
+		this.setType(type);
 		this.coordinate = coordinate;
 
 		this.reset();
@@ -48,14 +49,14 @@ public class Node {
 	/**
 	 * @return the path parent
 	 */
-	public Node getParent() {
+	public DijkstraNode getParent() {
 		return parent;
 	}
 
 	/**
 	 * @param parent The path parent to set
 	 */
-	public void setParent(Node parent) {
+	public void setParent(DijkstraNode parent) {
 		this.parent = parent;
 	}
 
@@ -71,13 +72,6 @@ public class Node {
 	 */
 	public void setPermanent(boolean permanent) {
 		this.permanent = permanent;
-	}
-
-	/**
-	 * @return the type
-	 */
-	public int getType() {
-		return type;
 	}
 
 	/**

@@ -1,6 +1,6 @@
 package ch.bfh.sokobomb.parser;
 
-import ch.bfh.sokobomb.model.TileCoordinate;
+import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 
 /**
  * A token, used by Lexer and Parser

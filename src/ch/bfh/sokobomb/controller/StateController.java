@@ -2,7 +2,7 @@ package ch.bfh.sokobomb.controller;
 
 import java.io.IOException;
 
-import ch.bfh.sokobomb.model.TileCoordinate;
+import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 import ch.bfh.sokobomb.states.DesignState;
 import ch.bfh.sokobomb.states.EndGameState;
 import ch.bfh.sokobomb.states.HighscoreState;

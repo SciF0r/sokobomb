@@ -8,15 +8,15 @@ import org.lwjgl.opengl.Display;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
-import ch.bfh.sokobomb.model.Bomb;
-import ch.bfh.sokobomb.model.FieldItem;
-import ch.bfh.sokobomb.model.Floor;
-import ch.bfh.sokobomb.model.Player;
-import ch.bfh.sokobomb.model.Target;
-import ch.bfh.sokobomb.model.TileCoordinate;
-import ch.bfh.sokobomb.model.Wall;
+import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
+import ch.bfh.sokobomb.model.tiles.Bomb;
+import ch.bfh.sokobomb.model.tiles.Floor;
+import ch.bfh.sokobomb.model.tiles.Player;
+import ch.bfh.sokobomb.model.tiles.Target;
+import ch.bfh.sokobomb.model.tiles.Wall;
 import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
+import ch.bfh.sokobomb.path.DijkstraNode;
 
 /**
  * A general field with items, bombs and player, cache, etc.
@@ -26,9 +26,8 @@ import ch.bfh.sokobomb.parser.Token;
 public abstract class Field implements Cloneable {
 
 	protected Stack<Field> fieldHistory   = new Stack<Field>();
-	protected LinkedList<FieldItem> items = new LinkedList<FieldItem>();
 	protected LinkedList<Bomb> bombs      = new LinkedList<Bomb>();
-	protected FieldCache cache            = null;
+	protected FieldCache cache            = new FieldCache();
 	protected Player player;
 
 	/**
@@ -42,7 +41,6 @@ public abstract class Field implements Cloneable {
 		Parser parser = new Parser();
 		parser.parse(path, this);
 	}
-
 
 	/**
 	 * Add a bomb to the field
@@ -84,25 +82,17 @@ public abstract class Field implements Cloneable {
 	 *
 	 * @param item
 	 */
-	public void addItem(FieldItem item) {
-		this.items.add(item);
+	public void addNode(DijkstraNode node) {
+		this.cache.addNode(node);
 	}
 
 	/**
 	 * Removes a field item from the field
 	 *
-	 * @param itemRestart
-	 * @return Whether removal was successful
+	 * @param node The coordinate where the node shall be removed
 	 */
-	public boolean removeItem(FieldItem item) {
-		return this.items.remove(item);
-	}
-
-	/**
-	 * @return the items
-	 */
-	public LinkedList<FieldItem> getItems() {
-		return items;
+	public void removeNode(TileCoordinate coordinate) {
+		this.cache.removeNode(coordinate);
 	}
 
 	/**
@@ -133,8 +123,9 @@ public abstract class Field implements Cloneable {
 	 */
 	public void resetObject() {
 		this.player = null;
+
+		this.cache.clear();
 		this.bombs.clear();
-		this.items.clear();
 		this.fieldHistory.clear();
 	}
 
@@ -153,9 +144,7 @@ public abstract class Field implements Cloneable {
 	 * @throws IOException 
 	 */
 	public void drawField() throws IOException {
-		for (FieldItem item: this.getItems()) {
-			item.draw();
-		}
+		this.cache.draw();
 
 		for (Bomb bomb: this.getBombs()) {
 			bomb.draw();
@@ -172,47 +161,36 @@ public abstract class Field implements Cloneable {
 	 *
 	 * @param token
 	 */
-	public void addItemByToken(Token token) {
-		Player    player = null;
-		Bomb      bomb   = null;
-		FieldItem item   = null;
+	public void addTileByToken(Token token) {
+		Player player     = null;
+		Bomb bomb         = null;
+		DijkstraNode node = null;
 
 		switch (token.type) {
 			case Token.WALL:
-				item = new Wall();
-				item.setType(Token.WALL);
+				node = new Wall(Token.WALL, token.coordinate);
 				break;
 			case Token.PLAYER_START:
-				player = new Player();
-				player.setType(Token.PLAYER_START);
-				item   = new Floor();
-				item.setType(Token.FLOOR);
+				player = new Player(Token.PLAYER_START, token.coordinate);
+				node   = new Floor(Token.FLOOR, token.coordinate);
 				break;
 			case Token.TARGET:
-				item = new Target();
-				item.setType(Token.TARGET);
+				node = new Target(Token.TARGET, token.coordinate);
 				break;
 			case Token.BOMB_START:
-				item = new Floor();
-				item.setType(Token.FLOOR);
-				bomb = new Bomb();
-				bomb.setType(Token.BOMB_START);
+				node = new Floor(Token.FLOOR, token.coordinate);
+				bomb = new Bomb(Token.BOMB_START, token.coordinate);
 				break;
 			case Token.BOMB_TARGET:
-				bomb = new Bomb();
-				bomb.setType(Token.BOMB_START);
-				item = new Target();
-				item.setType(Token.TARGET);
+				bomb = new Bomb(Token.BOMB_START, token.coordinate);
+				node = new Target(Token.TARGET, token.coordinate);
 				break;
 			case Token.PLAYER_TARGET:
-				player = new Player();
-				player.setType(Token.PLAYER_START);
-				item   = new Target();
-				item.setType(Token.TARGET);
+				player = new Player(Token.PLAYER_TARGET, token.coordinate);
+				node   = new Target(Token.TARGET, token.coordinate);
 				break;
 			case Token.FLOOR:
-				item = new Floor();
-				item.setType(Token.FLOOR);
+				node = new Floor(Token.FLOOR, token.coordinate);
 				break;
 			default:
 				throw new RuntimeException(
@@ -220,27 +198,17 @@ public abstract class Field implements Cloneable {
 				);
 		}
 
-		if (item != null) {
-			item.setPosition(token.coordinate);
-			this.addItem(item);
+		if (node != null) {
+			this.addNode(node);
 		}
 
 		if (bomb != null) {
-			bomb.setPosition(token.coordinate);
 			this.addBomb(bomb);
 		}
 
 		if (player != null) {
-			player.setPosition(token.coordinate);
 			this.addPlayer(player);
 		}
-	}
-
-	/**
-	 * Builds the field cache
-	 */
-	public void buildCache(int width, int height) {
-		this.cache = new FieldCache(this, width, height);
 	}
 
 	/**
@@ -251,15 +219,9 @@ public abstract class Field implements Cloneable {
 	}
 
 	/**
-	 * Adds current field to history
-	 */
-	abstract public void addFieldToHistory();
-
-	/**
 	 * Returns whether the player may enter a field
 	 *
-	 * @param x
-	 * @param y
+	 * @param coordinate
 	 * @return
 	 */
 	public boolean mayEnter(TileCoordinate coordinate) {
@@ -268,7 +230,7 @@ public abstract class Field implements Cloneable {
 				return false;
 			}
 
-			int type = this.cache.getTypeAtCoordinate(coordinate);
+			int type = this.cache.getNodeAtCoordinate(coordinate).getType();
 			return type == Token.FLOOR || type == Token.TARGET;
 		}
 		catch (InvalidCoordinateException e) {
@@ -286,7 +248,7 @@ public abstract class Field implements Cloneable {
 		if (this.player != null) {
 			field.player = (Player)this.player.clone();
 		}
-		
+
 		LinkedList<Bomb> bombs = new LinkedList<Bomb>();
 		for (Bomb bomb: this.bombs) {
 			bombs.add((Bomb)bomb.clone());
@@ -300,4 +262,9 @@ public abstract class Field implements Cloneable {
 	 * Undo the last move
 	 */
 	abstract public void undo();
+
+	/**
+	 * Adds current field to history
+	 */
+	abstract public void addFieldToHistory();
 }

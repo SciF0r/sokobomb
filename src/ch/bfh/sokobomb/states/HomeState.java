@@ -8,9 +8,9 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.Application;
-import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Menu;
 import ch.bfh.sokobomb.model.MenuItem;
+import ch.bfh.sokobomb.model.coordinate.Coordinate;
 
 public class HomeState extends State {
 	private Menu homeMenu;

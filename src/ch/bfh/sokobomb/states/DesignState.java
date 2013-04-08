@@ -6,19 +6,30 @@ import org.lwjgl.input.Keyboard;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.controller.OpenGLController;
-import ch.bfh.sokobomb.model.Coordinate;
-import ch.bfh.sokobomb.model.FieldItem;
-import ch.bfh.sokobomb.model.Floor;
-import ch.bfh.sokobomb.model.Wall;
+import ch.bfh.sokobomb.model.coordinate.Coordinate;
+import ch.bfh.sokobomb.model.coordinate.DeltaCoordinate;
+import ch.bfh.sokobomb.model.tiles.Floor;
+import ch.bfh.sokobomb.model.tiles.Tile;
+import ch.bfh.sokobomb.model.tiles.Wall;
+import ch.bfh.sokobomb.parser.Token;
+import ch.bfh.sokobomb.path.DijkstraNode;
 
+/**
+ * This state allows you to draw a field
+ *
+ * @author Denis Simonet
+ */
 public class DesignState extends State {
 
 	private boolean buttonDown = false;
-	private FieldItem tileAtMouse;
+	private Tile tileAtMouse;
 
 	public DesignState() {
 		this.stateId = State.DESIGN;
-		this.tileAtMouse = new Wall();
+		this.tileAtMouse = new Wall(
+			Token.WALL,
+			OpenGLController.getMousePosition().getTileCoordinate()
+		);
 		this.drawTile();
 	}
 
@@ -26,11 +37,14 @@ public class DesignState extends State {
 	 * @param coordinate Sets a new tile position
 	 */
 	private void drawTile() {
-		this.tileAtMouse.setPosition(
-			OpenGLController.getMousePosition().getTileCoordinate()
-		);
+		if (this.tileAtMouse == null) {
+			return;
+		}
 
 		try {
+			this.tileAtMouse.setPosition(
+				OpenGLController.getMousePosition().getTileCoordinate()
+			);
 			this.tileAtMouse.draw();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -43,8 +57,8 @@ public class DesignState extends State {
 	 */
 	private void addTileToField() {
 		try {
-			Application.getFieldController().addItem(
-				(FieldItem)this.tileAtMouse.clone()
+			Application.getFieldController().addNode(
+				(DijkstraNode)this.tileAtMouse.clone()
 			);
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -59,15 +73,21 @@ public class DesignState extends State {
 				Application.getStateController().setState(State.PLAY);
 				Application.getFieldController().restoreOldField();
 				break;
+			case Keyboard.KEY_R:
+				Application.getFieldController().getField().resetObject();
+				break;
 			case Keyboard.KEY_U:
 				Application.getFieldController().getField().undo();
 				break;
+			case Keyboard.KEY_0:
+				this.tileAtMouse = null;
+				break;
 			case Keyboard.KEY_1:
-				this.tileAtMouse = new Wall();
+				this.tileAtMouse = new Wall(Token.WALL, OpenGLController.getMousePosition().getTileCoordinate());
 				this.drawTile();
 				break;
 			case Keyboard.KEY_2:
-				this.tileAtMouse = new Floor();
+				this.tileAtMouse = new Floor(Token.FLOOR, OpenGLController.getMousePosition().getTileCoordinate());
 				this.drawTile();
 				break;
 		}
@@ -76,8 +96,14 @@ public class DesignState extends State {
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
 		Application.getFieldController().getField().addFieldToHistory();
-		this.addTileToField();
 		this.buttonDown = true;
+
+		if (this.tileAtMouse == null) {
+			Application.getFieldController().removeNode(coordinate.getTileCoordinate());
+		}
+		else {
+			this.addTileToField();
+		}
 	}
 
 	@Override
@@ -86,18 +112,19 @@ public class DesignState extends State {
 	}
 
 	@Override
-	public void handleMouseMoved(Coordinate coordinate) {
-		if (
-			this.buttonDown
-			&&
-			this.tileAtMouse != null
-			&&
-			!this.tileAtMouse.getCoordinate().equals(coordinate)
-		) {
-			this.addTileToField();
+	public void handleMouseMoved(Coordinate coordinate, DeltaCoordinate delta) {
+		if (this.buttonDown) {
+			if (this.tileAtMouse != null && !this.tileAtMouse.getCoordinate().equals(coordinate)) {
+				this.addTileToField();
+			}
+			else if (this.tileAtMouse == null) {
+				Application.getFieldController().removeNode(coordinate.getTileCoordinate());
+			}
 		}
 
-		this.tileAtMouse.setPosition(coordinate.getTileCoordinate());
+		if (this.tileAtMouse != null) {
+			this.tileAtMouse.setPosition(coordinate.getTileCoordinate());
+		}
 	}
 
 	/**

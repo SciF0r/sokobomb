@@ -7,8 +7,9 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
-import ch.bfh.sokobomb.model.Coordinate;
-import ch.bfh.sokobomb.model.TileCoordinate;
+import ch.bfh.sokobomb.model.coordinate.Coordinate;
+import ch.bfh.sokobomb.model.coordinate.DeltaCoordinate;
+import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 
 /**
  * Class for a state
@@ -108,7 +109,7 @@ public abstract class State {
 	/**
 	 * Handle a mouse move
 	 */
-	public void handleMouseMoved(Coordinate coordinate) {
+	public void handleMouseMoved(Coordinate coordinate, DeltaCoordinate delta) {
 		// Nothing
 	}
 
@@ -171,7 +172,13 @@ public abstract class State {
 			int y      = Display.getHeight() - Mouse.getEventY();
 
 			if (button == -1) {
-				this.handleMouseMoved(new Coordinate(x ,y ));
+				this.handleMouseMoved(
+					new Coordinate(x, y),
+					new DeltaCoordinate(
+						Mouse.getEventDX(),
+						Mouse.getEventDY()
+					)
+				);
 			}
 
 			if (button == 0) {

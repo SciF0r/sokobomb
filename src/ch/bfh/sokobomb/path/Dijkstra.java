@@ -6,8 +6,7 @@ import java.util.List;
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.field.FieldCache;
 import ch.bfh.sokobomb.field.PlayField;
-import ch.bfh.sokobomb.model.Node;
-import ch.bfh.sokobomb.model.TileCoordinate;
+import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 
 /**
  * This class calculates the shortest path using Dijkstra algorithm
@@ -17,9 +16,9 @@ import ch.bfh.sokobomb.model.TileCoordinate;
 public class Dijkstra {
 
 	private PlayField field;
-	private Node startNode, targetNode;
+	private DijkstraNode startNode, targetNode;
 
-	public Dijkstra(PlayField field, Node startNode, Node targetNode) {
+	public Dijkstra(PlayField field, DijkstraNode startNode, DijkstraNode targetNode) {
 		this.field      = field;
 		this.startNode  = startNode;
 		this.targetNode = targetNode;
@@ -33,7 +32,7 @@ public class Dijkstra {
 		this.startNode.setCost(0);
 
 		// First calculate the node costs and cheapest parents
-		Node currentNode = this.startNode;
+		DijkstraNode currentNode = this.startNode;
 		do {
 			this.dijkstraIteration(currentNode);
 			currentNode = this.field.getCache().getTemporaryNodeWithLowestCost();
@@ -63,11 +62,11 @@ public class Dijkstra {
 	 * @param node
 	 * @return The new lowest cost node
 	 */
-	private void dijkstraIteration(Node node) {
+	private void dijkstraIteration(DijkstraNode node) {
 		node.setPermanent(true);
 
 		// Updates the cost and parent of each adjacent node
-		for (Node currentNode: this.getAdjacentNodes(node)) {
+		for (DijkstraNode currentNode: this.getAdjacentNodes(node)) {
 			if ((node.getCost() + 1) < currentNode.getCost()) {
 				currentNode.setCost(node.getCost() + 1);
 				currentNode.setParent(node);
@@ -82,9 +81,9 @@ public class Dijkstra {
 	 * @param cache
 	 * @return
 	 */
-	private List<Node> getAdjacentNodes(Node node) {
-		LinkedList<Node> nodeList = new LinkedList<Node>();
-		FieldCache cache          = this.field.getCache();
+	private List<DijkstraNode> getAdjacentNodes(DijkstraNode node) {
+		LinkedList<DijkstraNode> nodeList = new LinkedList<DijkstraNode>();
+		FieldCache cache                  = this.field.getCache();
 
 		// Return all adjacent nodes which can be entered by the player 
 		try {
@@ -148,7 +147,7 @@ public class Dijkstra {
 	 * @param node
 	 * @param nodeList
 	 */
-	private void addNodeToList(Node node, LinkedList<Node> nodeList) {
+	private void addNodeToList(DijkstraNode node, LinkedList<DijkstraNode> nodeList) {
 		boolean mayEnter = this.field.mayEnter(
 			node.getCoordinate()
 		);

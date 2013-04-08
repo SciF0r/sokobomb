@@ -7,8 +7,8 @@ import org.lwjgl.input.Keyboard;
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.field.DesignField;
 import ch.bfh.sokobomb.field.PlayField;
-import ch.bfh.sokobomb.model.Coordinate;
-import ch.bfh.sokobomb.model.TileCoordinate;
+import ch.bfh.sokobomb.model.coordinate.Coordinate;
+import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 
 public class PlayState extends State {
 

@@ -3,8 +3,8 @@ package ch.bfh.sokobomb.field;
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.exception.NoNextLevelException;
-import ch.bfh.sokobomb.model.Bomb;
-import ch.bfh.sokobomb.model.TileCoordinate;
+import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
+import ch.bfh.sokobomb.model.tiles.Bomb;
 import ch.bfh.sokobomb.parser.Token;
 import ch.bfh.sokobomb.states.State;
 import ch.bfh.sokobomb.util.Levels;
@@ -127,7 +127,7 @@ public class PlayField extends Field implements Cloneable {
 	final private boolean hasWon() {
 		try {
 			for (Bomb bomb: this.bombs) {
-				if (this.cache.getTypeAtCoordinate(bomb.getCoordinate()) != Token.TARGET) {
+				if (this.cache.getNodeAtCoordinate(bomb.getCoordinate()).getType() != Token.TARGET) {
 					return false;
 				}
 			}
@@ -169,7 +169,6 @@ public class PlayField extends Field implements Cloneable {
 	public void undo() {
 		if (!this.fieldHistory.isEmpty()) {
 			PlayField field = (PlayField)this.fieldHistory.pop();
-			this.items  = field.getItems();
 			this.bombs  = field.getBombs();
 			this.player = field.getPlayer();
 		}

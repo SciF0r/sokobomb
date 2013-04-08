@@ -1,4 +1,4 @@
-package ch.bfh.sokobomb.model;
+package ch.bfh.sokobomb.model.coordinate;
 
 import ch.bfh.sokobomb.util.Tiles;
 
@@ -54,4 +54,9 @@ public class Coordinate {
 
 		return false;
 	}
+
+    @Override
+    public int hashCode() {
+    	return this.x * 2 + this.y * 3;
+    }
 }

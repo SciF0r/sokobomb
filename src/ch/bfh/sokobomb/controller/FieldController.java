@@ -5,8 +5,9 @@ import java.util.Stack;
 
 import ch.bfh.sokobomb.field.Field;
 import ch.bfh.sokobomb.field.PlayField;
-import ch.bfh.sokobomb.model.FieldItem;
+import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 import ch.bfh.sokobomb.parser.Token;
+import ch.bfh.sokobomb.path.DijkstraNode;
 
 /**
  * Manage fields
@@ -68,15 +69,24 @@ public class FieldController {
 	/**
 	 * @param item The item to be added to the field
 	 */
-	public void addItem(FieldItem item) {
-		this.field.addItem(item);
+	public void addNode(DijkstraNode node) {
+		this.field.addNode(node);
 	}
 
 	/**
 	 * @param token The token to be added to the field
 	 */
-	public void addItemByToken(Token token) {
-		this.field.addItemByToken(token);
+	public void addTileByToken(Token token) {
+		this.field.addTileByToken(token);
+	}
+
+	/**
+	 * Remove the node at a coordinate
+	 *
+	 * @param coordinate
+	 */
+	public void removeNode(TileCoordinate coordinate) {
+		this.field.removeNode(coordinate);
 	}
 
 	/**

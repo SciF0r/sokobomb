@@ -4,8 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import ch.bfh.sokobomb.field.PlayField;
-import ch.bfh.sokobomb.model.Node;
-import ch.bfh.sokobomb.model.TileCoordinate;
+import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 
 /**
  * Calculates a path from a start to a target node
@@ -18,7 +17,7 @@ public class Path {
 	private Iterator<TileCoordinate> pathIterator;
 	private PlayField field;
 
-	public Path(PlayField field, Node startNode, Node targetNode) {
+	public Path(PlayField field, DijkstraNode startNode, DijkstraNode targetNode) {
 		this.field = field;
 
 		this.calculatePath(startNode, targetNode);
@@ -27,9 +26,10 @@ public class Path {
 	/**
 	 * Calculates the path (Dijkstra)
 	 */
-	private void calculatePath(Node startNode, Node targetNode) {
+	private void calculatePath(DijkstraNode startNode, DijkstraNode targetNode) {
 		Dijkstra dijkstra = new Dijkstra(this.field, startNode, targetNode);
-		this.path         = dijkstra.getPath();
+
+		this.path = dijkstra.getPath();
 		if (this.path != null) {
 			this.pathIterator = this.path.iterator();
 		}

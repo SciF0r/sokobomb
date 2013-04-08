@@ -1,4 +1,4 @@
-package ch.bfh.sokobomb.model;
+package ch.bfh.sokobomb.model.tiles;
 
 import java.io.IOException;
 
@@ -8,6 +8,8 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
+import ch.bfh.sokobomb.model.Drawable;
+import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 import ch.bfh.sokobomb.util.Tiles;
 
 
@@ -16,7 +18,7 @@ import ch.bfh.sokobomb.util.Tiles;
  *
  * @author Denis Simonet
  */
-public abstract class FieldItem implements Cloneable, Drawable {
+public abstract class Tile implements Cloneable, Drawable {
 
 	protected String imagePath  = null;
 	protected Texture texture   = null;

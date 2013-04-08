@@ -6,9 +6,9 @@ import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.Application;
-import ch.bfh.sokobomb.model.Coordinate;
 import ch.bfh.sokobomb.model.Menu;
 import ch.bfh.sokobomb.model.MenuItem;
+import ch.bfh.sokobomb.model.coordinate.Coordinate;
 
 /**
  * Shows the pause screen

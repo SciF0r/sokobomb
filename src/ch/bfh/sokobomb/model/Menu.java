@@ -14,6 +14,7 @@ import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.controller.StateController;
 import ch.bfh.sokobomb.field.DesignField;
 import ch.bfh.sokobomb.field.PlayField;
+import ch.bfh.sokobomb.model.coordinate.Coordinate;
 import ch.bfh.sokobomb.states.State;
 /**
  * UNDER CONSTRUCTION!!!

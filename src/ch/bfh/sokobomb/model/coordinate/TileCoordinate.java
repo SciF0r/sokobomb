@@ -1,4 +1,4 @@
-package ch.bfh.sokobomb.model;
+package ch.bfh.sokobomb.model.coordinate;
 
 /**
  * Stores a tile coordinate

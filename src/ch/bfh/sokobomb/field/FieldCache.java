@@ -1,53 +1,36 @@
 package ch.bfh.sokobomb.field;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
-import ch.bfh.sokobomb.model.FieldItem;
-import ch.bfh.sokobomb.model.Node;
-import ch.bfh.sokobomb.model.TileCoordinate;
+import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
+import ch.bfh.sokobomb.path.DijkstraNode;
 
 /**
  * Caches the field
  *
  * @author Denis Simonet
  */
-final public class FieldCache {
+final public class FieldCache implements Cloneable {
 
-	private Node[][] cache;
-	private Field field;
-
-	public FieldCache(Field field, int width, int height) {
-		this.field = field;
-		this.cache = new Node[width][height];
-
-		this.buildCache();
-	}
-
-	/**
-	 * Builds the cache
-	 */
-	private void buildCache() {
-		for (FieldItem item: this.field.getItems()) {
-			this.setNodeAtCoordinate(
-				item.getCoordinate(),
-				new Node(item.getType(), item.getCoordinate())
-			);
-		}
-	}
+	private HashMap<TileCoordinate, DijkstraNode> cache = new HashMap<TileCoordinate, DijkstraNode>();
 
 	/**
 	 * Resets the cache such that a new Dijkstra can be run
 	 */
 	public void reset() {
-		for (int x = 0; x < this.cache.length; x++) {
-			for (int y = 0; y < this.cache[x].length; y++) {
-				try {
-					this.getNodeAtCoordinate(x, y).reset();
-				}
-				catch (InvalidCoordinateException e) {
-					// Ignore
-				}
-			}
+		for (Entry<TileCoordinate, DijkstraNode> entry: this.cache.entrySet()) {
+			entry.getValue().reset();
 		}
+	}
+
+	/**
+	 * Clears the cache HashMap
+	 */
+	public void clear() {
+		this.cache.clear();
 	}
 
 	/**
@@ -56,29 +39,15 @@ final public class FieldCache {
 	 * @param coordinate
 	 * @param node
 	 */
-	private void setNodeAtCoordinate(TileCoordinate coordinate, Node node) {
-		this.cache[coordinate.getX()][coordinate.getY()] = node;
+	public void addNode(DijkstraNode node) {
+		this.cache.put(node.getCoordinate(), node);
 	}
 
 	/**
-	 * Returns the tile type at given coordinate
-	 *
-	 * @param coordinate
-	 * @return The tile type
+	 * @param coordinate Coordinate to be emptied
 	 */
-	public int getTypeAtCoordinate(TileCoordinate coordinate) {
-		if (this.cache.length <= coordinate.getX() || this.cache[coordinate.getX()].length <= coordinate.getY() || coordinate.getX() < 0 || coordinate.getY() < 0) {
-			throw new InvalidCoordinateException("Coordinate is outside of play field");
-		}
-
-		try {
-			int type = this.cache[coordinate.getX()][coordinate.getY()].getType();
-			return type;
-
-		}
-		catch (NullPointerException e) {
-			throw new InvalidCoordinateException("Coordinate is not reachable");
-		}
+	public void removeNode(TileCoordinate coordinate) {
+		this.cache.remove(coordinate);
 	}
 
 	/**
@@ -88,12 +57,14 @@ final public class FieldCache {
 	 * @throws InvalidCoordinateException
 	 * @return The node reference, null if invalid coordinate
 	 */
-	public Node getNodeAtCoordinate(TileCoordinate coordinate) {
-		if (!this.field.mayEnter(coordinate)) {
-			throw new InvalidCoordinateException("Player may not enter this coordinate");
+	public DijkstraNode getNodeAtCoordinate(TileCoordinate coordinate) {
+		DijkstraNode node = this.cache.get(coordinate);
+
+		if (node == null) {
+			throw new InvalidCoordinateException("This coordinate does not exist");
 		}
 
-		return this.cache[coordinate.getX()][coordinate.getY()];
+		return node;
 	}
 
 	/**
@@ -103,14 +74,10 @@ final public class FieldCache {
 	 * @throws InvalidCoordinateException
 	 * @return The node reference, null if invalid coordinate
 	 */
-	public Node getNodeAtCoordinate(int x, int y) {
+	public DijkstraNode getNodeAtCoordinate(int x, int y) {
 		TileCoordinate coordinate = new TileCoordinate(x, y);
 
-		if (!this.field.mayEnter(coordinate)) {
-			throw new InvalidCoordinateException("Player may not enter this coordinate");
-		}
-
-		return this.cache[coordinate.getX()][coordinate.getY()];
+		return this.getNodeAtCoordinate(coordinate);
 	}
 
 	/**
@@ -118,30 +85,50 @@ final public class FieldCache {
 	 *
 	 * @return The current node with lowest cost
 	 */
-	public Node getTemporaryNodeWithLowestCost() {
-		Node node = null;
-		// Loop through the whole field
-		for (int x = 0; x < this.cache.length; x++) {
-			for (int y = 0; y < this.cache[x].length; y++) {
-				try {
-					Node currentNode = this.getNodeAtCoordinate(x, y);
-					if (
-						!currentNode.isPermanent()
-						&& (
-							node == null
-							||
-							node.getCost() > currentNode.getCost()
-						)
-					){
-						node = currentNode;
-					}
-				}
-				catch (InvalidCoordinateException e) {
-					// Ignore
-				}
+	public DijkstraNode getTemporaryNodeWithLowestCost() {
+
+		DijkstraNode node = null;
+
+		for (Entry<TileCoordinate, DijkstraNode> entry: this.cache.entrySet()) {
+			DijkstraNode currentNode = entry.getValue();
+
+			if (
+				!currentNode.isPermanent()
+				&& (
+					node == null
+					||
+					node.getCost() > currentNode.getCost()
+				)
+			){
+				node = currentNode;
 			}
 		}
 
 		return node;
+	}
+
+	/**
+	 * Draws the field
+	 */
+	public void draw() {
+		for (Entry<TileCoordinate, DijkstraNode> entry: this.cache.entrySet()) {
+			try {
+				entry.getValue().draw();
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.exit(0);
+			}
+		}
+	}
+
+	/**
+	 * Clone the field including tiles
+	 */
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		FieldCache fieldCache = (FieldCache)super.clone();
+		fieldCache.cache = (HashMap<TileCoordinate, DijkstraNode>)this.cache.clone();
+
+		return fieldCache;
 	}
 }

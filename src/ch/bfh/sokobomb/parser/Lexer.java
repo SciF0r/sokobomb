@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import ch.bfh.sokobomb.exception.LexerException;
-import ch.bfh.sokobomb.model.TileCoordinate;
+import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 
 /**
  * A lexer for ASCII sokoban notation
