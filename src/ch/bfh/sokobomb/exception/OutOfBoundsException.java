@@ -5,14 +5,14 @@ package ch.bfh.sokobomb.exception;
  *
  * @author Denis Simonet
  */
-public class InvalidCoordinateException extends Exception {
+public class OutOfBoundsException extends Exception {
 
 	/**
-	 * Generated serial
+	 * Generated serial id
 	 */
 	private static final long serialVersionUID = -3153307956424263199L;
 
-	public InvalidCoordinateException(String s) {
+	public OutOfBoundsException(String s) {
 		super(s);
 	}
 }

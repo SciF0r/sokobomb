@@ -85,7 +85,6 @@ public class Dijkstra {
 		LinkedList<DijkstraNode> nodeList = new LinkedList<DijkstraNode>();
 		FieldCache cache                  = this.field.getCache();
 
-		// Return all adjacent nodes which can be entered by the player 
 		try {
 			this.addNodeToList(
 				cache.getNodeAtCoordinate(
@@ -137,7 +136,7 @@ public class Dijkstra {
 		catch (InvalidCoordinateException e) {
 			// Ignore
 		}
-
+	
 		return nodeList;
 	}
 

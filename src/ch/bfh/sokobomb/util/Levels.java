@@ -27,8 +27,9 @@ public class Levels {
 
 	/**
 	 * @return The next level, null if there is none
+	 * @throws NoNextLevelException 
 	 */
-	public String getNextLevel() {
+	public String getNextLevel() throws NoNextLevelException {
 		if (this.levelListIterator.hasNext()) {
 			return this.levelListIterator.next();
 		}

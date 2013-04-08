@@ -32,7 +32,11 @@ public class PlayField extends Field implements Cloneable {
 	 */
 	public void startGame() {
 		this.levels = new Levels();
-		this.loadNextLevel();
+		try {
+			this.loadNextLevel();
+		} catch (NoNextLevelException e) {
+			// TODO Handle correctly
+		}
 	}
 
 	/**
@@ -125,15 +129,15 @@ public class PlayField extends Field implements Cloneable {
 	 * @return Whether the player has won
 	 */
 	final private boolean hasWon() {
-		try {
-			for (Bomb bomb: this.bombs) {
+		for (Bomb bomb: this.bombs) {
+			try {
 				if (this.cache.getNodeAtCoordinate(bomb.getCoordinate()).getType() != Token.TARGET) {
 					return false;
 				}
+			} catch (InvalidCoordinateException e) {
+				e.printStackTrace();
+				System.exit(0);
 			}
-		}
-		catch (InvalidCoordinateException e) {
-			return false;
 		}
 
 		return true;

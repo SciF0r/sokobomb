@@ -5,7 +5,7 @@ package ch.bfh.sokobomb.exception;
  *
  * @author Denis Simonet
  */
-public class LexerException extends RuntimeException {
+public class LexerException extends Exception {
 
 	/**
 	 * A generated serial id

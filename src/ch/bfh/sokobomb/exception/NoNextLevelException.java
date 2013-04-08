@@ -5,7 +5,7 @@ package ch.bfh.sokobomb.exception;
  *
  * @author Denis Simonet
  */
-public class NoNextLevelException extends RuntimeException {
+public class NoNextLevelException extends Exception {
 
 	/**
 	 * Generated serial

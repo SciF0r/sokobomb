@@ -57,7 +57,7 @@ final public class FieldCache implements Cloneable {
 	 * @throws InvalidCoordinateException
 	 * @return The node reference, null if invalid coordinate
 	 */
-	public DijkstraNode getNodeAtCoordinate(TileCoordinate coordinate) {
+	public DijkstraNode getNodeAtCoordinate(TileCoordinate coordinate) throws InvalidCoordinateException {
 		DijkstraNode node = this.cache.get(coordinate);
 
 		if (node == null) {
@@ -74,7 +74,7 @@ final public class FieldCache implements Cloneable {
 	 * @throws InvalidCoordinateException
 	 * @return The node reference, null if invalid coordinate
 	 */
-	public DijkstraNode getNodeAtCoordinate(int x, int y) {
+	public DijkstraNode getNodeAtCoordinate(int x, int y) throws InvalidCoordinateException {
 		TileCoordinate coordinate = new TileCoordinate(x, y);
 
 		return this.getNodeAtCoordinate(coordinate);

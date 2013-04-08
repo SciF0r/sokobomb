@@ -3,6 +3,7 @@ package ch.bfh.sokobomb.states;
 import java.io.IOException;
 
 import ch.bfh.sokobomb.Application;
+import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
@@ -66,14 +67,19 @@ public class PlayerMovingState extends State {
 	 */
 	public void setPlayerPosition(TileCoordinate coordinate) {
 		PlayField field = (PlayField)Application.getFieldController().getField();
-		this.path = new Path(
-			field,
-			field.getCache().getNodeAtCoordinate(
-					Application.getFieldController().getField().getPlayer().getCoordinate()
-			),
-			field.getCache().getNodeAtCoordinate(
-				coordinate
-			)
-		);
+		try {
+			this.path = new Path(
+				field,
+				field.getCache().getNodeAtCoordinate(
+						Application.getFieldController().getField().getPlayer().getCoordinate()
+				),
+				field.getCache().getNodeAtCoordinate(
+					coordinate
+				)
+			);
+		} catch (InvalidCoordinateException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 }

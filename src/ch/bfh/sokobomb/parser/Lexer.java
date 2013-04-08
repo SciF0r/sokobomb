@@ -27,8 +27,9 @@ public class Lexer {
 	 * Reads the level file and stores it in the class
 	 *
 	 * @param path
+	 * @throws LexerException 
 	 */
-	public void initLexer(String path) {
+	public void initLexer(String path) throws LexerException {
 		File file = new File(path);
 		if (!file.exists()) {
 			throw new LexerException(
@@ -71,7 +72,7 @@ public class Lexer {
 	 * @return A token
 	 * @throws LexerException
 	 */
-	public Token nextToken() throws RuntimeException {
+	public Token nextToken() throws RuntimeException, LexerException {
 		Token token = new Token();
 		
 		if (this.index >= this.length) {

@@ -1,5 +1,6 @@
 package ch.bfh.sokobomb.parser;
 
+import ch.bfh.sokobomb.exception.LexerException;
 import ch.bfh.sokobomb.field.Field;
 
 /**
@@ -24,16 +25,23 @@ public class Parser {
 	 * @param path
 	 */
 	public void parse(String path, Field field) {
-		Token token;
+		try {
+			Token token;
 
-		this.lexer.initLexer(path);
-
-		while ((token = this.lexer.nextToken()).type != Token.EOF) {
-			if (token.type == Token.EMPTY) {
-				continue;
+			this.lexer.initLexer(path);
+	
+	
+			while ((token = this.lexer.nextToken()).type != Token.EOF) {
+				if (token.type == Token.EMPTY) {
+					continue;
+				}
+	
+				field.addTileByToken(token);
 			}
-
-			field.addTileByToken(token);
+		}
+		catch (LexerException e) {
+			e.printStackTrace();
+			System.exit(0);
 		}
 	}
 }
