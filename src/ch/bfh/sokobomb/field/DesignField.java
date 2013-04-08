@@ -1,10 +1,5 @@
 package ch.bfh.sokobomb.field;
 
-import java.util.LinkedList;
-
-import ch.bfh.sokobomb.model.tiles.Tile;
-
-
 /**
  * Contains all required information to draw a field and handle input
  *

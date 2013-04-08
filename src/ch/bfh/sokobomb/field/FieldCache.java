@@ -124,6 +124,7 @@ final public class FieldCache implements Cloneable {
 	/**
 	 * Clone the field including tiles
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		FieldCache fieldCache = (FieldCache)super.clone();
