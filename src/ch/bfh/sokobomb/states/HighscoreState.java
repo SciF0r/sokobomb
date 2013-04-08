@@ -25,8 +25,6 @@ public class HighscoreState extends State {
 	private Menu highscoreMenu = new Menu("");
 	
 	public HighscoreState() {
-		this.highscoreList.setSelectable(false);
-
 		try {
 			Highscore highscore = new Highscore();
 			for (HighscoreItem item: highscore.getItems()) {

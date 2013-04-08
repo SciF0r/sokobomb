@@ -26,7 +26,6 @@ public class Menu implements Drawable {
 	private LinkedList<MenuItem> items;
 	private MenuItem selectedItem;
 	private AngelCodeFont font;
-	private boolean selectable = true;
 	final private String title;
 
 	private int titleOffset = 10;
@@ -47,6 +46,12 @@ public class Menu implements Drawable {
 	 * @param item Item to be added to the menu
 	 */
 	public void addMenuItem(MenuItem item) {
+		String text = item.getText();
+		int x = (Display.getWidth() - font.getWidth(text)) / 2;
+		int y = (int)1.5 * font.getHeight(text) * this.items.size() + this.titleOffset + font.getHeight(this.title);
+
+		item.setMinCoord(new Coordinate(x, y));
+		item.setMaxCoord(new Coordinate(x + font.getWidth(text), y + font.getHeight(text)));
 		items.add(item);
 
 		if (this.selectedItem == null) {
@@ -130,10 +135,7 @@ public class Menu implements Drawable {
 			x = (Display.getWidth() - font.getWidth(text)) / 2;
 			y += 1.5 * font.getHeight(text);
 
-			item.setMinCoord(new Coordinate(x, y));
-			item.setMaxCoord(new Coordinate(x + font.getWidth(text), y + font.getHeight(text)));
-
-			if (item == this.selectedItem && this.selectable) {
+			if (item == this.selectedItem) {
 				this.font.drawString(x, y, text, Color.yellow);
 			}
 			else {
@@ -153,13 +155,6 @@ public class Menu implements Drawable {
 				this.selectedItem = item;
 			}
 		}
-	}
-
-	/**
-	 * @param selectable Whether the menu items shall be selectable
-	 */
-	public void setSelectable(boolean selectable) {
-		this.selectable = selectable;
 	}
 
 	/**
