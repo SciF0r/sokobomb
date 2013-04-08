@@ -62,19 +62,16 @@ public class Menu implements Drawable{
 
 		while(menuIterator.hasNext()){
 			MenuItem item = menuIterator.next();
-			if (item.isChecked()){
+			if (item.isChecked() && menuIterator.hasNext()){
 				item.setChecked(false);
-				if (menuIterator.hasNext()){
-					menuIterator.next().setChecked(true);
-				}
+				menuIterator.next().setChecked(true);
 			}	
 		}
 	}
-	
-	public void performAction(){
-		PlayField field = (PlayField)Application.getFieldController().getField();
+
+	public int keyboardAction(){
 		this.menuIterator = items.iterator();
-		int action=0;
+		int action=MenuItem.NO_ACTION;
 		while(menuIterator.hasNext()){
 			MenuItem item = menuIterator.next();
 			if (item.isChecked()){
@@ -82,22 +79,41 @@ public class Menu implements Drawable{
 				break;
 			}
 		}
-			switch (action){
-			case MenuItem.END_GAME:
-				System.exit(0);
-				break;
-			case MenuItem.RESET_LEVEL:
-				field.restartLevel();
-				Application.getStateController().setState(State.PLAY);
-				break;
-			case MenuItem.RESUME_GAME:
-				Application.getStateController().setState(State.PLAY);
-				break;
-			
-			}
-	
+		return action;
 	}
-	
+
+	public void performAction(int action){
+		PlayField field = (PlayField)Application.getFieldController().getField();
+		switch (action){
+		case MenuItem.END_GAME:
+			System.exit(0);
+			break;
+		case MenuItem.RESET_LEVEL:
+			field.restartLevel();
+			Application.getStateController().setState(State.PLAY);
+			break;
+		case MenuItem.RESUME_GAME:
+			Application.getStateController().setState(State.PLAY);
+			break;
+		case MenuItem.NO_ACTION:
+			//Do nthing
+			break;
+
+		}
+
+	}
+
+	public void mouseAction(Coordinate coord){
+		int action = MenuItem.NO_ACTION;
+		for (MenuItem item : items){
+			if (item.containsCoordinate(coord)){	
+				action = item.getAction();
+				break;
+			}
+		}
+		this.performAction(action);
+	}
+
 
 	@Override
 	public void draw() throws IOException {
@@ -114,6 +130,9 @@ public class Menu implements Drawable{
 			x = (this.width - font.getWidth(text)) / 2;
 			y += 1.5 * font.getHeight(text);
 
+			item.setMinCoord(new Coordinate(x,y));
+			item.setMaxCoord(new Coordinate(x+font.getWidth(text),y+font.getHeight(text)));
+
 			if (item.isChecked()){
 				this.font.drawString(x, y, text, Color.darkGray);
 			}
@@ -122,4 +141,23 @@ public class Menu implements Drawable{
 			}
 		}
 	}
+
+	public void checkMousePosition(Coordinate coord){
+		MenuItem current = null;
+		for (MenuItem item : items){
+			if (item.isChecked()){
+				current = item;
+				break;
+			}
+		}
+		for (MenuItem item : items){
+			if (item.containsCoordinate(coord)){
+				if (!current.equals(null)){
+					current.setChecked(false);
+				}
+				item.setChecked(true);
+			}
+		}
+	}
+
 }

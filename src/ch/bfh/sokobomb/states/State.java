@@ -138,6 +138,13 @@ public abstract class State {
 	public void handleRightClickRelease(Coordinate coordinate) {
 		// Nothing
 	}
+	
+	/**
+	 * Handle Mouse over events
+	 */
+	public void handleMouseOver(Coordinate coordinate){
+		// Nothing
+	}
 
 	/**
 	 * Sets a new player position
@@ -153,6 +160,10 @@ public abstract class State {
 	 * Mouse and keyboard event handling
 	 */
 	final public void pollInput() {
+		int mouseX = Mouse.getX();
+		int mouseY = Display.getHeight() - Mouse.getY();
+		this.handleMouseOver(new Coordinate(mouseX, mouseY));
+		
 		while (Mouse.next()) {
 			int button = Mouse.getEventButton();
 			int x      = Mouse.getEventX();

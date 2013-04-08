@@ -49,24 +49,25 @@ private Menu pauseMenu;
 				pauseMenu.nextItem(Menu.UP);
 				break;
 			case Keyboard.KEY_RETURN:
-				pauseMenu.performAction();
+				pauseMenu.performAction(pauseMenu.keyboardAction());
 				break;
 			
 		}
 	}
 	
+	@Override
+	public void handleMouseOver(Coordinate coordinate){
+//		System.out.println(coordinate.getX() + "|" + coordinate.getY());
+		pauseMenu.checkMousePosition(coordinate);
+	}
 	
 	
 	
 
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
-		int x = coordinate.getX();
-		int y = coordinate.getY();
-
-//		if (mb.getX() < x && (mb.getX() + mb.getWidth()) > x && mb.getY() < y && (mb.getY() + mb.getHeight()) > y) {
-//			Application.getStateController().setState(State.PLAY);
-//		}
+		pauseMenu.mouseAction(coordinate);
+		
 	}
 	
 	

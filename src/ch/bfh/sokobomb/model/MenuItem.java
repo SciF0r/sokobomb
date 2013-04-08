@@ -9,14 +9,16 @@ import java.io.IOException;
  *
  */
 public class MenuItem{
-	final public static int END_GAME    = 0;
+	final public static int NO_ACTION   = 0;
 	final public static int RESUME_GAME = 1;
 	final public static int RESET_LEVEL = 2;
-	final public static int ACTION      = 3;
+	final public static int END_GAME    = 3;
 	
 	final private String text;
 	final private int action;
 	private boolean checked;
+	private Coordinate min;
+	private Coordinate max;
 	
 	public MenuItem(String text, int action){
 		this.text=text;
@@ -38,6 +40,26 @@ public class MenuItem{
 	
 	public int getAction(){
 		return this.action;
+	}
+	
+	public void setMinCoord(Coordinate min){
+		this.min = min;
+	}
+	public Coordinate getMinCoord(){
+		return min;
+	}
+	
+	public void setMaxCoord(Coordinate max){
+		this.max = max;
+	}
+	
+	public Coordinate getMaxCoord(){
+		return max;
+	}
+	
+	public boolean containsCoordinate(Coordinate coord){
+		return coord.getX() > min.getX() && coord.getX() < max.getX() &&
+				coord.getY() > min.getY() && coord.getY() < max.getY();
 	}
 
 }
