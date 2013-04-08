@@ -69,9 +69,8 @@ public class DesignState extends State {
 	@Override
 	public void handleKeyPress(int key) {
 		switch (key) {
-			case Keyboard.KEY_P:
-				Application.getStateController().setState(State.PLAY);
-				Application.getFieldController().restoreOldField();
+			case Keyboard.KEY_ESCAPE:
+				Application.getStateController().setState(State.HOME);
 				break;
 			case Keyboard.KEY_R:
 				Application.getFieldController().getField().resetObject();

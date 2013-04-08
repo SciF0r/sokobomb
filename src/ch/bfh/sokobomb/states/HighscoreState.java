@@ -22,15 +22,21 @@ public class HighscoreState extends State {
 	final public static int RESET_LIST  = 2;
 
 	private Menu highscoreList = new Menu("Highscore");
+	private Menu highscoreMenu = new Menu("");
 	
 	public HighscoreState() {
+		this.highscoreList.setSelectable(false);
+
 		try {
 			Highscore highscore = new Highscore();
 			for (HighscoreItem item: highscore.getItems()) {
-				this.highscoreList.addMenuItem(new MenuItem(item.getName(), MenuItem.NO_ACTION));
+				this.highscoreList.addMenuItem(new MenuItem(item.toString(), MenuItem.NO_ACTION));
 			}
 
 			this.stateId = State.HIGHSCORE;
+
+			this.highscoreMenu.setTitleOffset(100);
+			this.highscoreMenu.addMenuItem(new MenuItem("Resume game", HighscoreState.RESUME_GAME));
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -42,7 +48,24 @@ public class HighscoreState extends State {
 	public void handleKeyPress(int key) {
 		switch (key) {
 			case Keyboard.KEY_ESCAPE:
-				Application.getStateController().setState(State.PLAY);
+				Application.getStateController().setState(State.HOME);
+				break;
+			case Keyboard.KEY_RETURN:
+				this.performAction(this.highscoreMenu.getSelectedItem().getAction());
+				break;
+		}
+	}
+
+	/**
+	 * @param action Perform action
+	 */
+	public void performAction(int action){
+		switch (action){
+			case HighscoreState.RESUME_GAME:
+				Application.getStateController().setState(State.HOME);
+				break;
+			case MenuItem.NO_ACTION:
+				// Do nothing
 				break;
 		}
 	}
@@ -52,5 +75,6 @@ public class HighscoreState extends State {
 		Application.getFieldController().drawField();
 		this.drawTransparentOverlay();
 		this.highscoreList.draw();
+		this.highscoreMenu.draw();
 	}
 }

@@ -207,10 +207,10 @@ public abstract class State {
 	protected void drawTransparentOverlay() {
 		GL11.glColor4f(0.5f, 0.70f, 0.5f, 0.8f);
 		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex2i(0,                0                );
-		GL11.glVertex2i(0,                Display.getHeight());
+		GL11.glVertex2i(0,                  0                  );
+		GL11.glVertex2i(0,                  Display.getHeight());
 		GL11.glVertex2i(Display.getWidth(), Display.getHeight());
-		GL11.glVertex2i(Display.getWidth(), 0                );
+		GL11.glVertex2i(Display.getWidth(), 0                  );
 		GL11.glEnd();
 	}
 }

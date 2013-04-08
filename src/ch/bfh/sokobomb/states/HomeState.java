@@ -3,8 +3,6 @@ package ch.bfh.sokobomb.states;
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.OutOfBoundsException;
@@ -24,11 +22,13 @@ public class HomeState extends State {
 	final public static int START_GAME  = 1;
 	final public static int DESIGN_MODE = 2;
 	final public static int END_GAME    = 3;
+	final public static int HIGHSCORE   = 4;
 
 	private Menu homeMenu = new Menu("!!Welcome to SokoBomb!!");
 
 	public HomeState() {
 		this.homeMenu.addMenuItem(new MenuItem("Start Game",     HomeState.START_GAME));
+		this.homeMenu.addMenuItem(new MenuItem("Highscore",      HomeState.HIGHSCORE));
 		this.homeMenu.addMenuItem(new MenuItem("Level Designer", HomeState.DESIGN_MODE));
 		this.homeMenu.addMenuItem(new MenuItem("Exit Game",      HomeState.END_GAME));
 
@@ -42,6 +42,9 @@ public class HomeState extends State {
 		switch (action){
 			case HomeState.START_GAME:
 				Application.getStateController().setState(State.PLAY);
+				break;
+			case HomeState.HIGHSCORE:
+				Application.getStateController().setState(State.HIGHSCORE);
 				break;
 			case HomeState.DESIGN_MODE:
 				Application.getStateController().setState(State.DESIGN);
@@ -70,7 +73,6 @@ public class HomeState extends State {
 		case Keyboard.KEY_RETURN:
 			this.performAction(homeMenu.getSelectedItem().getAction());
 			break;
-
 		}
 	}
 
@@ -90,15 +92,7 @@ public class HomeState extends State {
 
 	@Override
 	public void draw() throws IOException {
-		Application.getFieldController().drawField();
-		GL11.glColor4f(0.4f, 0.6f, 0.7f, 1.0f);
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex2i(0,                  0                  );
-		GL11.glVertex2i(0,                  Display.getHeight());
-		GL11.glVertex2i(Display.getWidth(), Display.getHeight());
-		GL11.glVertex2i(Display.getWidth(), 0                  );
-		GL11.glEnd();
-
+		this.drawTransparentOverlay();
 		this.homeMenu.draw();
 	}
 }
