@@ -12,6 +12,7 @@ import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.controller.StateController;
+import ch.bfh.sokobomb.field.DesignField;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.states.State;
 /**
@@ -85,8 +86,11 @@ public class Menu implements Drawable{
 	public void performAction(int action){
 		PlayField field = (PlayField)Application.getFieldController().getField();
 		switch (action){
-		case MenuItem.END_GAME:
-			System.exit(0);
+		case MenuItem.START_GAME:
+			Application.getStateController().setState(State.PLAY);
+			break;
+		case MenuItem.EXIT_GAME:
+			Application.getStateController().setState(State.HOME);
 			break;
 		case MenuItem.RESET_LEVEL:
 			field.restartLevel();
@@ -95,6 +99,12 @@ public class Menu implements Drawable{
 		case MenuItem.RESUME_GAME:
 			Application.getStateController().setState(State.PLAY);
 			break;
+		case MenuItem.DESIGN_MODE:
+			Application.getStateController().setState(State.DESIGN);
+			Application.getFieldController().setField(new DesignField());
+			break;
+		case MenuItem.END_GAME:
+			System.exit(0);
 		case MenuItem.NO_ACTION:
 			//Do nthing
 			break;

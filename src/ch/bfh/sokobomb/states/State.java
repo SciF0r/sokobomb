@@ -27,6 +27,7 @@ public abstract class State {
 	final public static int PLAYER_MOVING = 4;
 	final public static int PLAY          = 5;
 	final public static int WON           = 6;
+	final public static int HOME          = 7;
 
 	/**
 	 * The state id of this state

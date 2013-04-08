@@ -12,7 +12,10 @@ public class MenuItem{
 	final public static int NO_ACTION   = 0;
 	final public static int RESUME_GAME = 1;
 	final public static int RESET_LEVEL = 2;
-	final public static int END_GAME    = 3;
+	final public static int EXIT_GAME   = 3;
+	final public static int START_GAME  = 4;
+	final public static int DESIGN_MODE = 5;
+	final public static int END_GAME    = 6;
 	
 	final private String text;
 	final private int action;

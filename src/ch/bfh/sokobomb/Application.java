@@ -43,7 +43,7 @@ public class Application {
 	 */
 	public static StateController getStateController() {
 		if (Application.stateController == null) {
-			Application.stateController = new StateController(State.PLAY);
+			Application.stateController = new StateController(State.HOME);
 		}
 
 		return Application.stateController;

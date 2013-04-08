@@ -28,9 +28,9 @@ private Menu pauseMenu;
 			e.printStackTrace();
 			System.exit(0);
 		}
-		this.pauseMenu.addMenuItem(new MenuItem("resume Game", MenuItem.RESUME_GAME));
-		this.pauseMenu.addMenuItem(new MenuItem("reset this Level", MenuItem.RESET_LEVEL));
-		this.pauseMenu.addMenuItem(new MenuItem("exit Game", MenuItem.END_GAME));
+		this.pauseMenu.addMenuItem(new MenuItem("Resume Game", MenuItem.RESUME_GAME));
+		this.pauseMenu.addMenuItem(new MenuItem("Reset this Level", MenuItem.RESET_LEVEL));
+		this.pauseMenu.addMenuItem(new MenuItem("End this Game", MenuItem.EXIT_GAME));
 		
 		
 		this.stateId = State.PAUSE;
@@ -57,7 +57,6 @@ private Menu pauseMenu;
 	
 	@Override
 	public void handleMouseOver(Coordinate coordinate){
-//		System.out.println(coordinate.getX() + "|" + coordinate.getY());
 		pauseMenu.checkMousePosition(coordinate);
 	}
 	

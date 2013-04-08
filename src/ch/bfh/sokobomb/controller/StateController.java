@@ -6,6 +6,7 @@ import ch.bfh.sokobomb.model.TileCoordinate;
 import ch.bfh.sokobomb.states.DesignState;
 import ch.bfh.sokobomb.states.EndGameState;
 import ch.bfh.sokobomb.states.HighscoreState;
+import ch.bfh.sokobomb.states.HomeState;
 import ch.bfh.sokobomb.states.PauseState;
 import ch.bfh.sokobomb.states.PlayState;
 import ch.bfh.sokobomb.states.PlayerMovingState;
@@ -50,6 +51,9 @@ public class StateController {
 				break;
 			case State.WON:
 				this.state = new WonState();
+				break;
+			case State.HOME:
+				this.state = new HomeState();
 				break;
 		}
 
