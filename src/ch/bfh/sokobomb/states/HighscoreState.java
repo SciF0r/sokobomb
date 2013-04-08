@@ -4,13 +4,10 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
-import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.datamapper.Highscore;
 import ch.bfh.sokobomb.model.HighscoreItem;
-import ch.bfh.sokobomb.model.HighscoreList;
 import ch.bfh.sokobomb.model.Menu;
 import ch.bfh.sokobomb.model.MenuItem;
 
@@ -24,25 +21,21 @@ public class HighscoreState extends State {
 	final public static int RESUME_GAME = 1;
 	final public static int RESET_LIST  = 2;
 
-	private Menu highscoreList;
+	private Menu highscoreList = new Menu("Highscore");
 	
 	public HighscoreState() {
-/*		try {
+		try {
 			Highscore highscore = new Highscore();
 			for (HighscoreItem item: highscore.getItems()) {
-				this.highscoreList.addMenuItem(new MenuItem(item.getName()));
+				this.highscoreList.addMenuItem(new MenuItem(item.getName(), MenuItem.NO_ACTION));
 			}
 
 			this.stateId = State.HIGHSCORE;
 		}
-		catch (SlickException e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
 		catch (SQLException e) {
 			e.printStackTrace();
 			System.exit(0);
-		}*/
+		}
 	}
 
 	@Override
