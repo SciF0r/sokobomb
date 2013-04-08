@@ -26,14 +26,17 @@ public class Menu implements Drawable {
 	private LinkedList<MenuItem> items;
 	private MenuItem selectedItem;
 	private AngelCodeFont font;
+	private boolean selectable = true;
 	final private String title;
+
+	private int titleOffset = 10;
 
 	public Menu(String title) {
 		this.title        = title;
 		this.selectedItem = null;
 		this.items        = new LinkedList<MenuItem>();
 		try {
-			this.font         = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
+			this.font = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
 		} catch (SlickException e) {
 			e.printStackTrace();
 			System.exit(0);
@@ -112,13 +115,14 @@ public class Menu implements Drawable {
 
 	@Override
 	public void draw() throws IOException {
-		int titleOffset = 10;
 		int titleWidth  = font.getWidth(this.title);
 
 		int x = (Display.getWidth() - titleWidth) / 2;
-		int y = titleOffset;
+		int y = this.titleOffset;
 
-		this.font.drawString(x, y, this.title);
+		if (!this.title.equals("")) {
+			this.font.drawString(x, y, this.title);
+		}
 
 		for (MenuItem item : items) {
 			String text = item.getText();
@@ -129,8 +133,8 @@ public class Menu implements Drawable {
 			item.setMinCoord(new Coordinate(x, y));
 			item.setMaxCoord(new Coordinate(x + font.getWidth(text), y + font.getHeight(text)));
 
-			if (item == this.selectedItem) {
-				this.font.drawString(x, y, text, Color.darkGray);
+			if (item == this.selectedItem && this.selectable) {
+				this.font.drawString(x, y, text, Color.yellow);
 			}
 			else {
 				this.font.drawString(x, y, text);
@@ -149,5 +153,26 @@ public class Menu implements Drawable {
 				this.selectedItem = item;
 			}
 		}
+	}
+
+	/**
+	 * @param selectable Whether the menu items shall be selectable
+	 */
+	public void setSelectable(boolean selectable) {
+		this.selectable = selectable;
+	}
+
+	/**
+	 * @return The title offset
+	 */
+	public int getTitleOffset() {
+		return titleOffset;
+	}
+
+	/**
+	 * @param titleOffset The title offset
+	 */
+	public void setTitleOffset(int titleOffset) {
+		this.titleOffset = titleOffset;
 	}
 }
