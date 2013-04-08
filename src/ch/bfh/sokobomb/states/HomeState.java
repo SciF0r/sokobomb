@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.OutOfBoundsException;
@@ -26,16 +25,9 @@ public class HomeState extends State {
 	final public static int DESIGN_MODE = 2;
 	final public static int END_GAME    = 3;
 
-	private Menu homeMenu;
+	private Menu homeMenu = new Menu("!!Welcome to SokoBomb!!");
 
 	public HomeState() {
-		try {
-			this.homeMenu = new Menu("!!WELCOME TO SOKOBOMB!!");
-		} catch (SlickException e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-
 		this.homeMenu.addMenuItem(new MenuItem("Start Game",     HomeState.START_GAME));
 		this.homeMenu.addMenuItem(new MenuItem("Level Designer", HomeState.DESIGN_MODE));
 		this.homeMenu.addMenuItem(new MenuItem("Exit Game",      HomeState.END_GAME));

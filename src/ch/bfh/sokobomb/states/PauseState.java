@@ -3,7 +3,6 @@ package ch.bfh.sokobomb.states;
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.OutOfBoundsException;
@@ -24,16 +23,9 @@ public class PauseState extends State {
 	final public static int RESET_LEVEL = 2;
 	final public static int EXIT_GAME   = 3;
 
-	private Menu pauseMenu;
+	private Menu pauseMenu = new Menu(":: Game paused ::");
 
 	public PauseState() {
-		try {
-			this.pauseMenu = new Menu("....Game paused....");
-		} catch (SlickException e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-
 		this.pauseMenu.addMenuItem(new MenuItem("Resume Game",      PauseState.RESUME_GAME));
 		this.pauseMenu.addMenuItem(new MenuItem("Reset this Level", PauseState.RESET_LEVEL));
 		this.pauseMenu.addMenuItem(new MenuItem("End this Game",    PauseState.EXIT_GAME));
