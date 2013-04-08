@@ -8,10 +8,12 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.Application;
+import ch.bfh.sokobomb.exception.OutOfBoundsException;
 import ch.bfh.sokobomb.field.DesignField;
 import ch.bfh.sokobomb.model.Menu;
 import ch.bfh.sokobomb.model.MenuItem;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
+import ch.bfh.sokobomb.model.coordinate.DeltaCoordinate;
 
 /**
  * Home screen
@@ -74,21 +76,24 @@ public class HomeState extends State {
 			homeMenu.nextItem(Menu.UP);
 			break;
 		case Keyboard.KEY_RETURN:
-			this.performAction(homeMenu.getSelectedItemAction());
+			this.performAction(homeMenu.getSelectedItem().getAction());
 			break;
 
 		}
 	}
 
 	@Override
-	public void handleMouseOver(Coordinate coordinate){
-		homeMenu.checkMousePosition(coordinate);
+	public void handleMouseMoved(Coordinate coordinate, DeltaCoordinate delta) {
+		homeMenu.selectAtPosition(coordinate);
 	}
 
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
-		homeMenu.mouseAction(coordinate);
-
+		try {
+			this.performAction(homeMenu.getItemAtPosition(coordinate).getAction());
+		} catch (OutOfBoundsException e) {
+			// Ignore
+		}
 	}
 
 	@Override

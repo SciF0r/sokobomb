@@ -9,7 +9,10 @@ import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.datamapper.Highscore;
+import ch.bfh.sokobomb.model.HighscoreItem;
 import ch.bfh.sokobomb.model.HighscoreList;
+import ch.bfh.sokobomb.model.Menu;
+import ch.bfh.sokobomb.model.MenuItem;
 
 /**
  * Shows the current highscore
@@ -18,17 +21,17 @@ import ch.bfh.sokobomb.model.HighscoreList;
  */
 public class HighscoreState extends State {
 
-	private HighscoreList highscoreList;
+	final public static int RESUME_GAME = 1;
+	final public static int RESET_LIST  = 2;
+
+	private Menu highscoreList;
 	
 	public HighscoreState() {
-		try {
+/*		try {
 			Highscore highscore = new Highscore();
-
-			this.highscoreList = new HighscoreList(
-				Display.getWidth(),
-				Display.getHeight(),
-				highscore.getItems()
-			);
+			for (HighscoreItem item: highscore.getItems()) {
+				this.highscoreList.addMenuItem(new MenuItem(item.getName()));
+			}
 
 			this.stateId = State.HIGHSCORE;
 		}
@@ -39,7 +42,7 @@ public class HighscoreState extends State {
 		catch (SQLException e) {
 			e.printStackTrace();
 			System.exit(0);
-		}
+		}*/
 	}
 
 	@Override

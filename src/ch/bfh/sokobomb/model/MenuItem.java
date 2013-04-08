@@ -11,7 +11,7 @@ import ch.bfh.sokobomb.model.coordinate.Coordinate;
 public class MenuItem {
 
 	final public static int NO_ACTION = Integer.MIN_VALUE;
-	
+
 	final private String text;
 	final private int action;
 	private boolean checked;

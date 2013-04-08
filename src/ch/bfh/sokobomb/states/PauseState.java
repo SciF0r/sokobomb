@@ -6,10 +6,12 @@ import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.Application;
+import ch.bfh.sokobomb.exception.OutOfBoundsException;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.Menu;
 import ch.bfh.sokobomb.model.MenuItem;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
+import ch.bfh.sokobomb.model.coordinate.DeltaCoordinate;
 
 /**
  * Shows the pause screen
@@ -52,7 +54,7 @@ public class PauseState extends State {
 				pauseMenu.nextItem(Menu.UP);
 				break;
 			case Keyboard.KEY_RETURN:
-				this.performAction(pauseMenu.getSelectedItemAction());
+				this.performAction(pauseMenu.getSelectedItem().getAction());
 				break;
 		}
 	}
@@ -80,21 +82,23 @@ public class PauseState extends State {
 	}
 
 	@Override
-	public void handleMouseOver(Coordinate coordinate){
-		pauseMenu.checkMousePosition(coordinate);
+	public void handleMouseMoved(Coordinate coordinate, DeltaCoordinate delta) {
+		pauseMenu.selectAtPosition(coordinate);
 	}
 
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
-		pauseMenu.mouseAction(coordinate);
-		
+		try {
+			this.performAction(pauseMenu.getItemAtPosition(coordinate).getAction());
+		} catch (OutOfBoundsException e) {
+			// Ignore
+		}
 	}
 
 	@Override
 	public void draw() throws IOException {
 		Application.getFieldController().drawField();
 		this.drawTransparentOverlay();
-		 
 		this.pauseMenu.draw();
 	}
 }

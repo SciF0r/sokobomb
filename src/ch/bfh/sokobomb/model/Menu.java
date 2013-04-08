@@ -9,6 +9,7 @@ import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
 
+import ch.bfh.sokobomb.exception.OutOfBoundsException;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
 
 /**
@@ -17,19 +18,21 @@ import ch.bfh.sokobomb.model.coordinate.Coordinate;
  * @author Christoph Bruderer
  *
  */
-public class Menu implements Drawable{
+public class Menu implements Drawable {
 
 	final public static int DOWN = 0;
 	final public static int UP   = 1;
 
 	private LinkedList<MenuItem> items;
+	private MenuItem selectedItem;
 	private AngelCodeFont font;
 	final private String title;
 
 	public Menu(String title) throws SlickException {
-		this.title = title;
-		this.items = new LinkedList<MenuItem>();
-		this.font  = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
+		this.title        = title;
+		this.selectedItem = null;
+		this.items        = new LinkedList<MenuItem>();
+		this.font         = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
 	}
 
 	/**
@@ -37,7 +40,10 @@ public class Menu implements Drawable{
 	 */
 	public void addMenuItem(MenuItem item) {
 		items.add(item);
-		items.getFirst().setChecked(true);
+
+		if (this.selectedItem == null) {
+			this.selectedItem = this.items.getFirst();
+		}
 	}
 
 	/**
@@ -67,12 +73,12 @@ public class Menu implements Drawable{
 		}
 
 		MenuItem item;
+
 		while (menuIterator.hasNext()) {
 			item = menuIterator.next();
 
-			if (item.isChecked() && menuIterator.hasNext()) {
-				item.setChecked(false);
-				menuIterator.next().setChecked(true);
+			if (item == this.selectedItem && menuIterator.hasNext()) {
+				this.selectedItem = menuIterator.next();
 				return;
 			}
 		}
@@ -81,31 +87,22 @@ public class Menu implements Drawable{
 	/**
 	 * @return The currently selected item action
 	 */
-	public int getSelectedItemAction() {
-		Iterator<MenuItem> menuIterator = items.iterator();
-
-		MenuItem item;
-		while (menuIterator.hasNext()) {
-			item = menuIterator.next();
-			if (item.isChecked()) {
-				return item.getAction();
-			}
-		}
-
-		return MenuItem.NO_ACTION;
+	public MenuItem getSelectedItem() {
+		return this.selectedItem;
 	}
 
 	/**
-	 * @param coord Handle action according to mouse click
+	 * @param coord Returns the item at the coordinate
+	 * @throws OutOfBoundsException 
 	 */
-	public int mouseAction(Coordinate coord) {
-		for (MenuItem item : items){
+	public MenuItem getItemAtPosition(Coordinate coord) throws OutOfBoundsException {
+		for (MenuItem item : this.items){
 			if (item.containsCoordinate(coord)) {	
-				return item.getAction();
+				return item;
 			}
 		}
-		
-		return MenuItem.NO_ACTION;
+
+		throw new OutOfBoundsException("No item at mouse position");
 	}
 
 	@Override
@@ -127,7 +124,7 @@ public class Menu implements Drawable{
 			item.setMinCoord(new Coordinate(x, y));
 			item.setMaxCoord(new Coordinate(x + font.getWidth(text), y + font.getHeight(text)));
 
-			if (item.isChecked()){
+			if (item == this.selectedItem) {
 				this.font.drawString(x, y, text, Color.darkGray);
 			}
 			else {
@@ -137,26 +134,14 @@ public class Menu implements Drawable{
 	}
 
 	/**
-	 * Check whether the mouse pointer is in a menu item
+	 * Selects the item under the mouse cursor
 	 *
-	 * @param coord
+	 * @param coord The coordinate of the mouse pointer 
 	 */
-	public void checkMousePosition(Coordinate coord) {
-		MenuItem current = null;
-
-		for (MenuItem item : items){
-			if (item.isChecked()){
-				current = item;
-				break;
-			}
-		}
-
+	public void selectAtPosition(Coordinate coord) {
 		for (MenuItem item : items){
 			if (item.containsCoordinate(coord)) {
-				if (!current.equals(null)) {
-					current.setChecked(false);
-				}
-				item.setChecked(true);
+				this.selectedItem = item;
 			}
 		}
 	}

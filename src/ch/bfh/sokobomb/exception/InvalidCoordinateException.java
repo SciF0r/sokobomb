@@ -8,7 +8,7 @@ package ch.bfh.sokobomb.exception;
 public class InvalidCoordinateException extends RuntimeException {
 
 	/**
-	 * Generated serial id
+	 * Generated serial
 	 */
 	private static final long serialVersionUID = -3153307956424263199L;
 
