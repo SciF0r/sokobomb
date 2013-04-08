@@ -6,6 +6,7 @@ import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.Application;
+import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.Menu;
 import ch.bfh.sokobomb.model.MenuItem;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
@@ -17,9 +18,11 @@ import ch.bfh.sokobomb.model.coordinate.Coordinate;
  */
 public class PauseState extends State {
 
+	final public static int RESUME_GAME = 1;
+	final public static int RESET_LEVEL = 2;
+	final public static int EXIT_GAME   = 3;
 
-
-private Menu pauseMenu;
+	private Menu pauseMenu;
 
 	public PauseState() {
 		try {
@@ -28,11 +31,11 @@ private Menu pauseMenu;
 			e.printStackTrace();
 			System.exit(0);
 		}
-		this.pauseMenu.addMenuItem(new MenuItem("Resume Game", MenuItem.RESUME_GAME));
-		this.pauseMenu.addMenuItem(new MenuItem("Reset this Level", MenuItem.RESET_LEVEL));
-		this.pauseMenu.addMenuItem(new MenuItem("End this Game", MenuItem.EXIT_GAME));
-		
-		
+
+		this.pauseMenu.addMenuItem(new MenuItem("Resume Game",      PauseState.RESUME_GAME));
+		this.pauseMenu.addMenuItem(new MenuItem("Reset this Level", PauseState.RESET_LEVEL));
+		this.pauseMenu.addMenuItem(new MenuItem("End this Game",    PauseState.EXIT_GAME));
+
 		this.stateId = State.PAUSE;
 	}
 
@@ -49,29 +52,44 @@ private Menu pauseMenu;
 				pauseMenu.nextItem(Menu.UP);
 				break;
 			case Keyboard.KEY_RETURN:
-				pauseMenu.performAction(pauseMenu.keyboardAction());
+				this.performAction(pauseMenu.getSelectedItemAction());
 				break;
-			
 		}
 	}
-	
+
+	/**
+	 * @param action Perform action
+	 */
+	public void performAction(int action){
+		switch (action){
+			case PauseState.EXIT_GAME:
+				Application.getStateController().setState(State.HOME);
+				break;
+			case PauseState.RESET_LEVEL:
+				PlayField field = (PlayField)Application.getFieldController().getField();
+				field.restartLevel();
+				Application.getStateController().setState(State.PLAY);
+				break;
+			case PauseState.RESUME_GAME:
+				Application.getStateController().setState(State.PLAY);
+				break;
+			case MenuItem.NO_ACTION:
+				// Do nothing
+				break;
+		}
+	}
+
 	@Override
 	public void handleMouseOver(Coordinate coordinate){
 		pauseMenu.checkMousePosition(coordinate);
 	}
-	
-	
-	
 
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
 		pauseMenu.mouseAction(coordinate);
 		
 	}
-	
-	
 
-	
 	@Override
 	public void draw() throws IOException {
 		Application.getFieldController().drawField();

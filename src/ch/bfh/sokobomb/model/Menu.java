@@ -5,144 +5,127 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
 
-import ch.bfh.sokobomb.Application;
-import ch.bfh.sokobomb.controller.StateController;
-import ch.bfh.sokobomb.field.DesignField;
-import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
-import ch.bfh.sokobomb.states.State;
+
 /**
- * UNDER CONSTRUCTION!!!
- * 
  * Draws a Title and a list of menu Items 
  * 
  * @author Christoph Bruderer
  *
  */
 public class Menu implements Drawable{
+
 	final public static int DOWN = 0;
-	final public static int UP = 1;
-	private int width,height;
+	final public static int UP   = 1;
+
 	private LinkedList<MenuItem> items;
-	private Iterator<MenuItem> menuIterator;
 	private AngelCodeFont font;
 	final private String title;
-	private String empty = "EMPTY";
 
-	public Menu(String title) throws SlickException{
+	public Menu(String title) throws SlickException {
 		this.title = title;
 		this.items = new LinkedList<MenuItem>();
-		this.font = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
-		this.width = Display.getWidth();
-		this.height = Display.getHeight();
+		this.font  = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
 	}
 
-	public void addMenuItem(MenuItem item){
+	/**
+	 * @param item Item to be added to the menu
+	 */
+	public void addMenuItem(MenuItem item) {
 		items.add(item);
 		items.getFirst().setChecked(true);
 	}
 
-
-	public LinkedList<MenuItem> getItems(){
-		return items;
+	/**
+	 * @return All menu items
+	 */
+	public LinkedList<MenuItem> getItems() {
+		return this.items;
 	}
 
-	public void nextItem(int order){	
-		switch ( order){
-		case DOWN:
-			menuIterator = items.iterator();
-			break;
-		case UP:
-			menuIterator = items.descendingIterator();
-			break;
+	/**
+	 * Select the next item
+	 *
+	 * @param direction
+	 */
+	public void nextItem(int direction) {
+		Iterator<MenuItem> menuIterator;
+
+		switch (direction) {
+			case DOWN:
+				menuIterator = this.items.iterator();
+				break;
+			case UP:
+				menuIterator = this.items.descendingIterator();
+				break;
+			default:
+				throw new IllegalArgumentException("Invalid direction given");
 		}
 
-		while(menuIterator.hasNext()){
-			MenuItem item = menuIterator.next();
-			if (item.isChecked() && menuIterator.hasNext()){
+		MenuItem item;
+		while (menuIterator.hasNext()) {
+			item = menuIterator.next();
+
+			if (item.isChecked() && menuIterator.hasNext()) {
 				item.setChecked(false);
 				menuIterator.next().setChecked(true);
-			}	
-		}
-	}
-
-	public int keyboardAction(){
-		this.menuIterator = items.iterator();
-		int action=MenuItem.NO_ACTION;
-		while(menuIterator.hasNext()){
-			MenuItem item = menuIterator.next();
-			if (item.isChecked()){
-				action = item.getAction();
-				break;
+				return;
 			}
 		}
-		return action;
 	}
 
-	public void performAction(int action){
-		PlayField field = (PlayField)Application.getFieldController().getField();
-		switch (action){
-		case MenuItem.START_GAME:
-			Application.getStateController().setState(State.PLAY);
-			break;
-		case MenuItem.EXIT_GAME:
-			Application.getStateController().setState(State.HOME);
-			break;
-		case MenuItem.RESET_LEVEL:
-			field.restartLevel();
-			Application.getStateController().setState(State.PLAY);
-			break;
-		case MenuItem.RESUME_GAME:
-			Application.getStateController().setState(State.PLAY);
-			break;
-		case MenuItem.DESIGN_MODE:
-			Application.getStateController().setState(State.DESIGN);
-			Application.getFieldController().setField(new DesignField());
-			break;
-		case MenuItem.END_GAME:
-			System.exit(0);
-		case MenuItem.NO_ACTION:
-			//Do nthing
-			break;
+	/**
+	 * @return The currently selected item action
+	 */
+	public int getSelectedItemAction() {
+		Iterator<MenuItem> menuIterator = items.iterator();
 
+		MenuItem item;
+		while (menuIterator.hasNext()) {
+			item = menuIterator.next();
+			if (item.isChecked()) {
+				return item.getAction();
+			}
 		}
 
+		return MenuItem.NO_ACTION;
 	}
 
-	public void mouseAction(Coordinate coord){
-		int action = MenuItem.NO_ACTION;
+	/**
+	 * @param coord Handle action according to mouse click
+	 */
+	public int mouseAction(Coordinate coord) {
 		for (MenuItem item : items){
-			if (item.containsCoordinate(coord)){	
-				action = item.getAction();
-				break;
+			if (item.containsCoordinate(coord)) {	
+				return item.getAction();
 			}
 		}
-		this.performAction(action);
+		
+		return MenuItem.NO_ACTION;
 	}
-
 
 	@Override
 	public void draw() throws IOException {
 		int titleOffset = 10;
-		int titleWidth = font.getWidth(this.title);
+		int titleWidth  = font.getWidth(this.title);
 
-		int x = (this.width - titleWidth) / 2;
+		int x = (Display.getWidth() - titleWidth) / 2;
 		int y = titleOffset;
 
 		this.font.drawString(x, y, this.title);
 
-		for (MenuItem item : items ){
+		for (MenuItem item : items) {
 			String text = item.getText();
-			x = (this.width - font.getWidth(text)) / 2;
+
+			x = (Display.getWidth() - font.getWidth(text)) / 2;
 			y += 1.5 * font.getHeight(text);
 
-			item.setMinCoord(new Coordinate(x,y));
-			item.setMaxCoord(new Coordinate(x+font.getWidth(text),y+font.getHeight(text)));
+			item.setMinCoord(new Coordinate(x, y));
+			item.setMaxCoord(new Coordinate(x + font.getWidth(text), y + font.getHeight(text)));
 
 			if (item.isChecked()){
 				this.font.drawString(x, y, text, Color.darkGray);
@@ -153,22 +136,28 @@ public class Menu implements Drawable{
 		}
 	}
 
-	public void checkMousePosition(Coordinate coord){
+	/**
+	 * Check whether the mouse pointer is in a menu item
+	 *
+	 * @param coord
+	 */
+	public void checkMousePosition(Coordinate coord) {
 		MenuItem current = null;
+
 		for (MenuItem item : items){
 			if (item.isChecked()){
 				current = item;
 				break;
 			}
 		}
+
 		for (MenuItem item : items){
-			if (item.containsCoordinate(coord)){
-				if (!current.equals(null)){
+			if (item.containsCoordinate(coord)) {
+				if (!current.equals(null)) {
 					current.setChecked(false);
 				}
 				item.setChecked(true);
 			}
 		}
 	}
-
 }

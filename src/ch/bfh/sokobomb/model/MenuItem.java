@@ -1,23 +1,16 @@
 package ch.bfh.sokobomb.model;
 
-import java.io.IOException;
-
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
 
 /**
- * UNDER CONSTRUCTION!!!
+ * A menu item
  * 
  * @author Christoph Bruderer
  *
  */
-public class MenuItem{
-	final public static int NO_ACTION   = 0;
-	final public static int RESUME_GAME = 1;
-	final public static int RESET_LEVEL = 2;
-	final public static int EXIT_GAME   = 3;
-	final public static int START_GAME  = 4;
-	final public static int DESIGN_MODE = 5;
-	final public static int END_GAME    = 6;
+public class MenuItem {
+
+	final public static int NO_ACTION = Integer.MIN_VALUE;
 	
 	final private String text;
 	final private int action;
@@ -25,14 +18,14 @@ public class MenuItem{
 	private Coordinate min;
 	private Coordinate max;
 	
-	public MenuItem(String text, int action){
-		this.text=text;
-		this.action = action;
-		this.checked=false;
+	public MenuItem(String text, int action) {
+		this.text    = text;
+		this.action  = action;
+		this.checked = false;
 	}
 	
-	public void setChecked(boolean b){
-		this.checked=b;
+	public void setChecked(boolean checked){
+		this.checked = checked;
 	}
 	
 	public boolean isChecked(){
@@ -64,7 +57,6 @@ public class MenuItem{
 	
 	public boolean containsCoordinate(Coordinate coord){
 		return coord.getX() > min.getX() && coord.getX() < max.getX() &&
-				coord.getY() > min.getY() && coord.getY() < max.getY();
+               coord.getY() > min.getY() && coord.getY() < max.getY();
 	}
-
 }

@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
 
 import ch.bfh.sokobomb.Application;
+import ch.bfh.sokobomb.field.DesignField;
 import ch.bfh.sokobomb.model.Menu;
 import ch.bfh.sokobomb.model.MenuItem;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
@@ -19,6 +20,10 @@ import ch.bfh.sokobomb.model.coordinate.Coordinate;
  */
 public class HomeState extends State {
 
+	final public static int START_GAME  = 1;
+	final public static int DESIGN_MODE = 2;
+	final public static int END_GAME    = 3;
+
 	private Menu homeMenu;
 
 	public HomeState() {
@@ -29,11 +34,31 @@ public class HomeState extends State {
 			System.exit(0);
 		}
 
-		this.homeMenu.addMenuItem(new MenuItem("Start Game", MenuItem.START_GAME));
-		this.homeMenu.addMenuItem(new MenuItem("Level Designer", MenuItem.DESIGN_MODE));
-		this.homeMenu.addMenuItem(new MenuItem("Exit Game", MenuItem.END_GAME));
+		this.homeMenu.addMenuItem(new MenuItem("Start Game",     HomeState.START_GAME));
+		this.homeMenu.addMenuItem(new MenuItem("Level Designer", HomeState.DESIGN_MODE));
+		this.homeMenu.addMenuItem(new MenuItem("Exit Game",      HomeState.END_GAME));
 
 		this.stateId = State.HOME;
+	}
+
+	/**
+	 * @param action Perform action
+	 */
+	public void performAction(int action){
+		switch (action){
+			case HomeState.START_GAME:
+				Application.getStateController().setState(State.PLAY);
+				break;
+			case HomeState.DESIGN_MODE:
+				Application.getStateController().setState(State.DESIGN);
+				Application.getFieldController().setField(new DesignField());
+				break;
+			case HomeState.END_GAME:
+				System.exit(0);
+			case MenuItem.NO_ACTION:
+				// Do nothing
+				break;
+		}
 	}
 
 	@Override
@@ -49,7 +74,7 @@ public class HomeState extends State {
 			homeMenu.nextItem(Menu.UP);
 			break;
 		case Keyboard.KEY_RETURN:
-			homeMenu.performAction(homeMenu.keyboardAction());
+			this.performAction(homeMenu.getSelectedItemAction());
 			break;
 
 		}
