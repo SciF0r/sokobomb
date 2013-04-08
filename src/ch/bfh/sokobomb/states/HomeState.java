@@ -12,7 +12,13 @@ import ch.bfh.sokobomb.model.Menu;
 import ch.bfh.sokobomb.model.MenuItem;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
 
+/**
+ * Home screen
+ *
+ * @author Christoph Bruderer
+ */
 public class HomeState extends State {
+
 	private Menu homeMenu;
 
 	public HomeState() {
@@ -22,10 +28,10 @@ public class HomeState extends State {
 			e.printStackTrace();
 			System.exit(0);
 		}
-		this.homeMenu.addMenuItem(new MenuItem("start Game", MenuItem.START_GAME));
-		this.homeMenu.addMenuItem(new MenuItem("Level Designer", MenuItem.DESIGN_MODE));
-		this.homeMenu.addMenuItem(new MenuItem("exit Game", MenuItem.END_GAME));
 
+		this.homeMenu.addMenuItem(new MenuItem("Start Game", MenuItem.START_GAME));
+		this.homeMenu.addMenuItem(new MenuItem("Level Designer", MenuItem.DESIGN_MODE));
+		this.homeMenu.addMenuItem(new MenuItem("Exit Game", MenuItem.END_GAME));
 
 		this.stateId = State.HOME;
 	}
@@ -54,30 +60,23 @@ public class HomeState extends State {
 		homeMenu.checkMousePosition(coordinate);
 	}
 
-
-
-
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
 		homeMenu.mouseAction(coordinate);
 
 	}
 
-
-
-
 	@Override
 	public void draw() throws IOException {
 		Application.getFieldController().drawField();
 		GL11.glColor4f(0.4f, 0.6f, 0.7f, 1.0f);
 		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex2i(0,                0                );
-		GL11.glVertex2i(0,                Display.getHeight());
+		GL11.glVertex2i(0,                  0                  );
+		GL11.glVertex2i(0,                  Display.getHeight());
 		GL11.glVertex2i(Display.getWidth(), Display.getHeight());
-		GL11.glVertex2i(Display.getWidth(), 0                );
+		GL11.glVertex2i(Display.getWidth(), 0                  );
 		GL11.glEnd();
 
 		this.homeMenu.draw();
 	}
 }
-
