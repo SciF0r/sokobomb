@@ -7,9 +7,12 @@ import org.lwjgl.input.Keyboard;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.datamapper.Highscore;
+import ch.bfh.sokobomb.exception.OutOfBoundsException;
 import ch.bfh.sokobomb.model.HighscoreItem;
 import ch.bfh.sokobomb.model.Menu;
 import ch.bfh.sokobomb.model.MenuItem;
+import ch.bfh.sokobomb.model.coordinate.Coordinate;
+import ch.bfh.sokobomb.model.coordinate.DeltaCoordinate;
 
 /**
  * Shows the current highscore
@@ -18,8 +21,7 @@ import ch.bfh.sokobomb.model.MenuItem;
  */
 public class HighscoreState extends State {
 
-	final public static int RESUME_GAME = 1;
-	final public static int RESET_LIST  = 2;
+	final public static int BACK = 1;
 
 	private Menu highscoreList = new Menu("Highscore");
 	private Menu highscoreMenu = new Menu("");
@@ -36,7 +38,7 @@ public class HighscoreState extends State {
 			this.stateId = State.HIGHSCORE;
 
 			this.highscoreMenu.setMenuOffset(this.highscoreList.getNextY() + 20);
-			this.highscoreMenu.addMenuItem("Resume game", HighscoreState.RESUME_GAME);
+			this.highscoreMenu.addMenuItem("Return to menu", HighscoreState.BACK);
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -56,12 +58,26 @@ public class HighscoreState extends State {
 		}
 	}
 
+	@Override
+	public void handleMouseMoved(Coordinate coordinate, DeltaCoordinate delta) {
+		this.highscoreMenu.selectAtPosition(coordinate);
+	}
+
+	@Override
+	public void handleLeftClick(Coordinate coordinate) {
+		try {
+			this.performAction(highscoreMenu.getItemAtPosition(coordinate).getAction());
+		} catch (OutOfBoundsException e) {
+			// Ignore
+		}
+	}
+
 	/**
 	 * @param action Perform action
 	 */
 	public void performAction(int action){
 		switch (action){
-			case HighscoreState.RESUME_GAME:
+			case HighscoreState.BACK:
 				Application.getStateController().setState(State.HOME);
 				break;
 			case MenuItem.NO_ACTION:
