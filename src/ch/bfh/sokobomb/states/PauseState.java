@@ -26,9 +26,9 @@ public class PauseState extends State {
 	private Menu pauseMenu = new Menu(":: Game paused ::");
 
 	public PauseState() {
-		this.pauseMenu.addMenuItem(new MenuItem("Resume Game",      PauseState.RESUME_GAME));
-		this.pauseMenu.addMenuItem(new MenuItem("Reset this Level", PauseState.RESET_LEVEL));
-		this.pauseMenu.addMenuItem(new MenuItem("End this Game",    PauseState.EXIT_GAME));
+		this.pauseMenu.addMenuItem("Resume Game",      PauseState.RESUME_GAME);
+		this.pauseMenu.addMenuItem("Reset this Level", PauseState.RESET_LEVEL);
+		this.pauseMenu.addMenuItem("End this Game",    PauseState.EXIT_GAME);
 
 		this.stateId = State.PAUSE;
 	}

@@ -28,13 +28,13 @@ public class HighscoreState extends State {
 		try {
 			Highscore highscore = new Highscore();
 			for (HighscoreItem item: highscore.getItems()) {
-				this.highscoreList.addMenuItem(new MenuItem(item.toString(), MenuItem.NO_ACTION));
+				this.highscoreList.addMenuItem(item.toString(), MenuItem.NO_ACTION);
 			}
 
 			this.stateId = State.HIGHSCORE;
 
 			this.highscoreMenu.setTitleOffset(100);
-			this.highscoreMenu.addMenuItem(new MenuItem("Resume game", HighscoreState.RESUME_GAME));
+			this.highscoreMenu.addMenuItem("Resume game", HighscoreState.RESUME_GAME);
 		}
 		catch (SQLException e) {
 			e.printStackTrace();

@@ -27,10 +27,10 @@ public class HomeState extends State {
 	private Menu homeMenu = new Menu("!!Welcome to SokoBomb!!");
 
 	public HomeState() {
-		this.homeMenu.addMenuItem(new MenuItem("Start Game",     HomeState.START_GAME));
-		this.homeMenu.addMenuItem(new MenuItem("Highscore",      HomeState.HIGHSCORE));
-		this.homeMenu.addMenuItem(new MenuItem("Level Designer", HomeState.DESIGN_MODE));
-		this.homeMenu.addMenuItem(new MenuItem("Exit Game",      HomeState.END_GAME));
+		this.homeMenu.addMenuItem("Start Game",     HomeState.START_GAME);
+		this.homeMenu.addMenuItem("Highscore",      HomeState.HIGHSCORE);
+		this.homeMenu.addMenuItem("Level Designer", HomeState.DESIGN_MODE);
+		this.homeMenu.addMenuItem("Exit Game",      HomeState.END_GAME);
 
 		this.stateId = State.HOME;
 	}

@@ -15,40 +15,38 @@ public class MenuItem {
 	final private String text;
 	final private int action;
 
-	private Coordinate min;
-	private Coordinate max;
-	
-	public MenuItem(String text, int action) {
-		this.text   = text;
-		this.action = action;
+	private Coordinate position;
+	private Coordinate maxCoordinate;
+
+	public MenuItem(String text, int action, Coordinate position, int width, int height) {
+		this.text     = text;
+		this.action   = action;
+		this.position = position;
+
+		this.maxCoordinate = new Coordinate(
+			position.getX() + width,
+			position.getY() + height
+		);
 	}
 
-	public String getText(){
+	public String getText() {
 		return this.text;
 	}
 
-	public int getAction(){
+	public int getAction() {
 		return this.action;
 	}
 
-	public void setMinCoord(Coordinate min){
-		this.min = min;
+	public Coordinate getMinCoordinate() {
+		return this.position;
 	}
 
-	public Coordinate getMinCoord(){
-		return min;
+	public Coordinate getMaxCoordinate() {
+		return this.maxCoordinate;
 	}
 
-	public void setMaxCoord(Coordinate max){
-		this.max = max;
-	}
-
-	public Coordinate getMaxCoord(){
-		return max;
-	}
-
-	public boolean containsCoordinate(Coordinate coord){
-		return coord.getX() > min.getX() && coord.getX() < max.getX() &&
-               coord.getY() > min.getY() && coord.getY() < max.getY();
+	public boolean containsCoordinate(Coordinate coord) {
+		return coord.getX() > this.getMinCoordinate().getX() && coord.getX() < this.getMaxCoordinate().getX() &&
+               coord.getY() > this.getMinCoordinate().getY() && coord.getY() < this.getMaxCoordinate().getY();
 	}
 }

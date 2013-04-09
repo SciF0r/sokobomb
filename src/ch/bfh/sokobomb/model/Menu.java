@@ -16,25 +16,27 @@ import ch.bfh.sokobomb.model.coordinate.Coordinate;
  * Draws a Title and a list of menu Items 
  * 
  * @author Christoph Bruderer
- *
+ * @author Denis Simonet
  */
 public class Menu implements Drawable {
 
 	final public static int DOWN = 0;
 	final public static int UP   = 1;
 
+	final private String title;
+
 	private LinkedList<MenuItem> items;
 	private MenuItem selectedItem;
 	private AngelCodeFont font;
-	final private String title;
 
-	private int titleOffset = 10;
+	private int titleOffset    = 10;
 	private double lineSpacing = 1.5;
 
 	public Menu(String title) {
 		this.title        = title;
 		this.selectedItem = null;
 		this.items        = new LinkedList<MenuItem>();
+
 		try {
 			this.font = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
 		} catch (SlickException e) {
@@ -46,12 +48,20 @@ public class Menu implements Drawable {
 	/**
 	 * @param item Item to be added to the menu
 	 */
-	public void addMenuItem(MenuItem item) {
-		String text = item.getText();
+	public void addMenuItem(String text, int action) {
+		int titleHeight = this.title.equals("") ? 0 : (int)(this.titleOffset + font.getHeight(this.title) * this.lineSpacing);
+
 		int x = (Display.getWidth() - font.getWidth(text)) / 2;
-		int y = (int) (this.lineSpacing * font.getLineHeight() * this.items.size() + this.titleOffset + font.getHeight(this.title)* this.lineSpacing);
-		item.setMinCoord(new Coordinate(x, y));
-		item.setMaxCoord(new Coordinate(x + font.getWidth(text), y +font.getLineHeight()));
+		int y = (int)(this.lineSpacing * font.getLineHeight() * (this.items.size() + 1) + titleHeight);
+
+		MenuItem item = new MenuItem(
+			text,
+			action,
+			new Coordinate(x, y),
+			font.getWidth(text),
+			font.getHeight(text)
+		);
+
 		items.add(item);
 
 		if (this.selectedItem == null) {
@@ -120,26 +130,21 @@ public class Menu implements Drawable {
 
 	@Override
 	public void draw() throws IOException {
-		int titleWidth  = font.getWidth(this.title);
-
-		int x = (Display.getWidth() - titleWidth) / 2;
-		int y = this.titleOffset;
-		
 		if (!this.title.equals("")) {
+			int x = (Display.getWidth() - this.font.getWidth(this.title)) / 2;
+			int y = this.titleOffset;
+
 			this.font.drawString(x, y, this.title);
 		}
 
 		for (MenuItem item : items) {
-			String text = item.getText();
-
-			x = (Display.getWidth() - font.getWidth(text)) / 2;
-			y += this.lineSpacing * font.getLineHeight();
+			Coordinate position = item.getMinCoordinate();
 
 			if (item == this.selectedItem) {
-				this.font.drawString(x, y, text, Color.yellow);
+				this.font.drawString(position.getX(), position.getY(), item.getText(), Color.yellow);
 			}
 			else {
-				this.font.drawString(x, y, text);
+				this.font.drawString(position.getX(), position.getY(), item.getText());
 			}
 		}
 	}
