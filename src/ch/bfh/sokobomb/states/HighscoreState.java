@@ -31,9 +31,11 @@ public class HighscoreState extends State {
 				this.highscoreList.addMenuItem(item.toString(), MenuItem.NO_ACTION);
 			}
 
+			this.highscoreList.setSelectable(false);
+
 			this.stateId = State.HIGHSCORE;
 
-			this.highscoreMenu.setTitleOffset(100);
+			this.highscoreMenu.setMenuOffset(this.highscoreList.getNextY() + 20);
 			this.highscoreMenu.addMenuItem("Resume game", HighscoreState.RESUME_GAME);
 		}
 		catch (SQLException e) {

@@ -29,8 +29,9 @@ public class Menu implements Drawable {
 	private MenuItem selectedItem;
 	private AngelCodeFont font;
 
-	private int titleOffset    = 10;
+	private int menuOffset     = 10;
 	private double lineSpacing = 1.5;
+	private boolean selectable = true;
 
 	public Menu(String title) {
 		this.title        = title;
@@ -49,15 +50,15 @@ public class Menu implements Drawable {
 	 * @param item Item to be added to the menu
 	 */
 	public void addMenuItem(String text, int action) {
-		int titleHeight = this.title.equals("") ? 0 : (int)(this.titleOffset + font.getHeight(this.title) * this.lineSpacing);
-
 		int x = (Display.getWidth() - font.getWidth(text)) / 2;
-		int y = (int)(this.lineSpacing * font.getLineHeight() * (this.items.size() + 1) + titleHeight);
 
 		MenuItem item = new MenuItem(
 			text,
 			action,
-			new Coordinate(x, y),
+			new Coordinate(
+				x,
+				this.getNextY()
+			),
 			font.getWidth(text),
 			font.getHeight(text)
 		);
@@ -67,6 +68,12 @@ public class Menu implements Drawable {
 		if (this.selectedItem == null) {
 			this.selectedItem = this.items.getFirst();
 		}
+	}
+
+	public int getNextY() {
+		int titleHeight = this.title.equals("") ? 0 : (int)(font.getHeight(this.title) * this.lineSpacing);
+
+		return this.menuOffset + (int)(this.lineSpacing * font.getLineHeight() * this.items.size() + titleHeight);
 	}
 
 	/**
@@ -132,7 +139,7 @@ public class Menu implements Drawable {
 	public void draw() throws IOException {
 		if (!this.title.equals("")) {
 			int x = (Display.getWidth() - this.font.getWidth(this.title)) / 2;
-			int y = this.titleOffset;
+			int y = this.menuOffset;
 
 			this.font.drawString(x, y, this.title);
 		}
@@ -140,7 +147,7 @@ public class Menu implements Drawable {
 		for (MenuItem item : items) {
 			Coordinate position = item.getMinCoordinate();
 
-			if (item == this.selectedItem) {
+			if (this.selectable && item == this.selectedItem) {
 				this.font.drawString(position.getX(), position.getY(), item.getText(), Color.yellow);
 			}
 			else {
@@ -165,14 +172,21 @@ public class Menu implements Drawable {
 	/**
 	 * @return The title offset
 	 */
-	public int getTitleOffset() {
-		return titleOffset;
+	public int getMenuOffset() {
+		return menuOffset;
 	}
 
 	/**
 	 * @param titleOffset The title offset
 	 */
-	public void setTitleOffset(int titleOffset) {
-		this.titleOffset = titleOffset;
+	public void setMenuOffset(int titleOffset) {
+		this.menuOffset = titleOffset;
+	}
+
+	/**
+	 * @param selectable Whether the menu shall be selectable
+	 */
+	public void setSelectable(boolean selectable) {
+		this.selectable = selectable;
 	}
 }
