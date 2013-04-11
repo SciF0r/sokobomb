@@ -7,7 +7,7 @@ import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
-import ch.bfh.sokobomb.path.Path;
+import ch.bfh.sokobomb.solver.Path;
 
 /**
  * This state moves the player along a given path

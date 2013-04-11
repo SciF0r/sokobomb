@@ -16,7 +16,7 @@ import ch.bfh.sokobomb.model.tiles.Target;
 import ch.bfh.sokobomb.model.tiles.Wall;
 import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
-import ch.bfh.sokobomb.path.DijkstraNode;
+import ch.bfh.sokobomb.solver.DijkstraNode;
 
 /**
  * A general field with items, bombs and player, cache, etc.

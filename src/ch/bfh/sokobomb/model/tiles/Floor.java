@@ -1,7 +1,7 @@
 package ch.bfh.sokobomb.model.tiles;
 
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
-import ch.bfh.sokobomb.path.DijkstraNode;
+import ch.bfh.sokobomb.solver.DijkstraNode;
 import ch.bfh.sokobomb.util.Tiles;
 
 

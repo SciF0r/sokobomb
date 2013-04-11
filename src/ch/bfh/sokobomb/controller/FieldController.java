@@ -7,7 +7,7 @@ import ch.bfh.sokobomb.field.Field;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 import ch.bfh.sokobomb.parser.Token;
-import ch.bfh.sokobomb.path.DijkstraNode;
+import ch.bfh.sokobomb.solver.DijkstraNode;
 
 /**
  * Manage fields

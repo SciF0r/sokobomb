@@ -12,7 +12,7 @@ import ch.bfh.sokobomb.model.tiles.Floor;
 import ch.bfh.sokobomb.model.tiles.Tile;
 import ch.bfh.sokobomb.model.tiles.Wall;
 import ch.bfh.sokobomb.parser.Token;
-import ch.bfh.sokobomb.path.DijkstraNode;
+import ch.bfh.sokobomb.solver.DijkstraNode;
 
 /**
  * This state allows you to draw a field
