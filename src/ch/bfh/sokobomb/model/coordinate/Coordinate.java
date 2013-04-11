@@ -57,6 +57,7 @@ public class Coordinate {
 
     @Override
     public int hashCode() {
-    	return this.x * 2 + this.y * 3;
+    	// Cantor pairing function http://en.wikipedia.org/wiki/Cantor_pairing_function
+    	return (int)(0.5 * (x + y) * (x + y + 1) + y);
     }
 }
