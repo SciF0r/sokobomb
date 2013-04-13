@@ -11,10 +11,14 @@ public class Coordinate {
 
 	final private int x;
 	final private int y;
+	final private int hash;
 
 	public Coordinate(int x, int y) {
 		this.x = x;
 		this.y = y;
+
+    	// Cantor pairing function http://en.wikipedia.org/wiki/Cantor_pairing_function
+		this.hash = (int)(0.5 * (x + y) * (x + y + 1) + y);
 	}
 
 	/**
@@ -43,21 +47,25 @@ public class Coordinate {
 		if (this == object) {
 			return true;
 		}
-		else if (object instanceof Coordinate) {
-			Coordinate coordinate = (Coordinate)object;
 
-			if (this.x == coordinate.x && this.y == coordinate.y) {
-				return true;
-			}
-	  
+		if (object == null) {
+			return false;
+		}
+		else if (!(object instanceof Coordinate)) {
+			return false;
 		}
 
-		return false;
+		Coordinate coordinate = (Coordinate)object;
+
+		if (this.hashCode() != coordinate.hashCode()) {
+			return false;
+		}
+
+		return true;
 	}
 
     @Override
     public int hashCode() {
-    	// Cantor pairing function http://en.wikipedia.org/wiki/Cantor_pairing_function
-    	return (int)(0.5 * (x + y) * (x + y + 1) + y);
+    	return this.hash;
     }
 }
