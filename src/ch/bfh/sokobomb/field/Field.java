@@ -13,6 +13,7 @@ import ch.bfh.sokobomb.model.tiles.Bomb;
 import ch.bfh.sokobomb.model.tiles.Floor;
 import ch.bfh.sokobomb.model.tiles.Player;
 import ch.bfh.sokobomb.model.tiles.Target;
+import ch.bfh.sokobomb.model.tiles.Tile;
 import ch.bfh.sokobomb.model.tiles.Wall;
 import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
@@ -25,9 +26,10 @@ import ch.bfh.sokobomb.solver.DijkstraNode;
  */
 public abstract class Field implements Cloneable {
 
-	protected Stack<Field> fieldHistory   = new Stack<Field>();
-	protected LinkedList<Bomb> bombs      = new LinkedList<Bomb>();
-	protected FieldCache cache            = new FieldCache();
+	protected Stack<Field> fieldHistory = new Stack<Field>();
+	protected LinkedList<Bomb> bombs    = new LinkedList<Bomb>();
+	protected LinkedList<Tile> targets  = new LinkedList<Tile>();
+	protected FieldCache cache          = new FieldCache();
 	protected Player player;
 
 	/**
@@ -133,9 +135,9 @@ public abstract class Field implements Cloneable {
 	 * Draw the field according to state  
 	 */
 	public void draw() {
-		Application.getStateController().draw();
-		Display.update();
 		Application.getStateController().pollInput();
+		Application.getStateController().draw();
+		Display.sync(60);
 	};
 
 	/**
@@ -176,6 +178,7 @@ public abstract class Field implements Cloneable {
 				break;
 			case Token.TARGET:
 				node = new Target(Token.TARGET, token.coordinate);
+				
 				break;
 			case Token.BOMB_START:
 				node = new Floor(Token.FLOOR, token.coordinate);
@@ -267,4 +270,31 @@ public abstract class Field implements Cloneable {
 	 * Adds current field to history
 	 */
 	abstract public void addFieldToHistory();
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null) {
+			return false;
+		}
+
+		if (!(obj instanceof Field)) {
+			return false;
+		}
+
+		Field other = (Field)obj;
+
+		if (!this.bombs.equals(other.bombs)) {
+			return false;
+		}
+
+		if (this.player.getCoordinate() != other.player.getCoordinate()) {
+			return false;
+		}
+
+		return true;
+	}
 }
