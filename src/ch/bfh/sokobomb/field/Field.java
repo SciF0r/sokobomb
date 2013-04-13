@@ -137,7 +137,6 @@ public abstract class Field implements Cloneable {
 	public void draw() {
 		Application.getStateController().pollInput();
 		Application.getStateController().draw();
-		Display.sync(60);
 	};
 
 	/**
