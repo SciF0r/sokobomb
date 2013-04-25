@@ -1,12 +1,15 @@
-package ch.bfh.sokobomb.states;
+package ch.bfh.sokobomb.state;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
+import ch.bfh.sokobomb.Application;
+import ch.bfh.sokobomb.command.Command;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
 import ch.bfh.sokobomb.model.coordinate.DeltaCoordinate;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
@@ -17,6 +20,8 @@ import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
  * @author Denis Simonet
  */
 public abstract class State {
+
+	protected LinkedList<Command> commands = new LinkedList<Command>();
 
 	/**
 	 * The available states
@@ -29,6 +34,7 @@ public abstract class State {
 	final public static int PLAY          = 5;
 	final public static int WON           = 6;
 	final public static int HOME          = 7;
+	final public static int SOLVING       = 8;
 
 	/**
 	 * The state id of this state
@@ -212,5 +218,18 @@ public abstract class State {
 		GL11.glVertex2i(Display.getWidth(), Display.getHeight());
 		GL11.glVertex2i(Display.getWidth(), 0                  );
 		GL11.glEnd();
+	}
+
+	/**
+	 * Process all commands
+	 */
+	public void processCommads() {
+		if (!this.commands.isEmpty()) {
+			for (Command command: this.commands) {
+				command.execute(Application.getFieldController().getField());
+			}
+
+			this.commands.clear();
+		}
 	}
 }

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
+import ch.bfh.sokobomb.model.tiles.DijkstraNode;
 
 /**
  * Calculates a path from a start to a target node

@@ -1,4 +1,4 @@
-package ch.bfh.sokobomb.states;
+package ch.bfh.sokobomb.state;
 
 import java.io.IOException;
 
@@ -8,11 +8,11 @@ import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.controller.OpenGLController;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
 import ch.bfh.sokobomb.model.coordinate.DeltaCoordinate;
+import ch.bfh.sokobomb.model.tiles.DijkstraNode;
 import ch.bfh.sokobomb.model.tiles.Floor;
 import ch.bfh.sokobomb.model.tiles.Tile;
 import ch.bfh.sokobomb.model.tiles.Wall;
 import ch.bfh.sokobomb.parser.Token;
-import ch.bfh.sokobomb.solver.DijkstraNode;
 
 /**
  * This state allows you to draw a field

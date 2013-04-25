@@ -3,15 +3,16 @@ package ch.bfh.sokobomb.controller;
 import java.io.IOException;
 
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
-import ch.bfh.sokobomb.states.DesignState;
-import ch.bfh.sokobomb.states.EndGameState;
-import ch.bfh.sokobomb.states.HighscoreState;
-import ch.bfh.sokobomb.states.HomeState;
-import ch.bfh.sokobomb.states.PauseState;
-import ch.bfh.sokobomb.states.PlayState;
-import ch.bfh.sokobomb.states.PlayerMovingState;
-import ch.bfh.sokobomb.states.State;
-import ch.bfh.sokobomb.states.WonState;
+import ch.bfh.sokobomb.state.DesignState;
+import ch.bfh.sokobomb.state.EndGameState;
+import ch.bfh.sokobomb.state.FieldSolvingState;
+import ch.bfh.sokobomb.state.HighscoreState;
+import ch.bfh.sokobomb.state.HomeState;
+import ch.bfh.sokobomb.state.PauseState;
+import ch.bfh.sokobomb.state.PlayState;
+import ch.bfh.sokobomb.state.PlayerMovingState;
+import ch.bfh.sokobomb.state.State;
+import ch.bfh.sokobomb.state.WonState;
 
 public class StateController {
 
@@ -55,6 +56,9 @@ public class StateController {
 			case State.HOME:
 				this.state = new HomeState();
 				break;
+			case State.SOLVING:
+				this.state = new FieldSolvingState();
+				break;
 		}
 
 		this.state.entry();
@@ -77,6 +81,13 @@ public class StateController {
 	 */
 	public void pollInput() {
 		this.state.pollInput();
+	}
+
+	/**
+	 * Process all queued commands
+	 */
+	public void processCommands() {
+		this.state.processCommads();
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package ch.bfh.sokobomb.states;
+package ch.bfh.sokobomb.state;
 
 import java.io.IOException;
 

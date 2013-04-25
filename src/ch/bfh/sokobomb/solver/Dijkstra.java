@@ -7,6 +7,7 @@ import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.field.FieldCache;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
+import ch.bfh.sokobomb.model.tiles.DijkstraNode;
 
 /**
  * This class calculates the shortest path using Dijkstra algorithm
@@ -147,12 +148,15 @@ public class Dijkstra {
 	 * @param nodeList
 	 */
 	private void addNodeToList(DijkstraNode node, LinkedList<DijkstraNode> nodeList) {
-		boolean mayEnter = this.field.mayEnter(
-			node.getCoordinate()
-		);
-
-		if (mayEnter && !node.isPermanent()) {
+		if (this.mayEnter(node.getCoordinate()) && !node.isPermanent()) {
 			nodeList.add(node);
 		}
+	}
+
+	/**
+	 * @return Whether the player may enter a field
+	 */
+	private boolean mayEnter(TileCoordinate coordinate) {
+		return this.field.mayEnter(coordinate);
 	}
 }

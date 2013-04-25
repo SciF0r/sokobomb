@@ -4,20 +4,17 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Stack;
 
-import org.lwjgl.opengl.Display;
-
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 import ch.bfh.sokobomb.model.tiles.Bomb;
+import ch.bfh.sokobomb.model.tiles.DijkstraNode;
 import ch.bfh.sokobomb.model.tiles.Floor;
 import ch.bfh.sokobomb.model.tiles.Player;
 import ch.bfh.sokobomb.model.tiles.Target;
-import ch.bfh.sokobomb.model.tiles.Tile;
 import ch.bfh.sokobomb.model.tiles.Wall;
 import ch.bfh.sokobomb.parser.Parser;
 import ch.bfh.sokobomb.parser.Token;
-import ch.bfh.sokobomb.solver.DijkstraNode;
 
 /**
  * A general field with items, bombs and player, cache, etc.
@@ -26,10 +23,10 @@ import ch.bfh.sokobomb.solver.DijkstraNode;
  */
 public abstract class Field implements Cloneable {
 
-	protected Stack<Field> fieldHistory = new Stack<Field>();
-	protected LinkedList<Bomb> bombs    = new LinkedList<Bomb>();
-	protected LinkedList<Tile> targets  = new LinkedList<Tile>();
-	protected FieldCache cache          = new FieldCache();
+	protected Stack<Field> fieldHistory  = new Stack<Field>();
+	protected LinkedList<Bomb> bombs     = new LinkedList<Bomb>();
+	protected LinkedList<Target> targets = new LinkedList<Target>();
+	protected FieldCache cache           = new FieldCache();
 	protected Player player;
 
 	/**
@@ -98,10 +95,17 @@ public abstract class Field implements Cloneable {
 	}
 
 	/**
+	 * @return the targets
+	 */
+	public LinkedList<Target> getTargets() {
+		return this.targets;
+	}
+
+	/**
 	 * @return the bombs
 	 */
 	public LinkedList<Bomb> getBombs() {
-		return bombs;
+		return this.bombs;
 	}
 
 	/**
@@ -136,6 +140,7 @@ public abstract class Field implements Cloneable {
 	 */
 	public void draw() {
 		Application.getStateController().pollInput();
+		Application.getStateController().processCommands();
 		Application.getStateController().draw();
 	};
 
@@ -177,7 +182,7 @@ public abstract class Field implements Cloneable {
 				break;
 			case Token.TARGET:
 				node = new Target(Token.TARGET, token.coordinate);
-				
+				this.targets.add((Target)node);
 				break;
 			case Token.BOMB_START:
 				node = new Floor(Token.FLOOR, token.coordinate);
@@ -221,7 +226,9 @@ public abstract class Field implements Cloneable {
 	}
 
 	/**
-	 * Returns whether the player may enter a field
+	 * Returns whether the player may enter a field item according to it's type
+	 *
+	 * This function doesn't verify whether there is a path to the field
 	 *
 	 * @param coordinate
 	 * @return

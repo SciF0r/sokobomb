@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
-import ch.bfh.sokobomb.solver.DijkstraNode;
+import ch.bfh.sokobomb.model.tiles.DijkstraNode;
 
 /**
  * Caches the field

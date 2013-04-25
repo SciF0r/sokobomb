@@ -1,10 +1,11 @@
-package ch.bfh.sokobomb.states;
+package ch.bfh.sokobomb.state;
 
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 
 import ch.bfh.sokobomb.Application;
+import ch.bfh.sokobomb.command.PlayerMoveCommand;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
@@ -40,15 +41,20 @@ public class PlayState extends State {
 			case Keyboard.KEY_R:
 				field.restartLevel();
 				break;
+			case Keyboard.KEY_S:
+				Application.getStateController().setState(State.SOLVING);
+				break;
 		}
 	}
 
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
-		this.setPlayerPosition(new Coordinate(
-			coordinate.getX(),
-			coordinate.getY()
-		).getTileCoordinate());
+		this.commands.add(new PlayerMoveCommand(
+			new Coordinate(
+				coordinate.getX(),
+				coordinate.getY()
+			).getTileCoordinate()
+		));
 	}
 
 	/**

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import ch.bfh.sokobomb.controller.FieldController;
 import ch.bfh.sokobomb.controller.StateController;
 import ch.bfh.sokobomb.field.PlayField;
-import ch.bfh.sokobomb.states.State;
+import ch.bfh.sokobomb.state.State;
 
 public class Application {
 
