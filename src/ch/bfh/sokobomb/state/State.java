@@ -8,7 +8,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
-import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.command.Command;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
 import ch.bfh.sokobomb.model.coordinate.DeltaCoordinate;
@@ -226,7 +225,7 @@ public abstract class State {
 	public void processCommads() {
 		if (!this.commands.isEmpty()) {
 			for (Command command: this.commands) {
-				command.execute(Application.getFieldController().getField());
+				command.execute();
 			}
 
 			this.commands.clear();

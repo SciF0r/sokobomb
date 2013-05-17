@@ -3,9 +3,9 @@ package ch.bfh.sokobomb.solver;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
-import ch.bfh.sokobomb.model.tiles.DijkstraNode;
 
 /**
  * Calculates a path from a start to a target node
@@ -18,17 +18,18 @@ public class Path {
 	private Iterator<TileCoordinate> pathIterator;
 	private PlayField field;
 
-	public Path(PlayField field, DijkstraNode startNode, DijkstraNode targetNode) {
+	public Path(PlayField field, TileCoordinate start, TileCoordinate target) throws InvalidCoordinateException {
 		this.field = field;
 
-		this.calculatePath(startNode, targetNode);
+		this.calculatePath(start, target);
 	}
 
 	/**
 	 * Calculates the path (Dijkstra)
+	 * @throws InvalidCoordinateException 
 	 */
-	private void calculatePath(DijkstraNode startNode, DijkstraNode targetNode) {
-		Dijkstra dijkstra = new Dijkstra(this.field, startNode, targetNode);
+	private void calculatePath(TileCoordinate start, TileCoordinate target) throws InvalidCoordinateException {
+		Dijkstra dijkstra = new Dijkstra(this.field, start, target);
 
 		this.path = dijkstra.getPath();
 		if (this.path != null) {
@@ -48,5 +49,12 @@ public class Path {
 	 */
 	public TileCoordinate next() {
 		return this.pathIterator.next();
+	}
+
+	/**
+	 * @return the path
+	 */
+	public LinkedList<TileCoordinate> getPath() {
+		return path;
 	}
 }

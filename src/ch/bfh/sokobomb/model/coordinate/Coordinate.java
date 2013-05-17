@@ -7,7 +7,7 @@ import ch.bfh.sokobomb.util.Tiles;
  *
  * @author Denis Simonet
  */
-public class Coordinate {
+public class Coordinate implements Cloneable {
 
 	final private int x;
 	final private int y;
@@ -35,6 +35,9 @@ public class Coordinate {
 		return y;
 	}
 
+	/**
+	 * @return The coordinate scaled to tiles dimensions
+	 */
 	public TileCoordinate getTileCoordinate() {
 		return new TileCoordinate(
 			this.x / Tiles.WIDTH,
@@ -68,4 +71,21 @@ public class Coordinate {
     public int hashCode() {
     	return this.hash;
     }
+
+    @Override
+    public String toString() {
+    	return this.getX() + "/" + this.getY();
+    }
+
+	@Override
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+
+		return null;
+	}
 }

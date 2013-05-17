@@ -23,10 +23,10 @@ import ch.bfh.sokobomb.parser.Token;
  */
 public abstract class Field implements Cloneable {
 
-	protected Stack<Field> fieldHistory  = new Stack<Field>();
-	protected LinkedList<Bomb> bombs     = new LinkedList<Bomb>();
-	protected LinkedList<Target> targets = new LinkedList<Target>();
-	protected FieldCache cache           = new FieldCache();
+	protected Stack<FieldHistoryItem> fieldHistory = new Stack<FieldHistoryItem>();
+	protected LinkedList<Bomb> bombs           = new LinkedList<Bomb>();
+	protected LinkedList<Target> targets       = new LinkedList<Target>();
+	protected FieldCache cache                 = new FieldCache();
 	protected Player player;
 
 	/**
@@ -102,10 +102,39 @@ public abstract class Field implements Cloneable {
 	}
 
 	/**
+	 * @return the targets
+	 */
+	public LinkedList<Target> getFreeTargets() {
+		LinkedList<Target> targets = new LinkedList<Target>();
+
+		for (Target target: this.targets) {
+			if (this.findBomb(target.getCoordinate()) != null) {
+				continue;
+			}
+
+			targets.add(target);
+		}
+
+		return targets;
+	}
+
+	/**
 	 * @return the bombs
 	 */
 	public LinkedList<Bomb> getBombs() {
 		return this.bombs;
+	}
+
+	/**
+	 * @return The coordinates of all bombs
+	 */
+	public LinkedList<TileCoordinate> getBombCoordinates() {
+		LinkedList<TileCoordinate> bombCoordinates = new LinkedList<TileCoordinate>();
+		for (Bomb bomb: this.bombs) {
+			bombCoordinates.add((TileCoordinate)bomb.getCoordinate().clone());
+		}
+
+		return bombCoordinates;
 	}
 
 	/**

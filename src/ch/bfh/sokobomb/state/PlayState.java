@@ -50,6 +50,7 @@ public class PlayState extends State {
 	@Override
 	public void handleLeftClick(Coordinate coordinate) {
 		this.commands.add(new PlayerMoveCommand(
+			(PlayField)Application.getFieldController().getField(),
 			new Coordinate(
 				coordinate.getX(),
 				coordinate.getY()

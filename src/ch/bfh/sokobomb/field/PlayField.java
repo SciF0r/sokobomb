@@ -53,9 +53,14 @@ public class PlayField extends Field implements Cloneable {
 	 */
 	public void restartLevel() {
 		if (!this.fieldHistory.isEmpty()) {
-			PlayField field = (PlayField)this.fieldHistory.firstElement();
-			this.bombs  = field.getBombs();
-			this.player = field.getPlayer();
+			FieldHistoryItem historyItem = this.fieldHistory.firstElement();
+
+			int i = 0;
+			for (TileCoordinate bombCoordinate: historyItem.getBombPositions()) {
+				this.bombs.get(i++).setPosition(bombCoordinate);
+			}
+
+			this.player.setPosition(historyItem.getPlayerPosition());
 			this.fieldHistory.clear();
 		}
 	}
@@ -67,11 +72,7 @@ public class PlayField extends Field implements Cloneable {
 	 * @param y
 	 */
 	public void movePlayer(int dx, int dy) {
-		try {
-			this.fieldHistory.push((PlayField)this.clone());
-		} catch (CloneNotSupportedException e) {
-			System.err.println(e.getMessage());
-		}
+		this.addFieldToHistory();
 
 		TileCoordinate coordinate = new TileCoordinate(
 			player.getPositionX() + dx,
@@ -154,16 +155,14 @@ public class PlayField extends Field implements Cloneable {
 
 	@Override
 	public void addFieldToHistory() {
-		try {
-			this.fieldHistory.push((PlayField)this.clone());
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
+		this.fieldHistory.push(
+			new FieldHistoryItem(
+				this.getBombCoordinates(),
+				(TileCoordinate)this.player.getCoordinate().clone()
+			)
+		);
 	}
 
-	/**
-	 * Clone bombs and player
-	 */
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return (PlayField)super.clone();
@@ -172,9 +171,14 @@ public class PlayField extends Field implements Cloneable {
 	@Override
 	public void undo() {
 		if (!this.fieldHistory.isEmpty()) {
-			PlayField field = (PlayField)this.fieldHistory.pop();
-			this.bombs  = field.getBombs();
-			this.player = field.getPlayer();
+			FieldHistoryItem historyItem = this.fieldHistory.pop();
+
+			int i = 0;
+			for (TileCoordinate bombPosition: historyItem.getBombPositions()) {
+				this.bombs.get(i++).setPosition(bombPosition);
+			}
+
+			this.player.setPosition(historyItem.getPlayerPosition());
 		}
 	}
 }

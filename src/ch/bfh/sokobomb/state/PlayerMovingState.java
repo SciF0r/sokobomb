@@ -70,12 +70,8 @@ public class PlayerMovingState extends State {
 		try {
 			this.path = new Path(
 				field,
-				field.getCache().getNodeAtCoordinate(
-						Application.getFieldController().getField().getPlayer().getCoordinate()
-				),
-				field.getCache().getNodeAtCoordinate(
-					coordinate
-				)
+				Application.getFieldController().getField().getPlayer().getCoordinate(),
+				coordinate
 			);
 		} catch (InvalidCoordinateException e) {
 			e.printStackTrace();

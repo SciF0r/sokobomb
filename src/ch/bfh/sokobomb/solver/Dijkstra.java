@@ -19,10 +19,11 @@ public class Dijkstra {
 	private PlayField field;
 	private DijkstraNode startNode, targetNode;
 
-	public Dijkstra(PlayField field, DijkstraNode startNode, DijkstraNode targetNode) {
+//	public Dijkstra(PlayField field, DijkstraNode startNode, DijkstraNode targetNode) {
+	public Dijkstra(PlayField field, TileCoordinate start, TileCoordinate target) throws InvalidCoordinateException {
 		this.field      = field;
-		this.startNode  = startNode;
-		this.targetNode = targetNode;
+		this.startNode  = this.field.getCache().getNodeAtCoordinate(start);
+		this.targetNode = this.field.getCache().getNodeAtCoordinate(target);
 		this.field.getCache().reset();
 	}
 

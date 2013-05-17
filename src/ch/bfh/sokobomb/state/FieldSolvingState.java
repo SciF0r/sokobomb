@@ -5,7 +5,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import ch.bfh.sokobomb.Application;
-import ch.bfh.sokobomb.command.Command;
+import ch.bfh.sokobomb.command.MoveCommand;
+import ch.bfh.sokobomb.exception.InvalidCoordinateException;
+import ch.bfh.sokobomb.exception.NoSolutionFoundException;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
 import ch.bfh.sokobomb.solver.Solver;
@@ -19,8 +21,8 @@ import ch.bfh.sokobomb.solver.Solver;
  */
 public class FieldSolvingState extends State {
 
-	private LinkedList<Command> commands;
-	private Iterator<Command> commandsIterator;
+	private LinkedList<MoveCommand> commands;
+	private Iterator<MoveCommand> commandsIterator;
 	private long timestamp;
 
 	public FieldSolvingState() {
@@ -32,9 +34,13 @@ public class FieldSolvingState extends State {
 		this.timestamp = 0;
 
 		Solver solver = new Solver((PlayField)Application.getFieldController().getField());
-		this.commands = solver.solve();
-
-		if (this.commands == null) {
+		try {
+			this.commands = solver.solve();
+		} catch (InvalidCoordinateException e) {
+			e.printStackTrace();
+			System.exit(0);
+		} catch (NoSolutionFoundException e) {
+			e.printStackTrace();
 			System.exit(0);
 		}
 
@@ -66,10 +72,9 @@ public class FieldSolvingState extends State {
 		this.timestamp = System.currentTimeMillis();
 
 		if (this.commandsIterator.hasNext()) {
-			this.commandsIterator.next().execute(Application.getFieldController().getField());
+			this.commandsIterator.next().execute();
 		}
 		else {
-			System.out.println("no next");
 			Application.getStateController().setState(State.PLAY);
 		}
 	}
