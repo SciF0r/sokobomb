@@ -56,7 +56,7 @@ public class Lexer {
 			this.source    = sourceBuilder.toString();
 			this.index     = 0;
 			this.length    = this.source.length();
-			this.row       = 0;
+			this.row       = 1;
 			this.column    = 0;
 			this.wallFound = false;
 		} catch (IOException e) {
