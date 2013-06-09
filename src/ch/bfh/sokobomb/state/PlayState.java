@@ -17,7 +17,9 @@ public class PlayState extends State {
 	private Header title;
 	public PlayState() {
 		this.stateId = State.PLAY;
-		this.title = new Header("Level 1", new Time(100));
+		
+		this.title = new Header("Level 1", new Time(120)); //TODO: dynamische Werte aus level file
+		
 	}
 
 	@Override

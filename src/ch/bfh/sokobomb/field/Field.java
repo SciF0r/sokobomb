@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
+import ch.bfh.sokobomb.model.Time;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 import ch.bfh.sokobomb.model.tiles.Bomb;
 import ch.bfh.sokobomb.model.tiles.DijkstraNode;
@@ -28,6 +29,7 @@ public abstract class Field implements Cloneable {
 	protected LinkedList<Target> targets       = new LinkedList<Target>();
 	protected FieldCache cache                 = new FieldCache();
 	protected Player player;
+	private Time time;
 
 	/**
 	 * Parse a level file
@@ -38,7 +40,8 @@ public abstract class Field implements Cloneable {
 		this.resetObject();
 
 		Parser parser = new Parser();
-		parser.parseTime(path);
+		//int initTime = parser.parseTime(path); //TODO: parse time from level file
+		//this.time = new Time(initTime); //TODO: initialize time-item
 		parser.parseField(path, this);
 	}
 
@@ -76,6 +79,16 @@ public abstract class Field implements Cloneable {
 	public Player getPlayer() {
 		return this.player;
 	}
+	
+	/**
+	 * Gets the current Time.
+	 * 
+	 * @ The time
+	 */
+	public Time getTime() {
+		return this.time;
+	}
+	
 
 	/**
 	 * Adds a field item to the field

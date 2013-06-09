@@ -23,7 +23,7 @@ public class Header implements Drawable {
 
 	@Override
 	public void draw() throws IOException {
-			int x = 10;//(Display.getWidth() - this.font.getWidth(this.level)) / 2;
+			int x = 10;
 			int y = 0;
 			
 			this.font.drawString(x, y, this.level);

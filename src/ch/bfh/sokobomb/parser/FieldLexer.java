@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import org.lwjgl.Sys;
+
 import ch.bfh.sokobomb.exception.LexerException;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 
@@ -20,7 +22,6 @@ public class FieldLexer implements Lexer {
 	private int     row;   // Current line
 	private int     column; // Current column
 	private boolean wallFound;
-	private boolean levelInformation; // skip information section
 
 	/**
 	 * Initialize the lexer
@@ -56,13 +57,12 @@ public class FieldLexer implements Lexer {
 			fis.close();
 
 			this.source    = sourceBuilder.toString();
-			System.out.println("1:=>" + source);
+			
 			this.index     = 0;
 			this.length    = this.source.length();
 			this.row       = 0;
 			this.column    = 0;
 			this.wallFound = false;
-			this.levelInformation = false;
 		} catch (IOException e) {
 			throw new LexerException(
 					e.getMessage()
@@ -86,6 +86,7 @@ public class FieldLexer implements Lexer {
 		}
 		else {
 			char c = this.source.charAt(this.index);
+			
 
 			switch (c) {
 			case '#':
@@ -117,8 +118,6 @@ public class FieldLexer implements Lexer {
 				this.index++;
 				return nextToken();
 			case '\n':
-				if(levelInformation) 
-					this.levelInformation = false;
 				// Next line
 				this.row++;
 				this.column = 0;
@@ -127,20 +126,13 @@ public class FieldLexer implements Lexer {
 				
 				return nextToken();
 			case 't':
-				this.levelInformation =true;
-				this.index++;
+				//Skip level information
+				this.index=this.source.indexOf("\n");
 				return nextToken();
 			default:
-				if(levelInformation){
-					System.out.println(c);
-					this.index++;
-					this.nextToken();
-				}
-				else {
 				throw new LexerException(
 						"Illegal character: " + c 
 						);
-				}
 			}
 		}
 
