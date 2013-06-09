@@ -38,7 +38,8 @@ public abstract class Field implements Cloneable {
 		this.resetObject();
 
 		Parser parser = new Parser();
-		parser.parse(path, this);
+		parser.parseTime(path);
+		parser.parseField(path, this);
 	}
 
 	/**

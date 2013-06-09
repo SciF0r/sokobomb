@@ -9,8 +9,8 @@ import org.newdawn.slick.SlickException;
 public class Header implements Drawable {
 	private AngelCodeFont font;
 	private String level;
-	private int time;
-	public Header(String level, int time){
+	private Time time;
+	public Header(String level, Time time){
 		this.level = level;
 		this.time = time;
 		try {
@@ -28,10 +28,7 @@ public class Header implements Drawable {
 			
 			this.font.drawString(x, y, this.level);
 		
-			 x = Display.getWidth() - this.font.getWidth(String.valueOf(this.time));
-			 y = 0;
-			
-			this.font.drawString(x, y, String.valueOf(this.time));
+			time.draw();
 		
 	}
 

@@ -8,6 +8,7 @@ import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.command.PlayerMoveCommand;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.Header;
+import ch.bfh.sokobomb.model.Time;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 
@@ -16,7 +17,7 @@ public class PlayState extends State {
 	private Header title;
 	public PlayState() {
 		this.stateId = State.PLAY;
-		this.title = new Header("Level 1", 100);
+		this.title = new Header("Level 1", new Time(100));
 	}
 
 	@Override

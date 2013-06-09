@@ -10,28 +10,56 @@ import ch.bfh.sokobomb.field.Field;
  */
 public class Parser {
 
-	private Lexer lexer;
+	private FieldLexer fieldLexer;
+	private LevelInformationLexer informationLexer;
 
 	/**
 	 * Creates a new lexer object
 	 */
 	public Parser() {
-		this.lexer = new Lexer();
+		this.fieldLexer = new FieldLexer();
+		this.informationLexer = new LevelInformationLexer();
 	}
+	
+	
+	/**
+	 * Parse a file
+	 *
+	 * @param path
+	 */
+	public int parseTime(String path) {
+		try {
+			Token token;
+
+			this.informationLexer.initLexer(path);
+	
+	
+			while ((token = this.informationLexer.nextToken()).type != Token.EOF) {
+				continue;
+			}
+		}
+		catch (LexerException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		return this.informationLexer.getTime();
+	}
+	
+	
 
 	/**
 	 * Parse a file
 	 *
 	 * @param path
 	 */
-	public void parse(String path, Field field) {
+	public void parseField(String path, Field field) {
 		try {
 			Token token;
 
-			this.lexer.initLexer(path);
+			this.fieldLexer.initLexer(path);
 	
 	
-			while ((token = this.lexer.nextToken()).type != Token.EOF) {
+			while ((token = this.fieldLexer.nextToken()).type != Token.EOF) {
 				if (token.type == Token.EMPTY) {
 					continue;
 				}

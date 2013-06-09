@@ -31,4 +31,5 @@ public class Token {
 	public static final int FLOOR         = 6; // Space
 	public static final int EOF           = 7; // End Of File
 	public static final int EMPTY         = 8; // Empty
+	public static final int DIGIT         = 9; // [0-9]
 }
