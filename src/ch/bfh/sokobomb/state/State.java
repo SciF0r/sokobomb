@@ -34,6 +34,7 @@ public abstract class State {
 	final public static int WON           = 6;
 	final public static int HOME          = 7;
 	final public static int SOLVING       = 8;
+	final public static int GAME_OVER     = 9;
 
 	/**
 	 * The state id of this state
