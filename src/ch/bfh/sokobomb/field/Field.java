@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
+import ch.bfh.sokobomb.model.Header;
 import ch.bfh.sokobomb.model.Time;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 import ch.bfh.sokobomb.model.tiles.Bomb;
@@ -31,8 +32,9 @@ public abstract class Field implements Cloneable {
 	protected FieldCache              cache        = new FieldCache();
 
 	protected Player player;
-	private   Time   time;
-	private   String title;
+	private Header header;
+	private Time time;
+	private String title;
 
 	/**
 	 * Parse a level file
@@ -82,9 +84,11 @@ public abstract class Field implements Cloneable {
 	public Player getPlayer() {
 		return this.player;
 	}
+	
 
 	/**
-	 * @return the time for this field
+	 * 
+	 * @return time for this field
 	 */
 	public Time getTime() {
 		return time;
@@ -98,7 +102,8 @@ public abstract class Field implements Cloneable {
 	}
 
 	/**
-	 * @return the title
+	 * 
+	 * @return title for this field
 	 */
 	public String getTitle() {
 		return title;
@@ -109,6 +114,22 @@ public abstract class Field implements Cloneable {
 	 */
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	
+	
+	/**
+	 * @return the header for this field
+	 */
+	public Header getHeader() {
+		return header;
+	}
+
+	/**
+	 * @param header the header to set
+	 */
+	public void setHeader(Header header) {
+		this.header = header;
 	}
 
 	/**
@@ -387,4 +408,6 @@ public abstract class Field implements Cloneable {
 
 		return true;
 	}
+
+	
 }

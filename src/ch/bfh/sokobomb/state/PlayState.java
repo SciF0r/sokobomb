@@ -14,7 +14,7 @@ import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 
 public class PlayState extends State {
 
-	private Header title;
+	//private Header title;
 
 	public PlayState() {
 		this.stateId = State.PLAY;
@@ -30,7 +30,7 @@ public class PlayState extends State {
 			throw new RuntimeException("Invalid level: Title is missing");
 		}
 
-		this.title = new Header(title, time);
+		Application.getFieldController().getField().setHeader( new Header(title, time));
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class PlayState extends State {
 	 */
 	public void draw() throws IOException {
 		Application.getFieldController().drawField();
-		title.draw();
+		Application.getFieldController().getField().getHeader().draw();
 	}
 
 	/**

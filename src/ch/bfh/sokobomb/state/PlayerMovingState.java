@@ -47,6 +47,8 @@ public class PlayerMovingState extends State {
 	 */
 	public void draw() throws IOException {
 		Application.getFieldController().drawField();
+		Application.getFieldController().getField().getHeader().draw();
+		
 
 		if ((System.currentTimeMillis() - this.timestamp) < 50) {
 			return;

@@ -19,7 +19,6 @@ import ch.bfh.sokobomb.util.Levels;
 public class PlayField extends Field implements Cloneable {
 
 	private Levels levels;
-//	private Time time;
 
 	/**
 	 * The constructor sets the player
@@ -31,18 +30,14 @@ public class PlayField extends Field implements Cloneable {
 	}
 	
 	/**
+	 * Gets the time
 	 * 
 	 */
 	public Time getTime() {
 		return super.getTime();
 	}
 	
-	/**
-	 * 
-	 */
-//	public void setHeader(Header header) {
-//		this.header = header;
-//	}
+
 	
 
 	/**
