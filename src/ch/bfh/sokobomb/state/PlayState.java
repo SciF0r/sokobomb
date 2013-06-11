@@ -19,8 +19,6 @@ import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
  */
 public class PlayState extends State {
 
-	//private Header title;
-
 	public PlayState() {
 		this.stateId = State.PLAY;
 
@@ -105,13 +103,11 @@ public class PlayState extends State {
 
 	@Override
 	protected void startDo() {
-		System.out.println("Start");
 		Application.getFieldController().getField().getTime().start();
 	}
 
 	@Override
 	protected void stopDo() {
-		System.out.println("Stop");
 		Application.getFieldController().getField().getTime().stop();
 	}
 }

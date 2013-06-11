@@ -125,7 +125,7 @@ public class PlayField extends Field implements Cloneable {
 			Application.getStateController().setState(State.WON);
 		}
 				
-		if (this.timeUp()) {
+		if (Application.getStateController().isState(State.PLAY) && this.timeUp()) {
 			Application.getStateController().setState(State.GAME_OVER);
 		}
 	}
