@@ -1,4 +1,4 @@
-title=Level 2;time=200
+title=Level 2;time=20
 #########
 #.      ##
 #  @ #$  #

@@ -38,7 +38,7 @@ public class LevelInformationLexer implements Lexer {
 			while (fis.available() > 0) {
 				char c = (char)fis.read();
 
-				if (c == '\n') {
+				if (c == '\n' || c == '\r') {
 					break;
 				}
 
@@ -61,18 +61,21 @@ public class LevelInformationLexer implements Lexer {
 	public LevelInformationToken nextToken() throws RuntimeException, LexerException {
 		LevelInformationToken token = new LevelInformationToken();
 
-		if (this.index >= this.length) {
+			if (this.index >= this.length) {
 			token.type = LevelInformationToken.EOF;
 		}
 		else {
 			String attribute[] = this.source[this.index].split("=", 2);
 
+
 			if (attribute[0].equals("time")) {
 				token.type = LevelInformationToken.TIME;
+								
 				token.intValue = Integer.parseInt(attribute[1]);
 			}
 			else if (attribute[0].equals("title")) {
 				token.type        = LevelInformationToken.TITLE;
+				
 				token.stringValue = attribute[1];
 			}
 			else {
