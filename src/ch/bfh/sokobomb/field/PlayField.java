@@ -5,7 +5,7 @@ import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.exception.NoNextLevelException;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 import ch.bfh.sokobomb.model.tiles.Bomb;
-import ch.bfh.sokobomb.parser.Token;
+import ch.bfh.sokobomb.parser.FieldToken;
 import ch.bfh.sokobomb.state.State;
 import ch.bfh.sokobomb.util.Levels;
 
@@ -132,7 +132,7 @@ public class PlayField extends Field implements Cloneable {
 	final public boolean hasWon() {
 		for (Bomb bomb: this.bombs) {
 			try {
-				if (this.cache.getNodeAtCoordinate(bomb.getCoordinate()).getType() != Token.TARGET) {
+				if (this.cache.getNodeAtCoordinate(bomb.getCoordinate()).getType() != FieldToken.TARGET) {
 					return false;
 				}
 			} catch (InvalidCoordinateException e) {

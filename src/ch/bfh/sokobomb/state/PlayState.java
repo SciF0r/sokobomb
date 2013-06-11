@@ -15,11 +15,22 @@ import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 public class PlayState extends State {
 
 	private Header title;
+
 	public PlayState() {
 		this.stateId = State.PLAY;
+
+		Time time    = Application.getFieldController().getTime();
+		String title = Application.getFieldController().getTitle();
 		
-		this.title = new Header("Level 1", new Time(120)); //TODO: dynamische Werte aus level file
-		
+		if (time == null) {
+			throw new RuntimeException("Invalid level: Time is missing");
+		}
+
+		if (title == null) {
+			throw new RuntimeException("Invalid level: Title is missing");
+		}
+
+		this.title = new Header(title, time);
 	}
 
 	@Override

@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.lwjgl.Sys;
-
 import ch.bfh.sokobomb.exception.LexerException;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 
@@ -36,14 +34,14 @@ public class FieldLexer implements Lexer {
 		File file = new File(path);
 		if (!file.exists()) {
 			throw new LexerException(
-					"File not found"
-					);
+				"File not found"
+			);
 		}
 
 		if (!(file.isFile() && file.canRead())) {
 			throw new LexerException(
-					"Cannot read from file"
-					);
+				"Cannot read from file"
+			);
 		}
 
 		try {
@@ -57,16 +55,17 @@ public class FieldLexer implements Lexer {
 			fis.close();
 
 			this.source    = sourceBuilder.toString();
-			
-			this.index     = 0;
+
+			// Skip first line as it is reserved for meta information
+			this.index     = this.source.indexOf("\n");
 			this.length    = this.source.length();
 			this.row       = 0;
 			this.column    = 0;
 			this.wallFound = false;
 		} catch (IOException e) {
 			throw new LexerException(
-					e.getMessage()
-					);
+				e.getMessage()
+			);
 		}
 	}
 
@@ -77,42 +76,41 @@ public class FieldLexer implements Lexer {
 	 * @throws LexerException
 	 */
 	@Override
-	public Token nextToken() throws RuntimeException, LexerException {
-		Token token = new Token();
+	public FieldToken nextToken() throws RuntimeException, LexerException {
+		FieldToken token = new FieldToken();
 
 		if (this.index >= this.length) {
-			token.type = Token.EOF;
+			token.type = FieldToken.EOF;
 			return token;
 		}
 		else {
 			char c = this.source.charAt(this.index);
-			
 
 			switch (c) {
 			case '#':
 				wallFound = true;
-				token.type = Token.WALL;
+				token.type = FieldToken.WALL;
 				break;
 			case '@':
-				token.type = Token.PLAYER_START;
+				token.type = FieldToken.PLAYER_START;
 				break;
 			case '.':
-				token.type = Token.TARGET;
+				token.type = FieldToken.TARGET;
 				break;
 			case '$':
-				token.type = Token.BOMB_START;
+				token.type = FieldToken.BOMB_START;
 				break;
 			case '*':
-				token.type = Token.BOMB_TARGET;
+				token.type = FieldToken.BOMB_TARGET;
 				break;
 			case '+':
-				token.type = Token.PLAYER_TARGET;
+				token.type = FieldToken.PLAYER_TARGET;
 				break;
 			case '&':
-				token.type = Token.EMPTY;
+				token.type = FieldToken.EMPTY;
 				break;
 			case ' ':
-				token.type = this.wallFound ? Token.FLOOR : Token.EMPTY;
+				token.type = this.wallFound ? FieldToken.FLOOR : FieldToken.EMPTY;
 				break;
 			case '\r':
 				this.index++;
@@ -127,19 +125,19 @@ public class FieldLexer implements Lexer {
 				return nextToken();
 			case 't':
 				//Skip level information
-				this.index=this.source.indexOf("\n");
+				
 				return nextToken();
 			default:
 				throw new LexerException(
-						"Illegal character: " + c 
-						);
+					"Illegal character: " + c 
+				);
 			}
 		}
 
 		token.coordinate = new TileCoordinate(
-				this.column++,
-				this.row
-				);
+			this.column++,
+			this.row
+		);
 
 		this.index++;
 

@@ -14,8 +14,9 @@ import ch.bfh.sokobomb.model.tiles.Floor;
 import ch.bfh.sokobomb.model.tiles.Player;
 import ch.bfh.sokobomb.model.tiles.Target;
 import ch.bfh.sokobomb.model.tiles.Wall;
+import ch.bfh.sokobomb.parser.FieldToken;
+import ch.bfh.sokobomb.parser.LevelInformationToken;
 import ch.bfh.sokobomb.parser.Parser;
-import ch.bfh.sokobomb.parser.Token;
 
 /**
  * A general field with items, bombs and player, cache, etc.
@@ -25,11 +26,13 @@ import ch.bfh.sokobomb.parser.Token;
 public abstract class Field implements Cloneable {
 
 	protected Stack<FieldHistoryItem> fieldHistory = new Stack<FieldHistoryItem>();
-	protected LinkedList<Bomb> bombs           = new LinkedList<Bomb>();
-	protected LinkedList<Target> targets       = new LinkedList<Target>();
-	protected FieldCache cache                 = new FieldCache();
+	protected LinkedList<Bomb>        bombs        = new LinkedList<Bomb>();
+	protected LinkedList<Target>      targets      = new LinkedList<Target>();
+	protected FieldCache              cache        = new FieldCache();
+
 	protected Player player;
-	private Time time;
+	private   Time   time;
+	private   String title;
 
 	/**
 	 * Parse a level file
@@ -40,9 +43,9 @@ public abstract class Field implements Cloneable {
 		this.resetObject();
 
 		Parser parser = new Parser();
-		//int initTime = parser.parseTime(path); //TODO: parse time from level file
-		//this.time = new Time(initTime); //TODO: initialize time-item
+
 		parser.parseField(path, this);
+		parser.parseLevelInformation(path, this);
 	}
 
 	/**
@@ -79,16 +82,34 @@ public abstract class Field implements Cloneable {
 	public Player getPlayer() {
 		return this.player;
 	}
-	
+
 	/**
-	 * Gets the current Time.
-	 * 
-	 * @ The time
+	 * @return the time for this field
 	 */
 	public Time getTime() {
-		return this.time;
+		return time;
 	}
-	
+
+	/**
+	 * @param time the time to set
+	 */
+	public void setTime(Time time) {
+		this.time = time;
+	}
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 	/**
 	 * Adds a field item to the field
@@ -210,37 +231,37 @@ public abstract class Field implements Cloneable {
 	 *
 	 * @param token
 	 */
-	public void addTileByToken(Token token) {
+	public void addTileByToken(FieldToken token) {
 		Player player     = null;
 		Bomb bomb         = null;
 		DijkstraNode node = null;
 
 		switch (token.type) {
-			case Token.WALL:
-				node = new Wall(Token.WALL, token.coordinate);
+			case FieldToken.WALL:
+				node = new Wall(FieldToken.WALL, token.coordinate);
 				break;
-			case Token.PLAYER_START:
-				player = new Player(Token.PLAYER_START, token.coordinate);
-				node   = new Floor(Token.FLOOR, token.coordinate);
+			case FieldToken.PLAYER_START:
+				player = new Player(FieldToken.PLAYER_START, token.coordinate);
+				node   = new Floor(FieldToken.FLOOR, token.coordinate);
 				break;
-			case Token.TARGET:
-				node = new Target(Token.TARGET, token.coordinate);
+			case FieldToken.TARGET:
+				node = new Target(FieldToken.TARGET, token.coordinate);
 				this.targets.add((Target)node);
 				break;
-			case Token.BOMB_START:
-				node = new Floor(Token.FLOOR, token.coordinate);
-				bomb = new Bomb(Token.BOMB_START, token.coordinate);
+			case FieldToken.BOMB_START:
+				node = new Floor(FieldToken.FLOOR, token.coordinate);
+				bomb = new Bomb(FieldToken.BOMB_START, token.coordinate);
 				break;
-			case Token.BOMB_TARGET:
-				bomb = new Bomb(Token.BOMB_START, token.coordinate);
-				node = new Target(Token.TARGET, token.coordinate);
+			case FieldToken.BOMB_TARGET:
+				bomb = new Bomb(FieldToken.BOMB_START, token.coordinate);
+				node = new Target(FieldToken.TARGET, token.coordinate);
 				break;
-			case Token.PLAYER_TARGET:
-				player = new Player(Token.PLAYER_TARGET, token.coordinate);
-				node   = new Target(Token.TARGET, token.coordinate);
+			case FieldToken.PLAYER_TARGET:
+				player = new Player(FieldToken.PLAYER_TARGET, token.coordinate);
+				node   = new Target(FieldToken.TARGET, token.coordinate);
 				break;
-			case Token.FLOOR:
-				node = new Floor(Token.FLOOR, token.coordinate);
+			case FieldToken.FLOOR:
+				node = new Floor(FieldToken.FLOOR, token.coordinate);
 				break;
 			default:
 				throw new RuntimeException(
@@ -258,6 +279,26 @@ public abstract class Field implements Cloneable {
 
 		if (player != null) {
 			this.addPlayer(player);
+		}
+	}
+
+	/**
+	 * Set an attribute by token
+	 *
+	 * @param token
+	 */
+	public void setAttributeByToken(LevelInformationToken token) {
+		switch (token.type) {
+			case LevelInformationToken.TIME:
+				this.setTime(new Time(token.intValue));
+				break;
+			case LevelInformationToken.TITLE:
+				this.setTitle(token.stringValue);
+				break;
+			default:
+				throw new RuntimeException(
+					"Illegal token"
+				);
 		}
 	}
 
@@ -283,7 +324,7 @@ public abstract class Field implements Cloneable {
 			}
 
 			int type = this.cache.getNodeAtCoordinate(coordinate).getType();
-			return type == Token.FLOOR || type == Token.TARGET;
+			return type == FieldToken.FLOOR || type == FieldToken.TARGET;
 		}
 		catch (InvalidCoordinateException e) {
 			return false;

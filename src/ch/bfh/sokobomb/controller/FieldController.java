@@ -5,9 +5,10 @@ import java.util.Stack;
 
 import ch.bfh.sokobomb.field.Field;
 import ch.bfh.sokobomb.field.PlayField;
+import ch.bfh.sokobomb.model.Time;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 import ch.bfh.sokobomb.model.tiles.DijkstraNode;
-import ch.bfh.sokobomb.parser.Token;
+import ch.bfh.sokobomb.parser.FieldToken;
 
 /**
  * Manage fields
@@ -48,6 +49,20 @@ public class FieldController {
 	}
 
 	/**
+	 * @return The time object which belongs to the field
+	 */
+	public Time getTime() {
+		return this.field.getTime();
+	}
+
+	/**
+	 * @return The title of the current level
+	 */
+	public String getTitle() {
+		return this.field.getTitle();
+	}
+
+	/**
 	 * Says the field to be drawn
 	 */
 	public void draw() {
@@ -76,7 +91,7 @@ public class FieldController {
 	/**
 	 * @param token The token to be added to the field
 	 */
-	public void addTileByToken(Token token) {
+	public void addTileByToken(FieldToken token) {
 		this.field.addTileByToken(token);
 	}
 

@@ -12,7 +12,7 @@ import ch.bfh.sokobomb.model.tiles.DijkstraNode;
 import ch.bfh.sokobomb.model.tiles.Floor;
 import ch.bfh.sokobomb.model.tiles.Tile;
 import ch.bfh.sokobomb.model.tiles.Wall;
-import ch.bfh.sokobomb.parser.Token;
+import ch.bfh.sokobomb.parser.FieldToken;
 
 /**
  * This state allows you to draw a field
@@ -27,7 +27,7 @@ public class DesignState extends State {
 	public DesignState() {
 		this.stateId = State.DESIGN;
 		this.tileAtMouse = new Wall(
-			Token.WALL,
+			FieldToken.WALL,
 			OpenGLController.getMousePosition().getTileCoordinate()
 		);
 		this.drawTile();
@@ -82,11 +82,11 @@ public class DesignState extends State {
 				this.tileAtMouse = null;
 				break;
 			case Keyboard.KEY_1:
-				this.tileAtMouse = new Wall(Token.WALL, OpenGLController.getMousePosition().getTileCoordinate());
+				this.tileAtMouse = new Wall(FieldToken.WALL, OpenGLController.getMousePosition().getTileCoordinate());
 				this.drawTile();
 				break;
 			case Keyboard.KEY_2:
-				this.tileAtMouse = new Floor(Token.FLOOR, OpenGLController.getMousePosition().getTileCoordinate());
+				this.tileAtMouse = new Floor(FieldToken.FLOOR, OpenGLController.getMousePosition().getTileCoordinate());
 				this.drawTile();
 				break;
 		}

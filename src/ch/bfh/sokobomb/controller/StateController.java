@@ -5,7 +5,6 @@ import java.io.IOException;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 import ch.bfh.sokobomb.state.DesignState;
 import ch.bfh.sokobomb.state.EndGameState;
-import ch.bfh.sokobomb.state.FieldSolvingState;
 import ch.bfh.sokobomb.state.HighscoreState;
 import ch.bfh.sokobomb.state.HomeState;
 import ch.bfh.sokobomb.state.PauseState;
@@ -55,9 +54,6 @@ public class StateController {
 				break;
 			case State.HOME:
 				this.state = new HomeState();
-				break;
-			case State.SOLVING:
-				this.state = new FieldSolvingState();
 				break;
 		}
 
