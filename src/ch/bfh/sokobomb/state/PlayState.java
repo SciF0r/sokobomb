@@ -19,7 +19,7 @@ public class PlayState extends State {
 	public PlayState() {
 		this.stateId = State.PLAY;
 
-		Time time    = Application.getFieldController().getTime();
+		Time   time  = Application.getFieldController().getTime();
 		String title = Application.getFieldController().getTitle();
 		
 		if (time == null) {
@@ -57,6 +57,7 @@ public class PlayState extends State {
 				break;
 			case Keyboard.KEY_R:
 				field.restartLevel();
+				Application.getStateController().setState(State.PLAY);
 				break;
 			case Keyboard.KEY_S:
 				Application.getStateController().setState(State.SOLVING);

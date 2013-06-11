@@ -62,8 +62,9 @@ public class PlayField extends Field implements Cloneable {
 
 			this.player.setPosition(historyItem.getPlayerPosition());
 			this.fieldHistory.clear();
-			this.getTime().reset();
 		}
+
+		this.getTime().reset();
 	}
 
 	/**
