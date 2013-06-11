@@ -1,5 +1,10 @@
 package ch.bfh.sokobomb.model;
 
+/**
+ * An item in the highscore
+ *
+ * @author Denis Simonet
+ */
 public class HighscoreItem {
 
 	private int id, level, points;

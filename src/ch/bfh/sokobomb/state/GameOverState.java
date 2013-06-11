@@ -10,8 +10,13 @@ import org.newdawn.slick.SlickException;
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.field.PlayField;
 
+/**
+ * Show the game over screen
+ *
+ * @author Christoph Bruderer
+ */
 public class GameOverState extends State{
-	final private String textGameOver = "!!GAME OVER!! \n Press ENTER to restart";
+	final private String textGameOver = "!!GAME OVER!!\nPress ENTER to restart";
 	private AngelCodeFont font;
 
 	public GameOverState() {
@@ -22,6 +27,7 @@ public class GameOverState extends State{
 			e.printStackTrace();
 			System.exit(0);
 		}
+
 		this.stateId = State.GAME_OVER;
 	}
 
@@ -52,6 +58,4 @@ public class GameOverState extends State{
 		int y = (Display.getHeight() - titleHeight) / 2;
 		this.font.drawString(x, y, this.textGameOver);
 	}
-
-
 }

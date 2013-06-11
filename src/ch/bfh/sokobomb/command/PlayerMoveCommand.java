@@ -5,6 +5,12 @@ import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 import ch.bfh.sokobomb.state.State;
 
+/**
+ * Implementation for player movement
+ *
+ * @author Denis Simonet
+ *
+ */
 public class PlayerMoveCommand extends MoveCommand {
 
 	public PlayerMoveCommand(PlayField field, TileCoordinate target) {
@@ -21,6 +27,7 @@ public class PlayerMoveCommand extends MoveCommand {
 		}
 	}
 
+	@Override
 	public void undo() {
 		this.field.undo();
 	}

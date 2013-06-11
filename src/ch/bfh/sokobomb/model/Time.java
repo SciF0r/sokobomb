@@ -18,14 +18,18 @@ public class Time implements Drawable {
 	private Long          start;
 	private boolean       running;
 	private boolean       timeUp;
-	
+
+	/**
+	 * Time in seconds
+	 *
+	 * @param time
+	 */
 	public Time(int time) {
 		this.time        = time;
 		this.initialTime = time;
 		this.timeUp      = false;
 	}
-	
-	
+
 	public boolean isTimeUp() {
 		return this.timeUp;
 	}
@@ -52,7 +56,7 @@ public class Time implements Drawable {
 		this.running = false;
 		this.time    = this.initialTime;
 		this.start   = null;
-		this.timeUp = false;
+		this.timeUp  = false;
 	}
 
 	/**

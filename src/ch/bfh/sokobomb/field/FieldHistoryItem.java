@@ -15,6 +15,12 @@ public class FieldHistoryItem {
 	private TileCoordinate playerPosition;
 	private FieldCache cache;
 
+	/**
+	 * 
+	 * @param bombPositions
+	 * @param playerPosition
+	 * @param cache
+	 */
 	public FieldHistoryItem(LinkedList<TileCoordinate> bombPositions, TileCoordinate playerPosition, FieldCache cache) {
 		this.bombPositions  = bombPositions;
 		this.playerPosition = playerPosition;

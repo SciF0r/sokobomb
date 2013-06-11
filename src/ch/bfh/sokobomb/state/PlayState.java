@@ -12,6 +12,11 @@ import ch.bfh.sokobomb.model.Time;
 import ch.bfh.sokobomb.model.coordinate.Coordinate;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 
+/**
+ * State while playing
+ *
+ * @author Denis Simonet
+ */
 public class PlayState extends State {
 
 	private Header title;

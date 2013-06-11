@@ -15,6 +15,10 @@ public class DijkstraNode extends Tile {
 	private DijkstraNode parent;
 	private boolean permanent;
 
+	/**
+	 * @param type
+	 * @param coordinate
+	 */
 	public DijkstraNode(int type, TileCoordinate coordinate) {
 		this.setType(type);
 		this.coordinate = coordinate;

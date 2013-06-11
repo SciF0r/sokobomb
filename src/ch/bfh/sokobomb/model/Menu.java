@@ -33,6 +33,9 @@ public class Menu implements Drawable {
 	private double lineSpacing = 1.5;
 	private boolean selectable = true;
 
+	/**
+	 * @param title The menu title
+	 */
 	public Menu(String title) {
 		this.title        = title;
 		this.selectedItem = null;
@@ -70,6 +73,9 @@ public class Menu implements Drawable {
 		}
 	}
 
+	/**
+	 * @return The vertical position to be used for the next menu item
+	 */
 	public int getNextY() {
 		int titleHeight = this.title.equals("") ? 0 : (int)(font.getHeight(this.title) * this.lineSpacing);
 

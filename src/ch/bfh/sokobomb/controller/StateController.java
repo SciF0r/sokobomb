@@ -14,6 +14,11 @@ import ch.bfh.sokobomb.state.PlayerMovingState;
 import ch.bfh.sokobomb.state.State;
 import ch.bfh.sokobomb.state.WonState;
 
+/**
+ * State pattern
+ *
+ * @author Denis Simonet
+ */
 public class StateController {
 
 	/**
@@ -27,6 +32,8 @@ public class StateController {
 
 	/**
 	 * Sets a new state
+	 *
+	 * Calls the exit() method of the old state and the entry() method of the new one
 	 *
 	 * @param state
 	 */

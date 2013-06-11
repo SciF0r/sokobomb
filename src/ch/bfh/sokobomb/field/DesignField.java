@@ -23,9 +23,6 @@ public class DesignField extends Field implements Cloneable {
 		}
 	}
 
-	/**
-	 * Clone bombs and player
-	 */
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		DesignField field = (DesignField)super.clone();

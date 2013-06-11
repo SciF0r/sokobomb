@@ -12,7 +12,6 @@ import ch.bfh.sokobomb.model.Drawable;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 import ch.bfh.sokobomb.util.Tiles;
 
-
 /**
  * A field item (Bomb, Floor, ...)
  *

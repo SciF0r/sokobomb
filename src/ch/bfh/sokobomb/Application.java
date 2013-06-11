@@ -9,6 +9,12 @@ import ch.bfh.sokobomb.controller.StateController;
 import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.state.State;
 
+/**
+ * Application class which holds instances of important controllers etc.
+ *
+ * @author Denis Simonet
+ *
+ */
 public class Application {
 
 	private static Connection connection;

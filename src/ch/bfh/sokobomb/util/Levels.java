@@ -5,6 +5,13 @@ import java.util.LinkedList;
 
 import ch.bfh.sokobomb.exception.NoNextLevelException;
 
+/**
+ * Level information
+ *
+ * Stores the order the levels shall be played
+ *
+ * @author Denis Simonet
+ */
 public class Levels {
 
 	final public static String LEVEL1 = "res/levels/level1.txt";

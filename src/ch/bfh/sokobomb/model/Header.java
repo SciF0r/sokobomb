@@ -8,6 +8,8 @@ import org.newdawn.slick.SlickException;
 /**
  * Draws the header
  *
+ * Time left, title of the current level
+ *
  * @author Christoph Bruderer
  */
 public class Header implements Drawable {
@@ -15,6 +17,10 @@ public class Header implements Drawable {
 	private String level;
 	private Time time;
 
+	/**
+	 * @param level The level name
+	 * @param time  A Time object
+	 */
 	public Header(String level, Time time){
 		this.level = level;
 		this.time  = time;
@@ -38,7 +44,6 @@ public class Header implements Drawable {
 			
 			this.font.drawString(x, y, this.level);
 		
-			time.draw();
+			this.time.draw();
 	}
-
 }

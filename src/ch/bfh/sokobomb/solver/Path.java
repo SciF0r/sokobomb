@@ -8,7 +8,7 @@ import ch.bfh.sokobomb.field.PlayField;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 
 /**
- * Calculates a path from a start to a target node
+ * Stores a path
  *
  * @author Denis Simonet
  */

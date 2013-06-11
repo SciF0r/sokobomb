@@ -1,5 +1,10 @@
 package ch.bfh.sokobomb.command;
 
+/**
+ * Interface for the command pattern
+ *
+ * @author Denis Simonet
+ */
 abstract public class Command {
 
 	/**

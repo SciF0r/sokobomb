@@ -3,8 +3,6 @@ package ch.bfh.sokobomb.field;
 import ch.bfh.sokobomb.Application;
 import ch.bfh.sokobomb.exception.InvalidCoordinateException;
 import ch.bfh.sokobomb.exception.NoNextLevelException;
-import ch.bfh.sokobomb.model.Header;
-import ch.bfh.sokobomb.model.Time;
 import ch.bfh.sokobomb.model.coordinate.TileCoordinate;
 import ch.bfh.sokobomb.model.tiles.Bomb;
 import ch.bfh.sokobomb.parser.FieldToken;
@@ -19,7 +17,6 @@ import ch.bfh.sokobomb.util.Levels;
 public class PlayField extends Field implements Cloneable {
 
 	private Levels levels;
-//	private Time time;
 
 	/**
 	 * The constructor sets the player
@@ -29,21 +26,6 @@ public class PlayField extends Field implements Cloneable {
 	public PlayField() {
 		this.startGame();
 	}
-	
-	/**
-	 * 
-	 */
-	public Time getTime() {
-		return super.getTime();
-	}
-	
-	/**
-	 * 
-	 */
-//	public void setHeader(Header header) {
-//		this.header = header;
-//	}
-	
 
 	/**
 	 * Start game
@@ -148,6 +130,9 @@ public class PlayField extends Field implements Cloneable {
 		}
 	}
 	
+	/**
+	 * @return Whether we're run out of time
+	 */
 	final public boolean timeUp() {
 		return this.getTime().isTimeUp();
 	}
