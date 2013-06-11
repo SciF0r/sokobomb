@@ -26,6 +26,10 @@ public class Header implements Drawable {
 			System.exit(0);
 		}
 	}
+	
+	public Time getTime(){
+		return this.time;
+	}
 
 	@Override
 	public void draw() throws IOException {

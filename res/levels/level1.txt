@@ -1,4 +1,4 @@
-title=Level 1;time=120
+title=Level 1;time=3
   #########
   #      .#
 ###  $$$$ #
