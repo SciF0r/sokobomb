@@ -14,10 +14,12 @@ import org.newdawn.slick.SlickException;
 public class Time implements Drawable {
 
 	private AngelCodeFont font;
-	private int           time;
+	private long          time, initialTime;
+	private Long          start;
 	
 	public Time(int time) {
-		this.time = time;
+		this.time        = time;
+		this.initialTime = time;
 	}
 
 	@Override
@@ -30,6 +32,12 @@ public class Time implements Drawable {
 				System.exit(0);
 			}
 		}
+
+		if (this.start == null) {
+			this.start = System.currentTimeMillis() / 1000L;
+		}
+
+		this.time = this.initialTime + this.start - System.currentTimeMillis() / 1000L;
 
 		int x = Display.getWidth() - this.font.getWidth(String.valueOf(this.time));
 		int y = 0;
