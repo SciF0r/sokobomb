@@ -159,7 +159,8 @@ public class PlayField extends Field implements Cloneable {
 		this.fieldHistory.push(
 			new FieldHistoryItem(
 				this.getBombCoordinates(),
-				(TileCoordinate)this.player.getCoordinate().clone()
+				(TileCoordinate)this.player.getCoordinate().clone(),
+				this.getCache()
 			)
 		);
 	}

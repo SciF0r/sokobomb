@@ -10,9 +10,16 @@ public class DesignField extends Field implements Cloneable {
 	@Override
 	public void addFieldToHistory() {
 		try {
-			this.fieldHistory.push((DesignField)this.clone());
+			this.fieldHistory.push(
+				new FieldHistoryItem(
+					null,
+					null,
+					(FieldCache)this.getCache().clone()
+				)
+			);
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
+			System.exit(0);
 		}
 	}
 
@@ -30,10 +37,8 @@ public class DesignField extends Field implements Cloneable {
 	@Override
 	public void undo() {
 		if (!this.fieldHistory.isEmpty()) {
-			DesignField field = (DesignField)this.fieldHistory.pop();
-			this.cache  = field.getCache();
-			this.bombs  = field.getBombs();
-			this.player = field.getPlayer();
+			FieldHistoryItem historyItem = this.fieldHistory.pop();
+			this.cache = historyItem.getCache();
 		}
 	}
 }

@@ -13,10 +13,12 @@ public class FieldHistoryItem {
 
 	private LinkedList<TileCoordinate> bombPositions;
 	private TileCoordinate playerPosition;
+	private FieldCache cache;
 
-	public FieldHistoryItem(LinkedList<TileCoordinate> bombPositions, TileCoordinate playerPosition) {
+	public FieldHistoryItem(LinkedList<TileCoordinate> bombPositions, TileCoordinate playerPosition, FieldCache cache) {
 		this.bombPositions  = bombPositions;
 		this.playerPosition = playerPosition;
+		this.cache          = cache;
 	}
 
 	/**
@@ -31,5 +33,12 @@ public class FieldHistoryItem {
 	 */
 	public TileCoordinate getPlayerPosition() {
 		return playerPosition;
+	}
+
+	/**
+	 * @return the cache
+	 */
+	public FieldCache getCache() {
+		return cache;
 	}
 }
