@@ -96,4 +96,16 @@ public class PlayState extends State {
 			field.addFieldToHistory();
 		}
 	}
+
+	@Override
+	protected void startDo() {
+		System.out.println("Start");
+		Application.getFieldController().getField().getTime().start();
+	}
+
+	@Override
+	protected void stopDo() {
+		System.out.println("Stop");
+		Application.getFieldController().getField().getTime().stop();
+	}
 }

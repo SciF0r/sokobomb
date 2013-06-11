@@ -16,6 +16,7 @@ public class Time implements Drawable {
 	private AngelCodeFont font;
 	private long          time, initialTime;
 	private Long          start;
+	private boolean       running;
 	
 	public Time(int time) {
 		this.time        = time;
@@ -24,24 +25,50 @@ public class Time implements Drawable {
 
 	@Override
 	public void draw() throws IOException {
-		if (this.font == null) {
-			try {
-				this.font = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
-			} catch (SlickException e) {
-				e.printStackTrace();
-				System.exit(0);
-			}
+		if (this.running && this.time > 0) { 
+			this.time = this.initialTime + this.start - System.currentTimeMillis() / 1000L;
 		}
-
-		if (this.start == null) {
-			this.start = System.currentTimeMillis() / 1000L;
-		}
-
-		this.time = this.initialTime + this.start - System.currentTimeMillis() / 1000L;
 
 		int x = Display.getWidth() - this.font.getWidth(String.valueOf(this.time));
 		int y = 0;
 
 		this.font.drawString(x, y, String.valueOf(this.time));
+	}
+
+	/**
+	 * Reset the countdown
+	 */
+	public void reset() {
+		this.running = false;
+		this.time    = this.initialTime;
+		this.start   = null;
+	}
+
+	/**
+	 * Start the countdown
+	 */
+	public void start() {
+		this.running = true;
+		
+		if (this.start == null) {
+			this.start = System.currentTimeMillis() / 1000L;
+		}
+		else {
+			this.start = System.currentTimeMillis() / 1000L - this.initialTime + this.time;
+		}
+
+		try {
+			this.font = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
+		} catch (SlickException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	/**
+	 * Stop the countdown
+	 */
+	public void stop() {
+		this.running = false;
 	}
 }

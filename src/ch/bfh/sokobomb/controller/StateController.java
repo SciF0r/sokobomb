@@ -30,6 +30,10 @@ public class StateController {
 	 * @param state
 	 */
 	public void setState(int stateId) {
+		if (this.state != null) {
+			this.state.exit();
+		}
+
 		switch (stateId) {
 			case State.DESIGN:
 				this.state = new DesignState();
