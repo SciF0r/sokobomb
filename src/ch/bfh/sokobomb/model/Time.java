@@ -52,6 +52,7 @@ public class Time implements Drawable {
 		this.running = false;
 		this.time    = this.initialTime;
 		this.start   = null;
+		this.timeUp = false;
 	}
 
 	/**

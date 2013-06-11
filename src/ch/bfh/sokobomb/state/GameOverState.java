@@ -15,7 +15,6 @@ public class GameOverState extends State{
 	private AngelCodeFont font;
 
 	public GameOverState() {
-		System.out.println("GameOver!!!");
 		try {
 			this.font = new AngelCodeFont("res/font/sokofont.fnt", "res/font/sokofont_0.png");
 			
@@ -32,10 +31,10 @@ public class GameOverState extends State{
 		switch (key) {
 			case Keyboard.KEY_RETURN:
 				field.restartLevel();
-				//Application.getFieldController().getField().restartLevel();
 				Application.getStateController().setState(State.PLAY);
 				break;
 			case Keyboard.KEY_ESCAPE:
+				field.restartLevel();
 				Application.getStateController().setState(HOME);
 				break;
 		}
