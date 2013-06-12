@@ -56,11 +56,18 @@ public class Application {
 	}
 
 	/**
+	 * Create a new field
+	 */
+	public static void createNewField() {
+		Application.fieldController = new FieldController(new PlayField());
+	}
+	
+	/**
 	 * @return The state controller instance
 	 */
 	public static FieldController getFieldController() {
 		if (Application.fieldController == null) {
-			Application.fieldController = new FieldController(new PlayField());
+			Application.createNewField();
 		}
 
 		return Application.fieldController;

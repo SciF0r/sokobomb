@@ -22,6 +22,8 @@ public class PlayState extends State {
 	public PlayState() {
 		this.stateId = State.PLAY;
 
+		Application.createNewField();
+
 		Time   time  = Application.getFieldController().getTime();
 		String title = Application.getFieldController().getTitle();
 		
@@ -33,7 +35,7 @@ public class PlayState extends State {
 			throw new RuntimeException("Invalid level: Title is missing");
 		}
 
-		Application.getFieldController().getField().setHeader( new Header(title, time));
+		Application.getFieldController().getField().setHeader(new Header(title, time));
 	}
 
 	@Override
